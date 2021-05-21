@@ -9,7 +9,7 @@ abstract class AbstractController
      */
     public function render(string $template, array $data = [])
     {
-        $loader = new \Twig\Loader\FilesystemLoader('./templates/');
+        $loader = new \Twig\Loader\FilesystemLoader('../templates/');
         $twig = new \Twig\Environment($loader, ['debug' => true]);
         $twig->addExtension(new \Twig\Extension\DebugExtension());
 
