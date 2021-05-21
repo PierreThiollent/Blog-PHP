@@ -11983,7 +11983,7 @@ a {
   position: relative;
   margin: 0;
 }
-.search-form [class^='icon-'] {
+.search-form .icon-search2 {
   position: absolute;
   top: 10px;
   left: 15px;
@@ -12137,7 +12137,6 @@ a {
   position: relative;
   display: inline-block;
 }
-
 .site-footer a:before {
   position: absolute;
   left: 0;
@@ -12197,7 +12196,7 @@ a {
 .site-footer .social li a:before {
   display: none;
 }
-.site-footer .social li a > span {
+.site-footer .social li a > i {
   position: absolute;
   top: 50%;
   left: 50%;

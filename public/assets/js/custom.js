@@ -1,28 +1,6 @@
 (function () {
   'use strict';
 
-  var preloader = function () {
-    var loader = document.querySelector('.loader');
-    var overlay = document.getElementById('overlayer');
-
-    function fadeOut(el) {
-      el.style.opacity = 1;
-      (function fade() {
-        if ((el.style.opacity -= 0.1) < 0) {
-          el.style.display = 'none';
-        } else {
-          requestAnimationFrame(fade);
-        }
-      })();
-    }
-
-    setTimeout(function () {
-      fadeOut(loader);
-      fadeOut(overlay);
-    }, 200);
-  };
-  preloader();
-
   var tinyslider = function () {
     var heroSlider = document.querySelectorAll('.hero-slide');
     var propertySlider = document.querySelectorAll('.property-slider');
@@ -104,7 +82,6 @@
         edgePadding: 0,
         center: true,
         controlsContainer: '#most-popular-nav',
-
         loop: false,
         swipeAngle: false,
         speed: 700,
