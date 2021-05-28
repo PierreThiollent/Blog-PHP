@@ -15,7 +15,7 @@ class ArticlesController extends AbstractController
 
     public function index()
     {
-        $articles = $this->repository->getAll();
+        $articles = $this->repository->getAll(['updatedDate' => 'DESC']);
 
         return $this->render('articles.html.twig', ['articles' => $articles]);
     }
