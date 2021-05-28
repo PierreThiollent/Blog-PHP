@@ -12,6 +12,7 @@ class Article
     private string $slug;
     private \DateTime $publishedDate;
     private \DateTime $updatedDate;
+    private string $thumbnailUrl;
 
     /**
      * Constructor
@@ -201,6 +202,29 @@ class Article
     public function setUpdatedDate(\DateTime $updatedDate): self
     {
         $this->updatedDate = $updatedDate;
+
+        return $this;
+    }
+
+    /**
+     * Get thumbnail url.
+     *
+     * @return string|null
+     */
+    public function getThumbnailUrl(): ?string
+    {
+        return $this->thumbnailUrl;
+    }
+
+    /**
+     * Set thumbnail url.
+     *
+     * @param  string $thumbnailUrl
+     * @return self
+     */
+    public function setThumbnailUrl(string $thumbnailUrl): self
+    {
+        $this->thumbnailUrl = $thumbnailUrl;
 
         return $this;
     }
