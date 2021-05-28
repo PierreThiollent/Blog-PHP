@@ -1,233 +1,301 @@
 <html lang="fr">
-	<head>
-		<meta charset="utf-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<link rel="preconnect" href="https://fonts.gstatic.com"/>
-		<meta name="author" content="Pierre Thiollent">
-		<title>
-			{% block title %}
-				[Dev] SuperBlog
-			{% endblock %}
-		</title>
-		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
-		<link rel="stylesheet" href="assets/css/style.css"/>
-		<link rel="stylesheet" href="assets/css/tiny-slider.css"/> {% block stylesheets %}{% endblock %}
-		</head>
-		<body data-aos-easing="slide" data-aos-duration="800" data-aos-delay="0">
-			<div class="site-mobile-menu site-navbar-target">
-				<div class="site-mobile-menu-header">
-					<div class="site-mobile-menu-close">
-						<span class="icofont-close js-menu-toggle"></span>
-					</div>
-				</div>
-				<div class="site-mobile-menu-body">
-					<ul class="site-nav-wrap">
-						<li class="active">
-							<a href="/">Home</a>
-						</li>
-						<li class="has-children">
-							<span class="arrow-collapse collapsed" data-bs-toggle="collapse" data-bs-target="#collapseItem0"></span>
-							<a href="categories.html">Categories</a>
-							<ul class="collapse" id="collapseItem0">
-								<li>
-									<a href="#">Travel</a>
-								</li>
-								<li>
-									<a href="#">Food</a>
-								</li>
-								<li>
-									<a href="#">Technology</a>
-								</li>
-								<li>
-									<a href="#">Business</a>
-								</li>
-								<li class="has-children">
-									<span class="arrow-collapse collapsed" data-bs-toggle="collapse" data-bs-target="#collapseItem1"></span>
-									<a href="#">Dropdown</a>
-									<ul class="collapse" id="collapseItem1">
-										<li>
-											<a href="#">Sub Menu One</a>
-										</li>
-										<li>
-											<a href="#">Sub Menu Two</a>
-										</li>
-										<li>
-											<a href="#">Sub Menu Three</a>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<a href="#">Travel</a>
-						</li>
-						<li>
-							<a href="#">Food</a>
-						</li>
-						<li>
-							<a href="#">Technology</a>
-						</li>
-						<li>
-							<a href="#">Business</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<nav class="site-nav">
-				<div class="container">
-					<div class="site-navigation">
-						<div class="row">
-							<div class="col-md-6 text-center order-1 order-md-2 mb-3 mb-md-0">
-								<a href="/" class="logo m-0 text-uppercase">SuperBlog</a>
-							</div>
-							<div class="col-md-3 order-3 order-md-1">
-								<form action="#" class="search-form">
-									<span class="icon-search2"></span>
-									<span class="fal fa-search icon-search2"></span>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+    <meta name="author" content="Pierre Thiollent">
+    <title>
+        {% block title %}
+            [Dev] SuperBlog
 
-									<input type="search" class="form-control" placeholder="Search..."/>
-								</form>
-							</div>
-							<div class="col-md-3 text-end order-2 order-md-3 mb-3 mb-md-0">
-								<div class="d-flex">
-									<ul class="list-unstyled social me-auto">
-										<li>
-											<a href="https://twitter.com" target="_blank">
-												<i class="fab fa-twitter"></i>
-											</a>
-										</li>
-										<li>
-											<a href="https://facebook.com" target="_blank">
-												<i class="fab fa-facebook-f"></i>
-											</a>
-										</li>
-										<li>
-											<a href="https://instagram.com" target="_blank">
-												<i class="fab fa-instagram"></i>
-											</a>
-										</li>
-									</ul>
-									<a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block" data-toggle="collapse" data-target="#main-navbar">
-										<span></span>
-									</a>
-								</div>
-							</div>
-						</div>
-						<ul class="js-clone-nav d-none d-lg-inline-none text-start site-menu float-end">
-							<li class="active">
-								<a href="index.html">Home</a>
-							</li>
-							<li class="has-children">
-								<a href="categories.html">Categories</a>
-								<ul class="dropdown">
-									<li>
-										<a href="#">Travel</a>
-									</li>
-									<li>
-										<a href="#">Food</a>
-									</li>
-									<li>
-										<a href="#">Technology</a>
-									</li>
-									<li>
-										<a href="#">Business</a>
-									</li>
-									<li class="has-children">
-										<a href="#">Dropdown</a>
-										<ul class="dropdown">
-											<li>
-												<a href="#">Sub Menu One</a>
-											</li>
-											<li>
-												<a href="#">Sub Menu Two</a>
-											</li>
-											<li>
-												<a href="#">Sub Menu Three</a>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a href="#">Travel</a>
-							</li>
-							<li>
-								<a href="#">Food</a>
-							</li>
-							<li>
-								<a href="#">Technology</a>
-							</li>
-							<li>
-								<a href="#">Business</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
+        {% endblock %}
+    </title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/css/style.css"/>
+    <link rel="stylesheet" href="assets/css/tiny-slider.css"/>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close">
+            <span class="icofont-close js-menu-toggle"></span>
+        </div>
+    </div>
+    <div class="site-mobile-menu-body">
+        <ul class="site-nav-wrap">
+            <li class="active">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            <li class="has-children">
+                <span class="arrow-collapse collapsed" data-bs-toggle="collapse" data-bs-target="#collapseItem0"></span>
+                <a href="categories.html">
+                    Categories
+                </a>
+                <ul class="collapse" id="collapseItem0">
+                    <li>
+                        <a href="#">
+                            Travel
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            Food
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            Technology
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            Business
+                        </a>
+                    </li>
+                    <li class="has-children">
+                        <span class="arrow-collapse collapsed" data-bs-toggle="collapse"
+                              data-bs-target="#collapseItem1"></span>
+                        <a href="#">
+                            Dropdown
+                        </a>
+                        <ul class="collapse" id="collapseItem1">
+                            <li>
+                                <a href="#">
+                                    Sub Menu One
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Sub Menu Two
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Sub Menu Three
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    Travel
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    Food
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    Technology
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    Business
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<nav class="site-nav">
+    <div class="container">
+        <div class="site-navigation">
+            <div class="row">
+                <div class="col-md-6 text-center order-1 order-md-2 mb-3 mb-md-0">
+                    <a href="/" class="logo m-0 text-uppercase">
+                        SuperBlog
+                    </a>
+                </div>
+                <div class="col-md-3 order-3 order-md-1">
+                    <form action="#" class="search-form">
+                        <span class="icon-search2"></span>
+                        <span class="fal fa-search icon-search2"></span>
 
-			{% block body %}{% endblock %}
+                        <input type="search" class="form-control" placeholder="Search..."/>
+                    </form>
+                </div>
+                <div class="col-md-3 text-end order-2 order-md-3 mb-3 mb-md-0">
+                    <div class="d-flex">
+                        <ul class="list-unstyled social me-auto">
+                            <li>
+                                <a href="https://twitter.com" target="_blank">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://facebook.com" target="_blank">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://instagram.com" target="_blank">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block"
+                           data-toggle="collapse" data-target="#main-navbar">
+                            <span></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <ul class="js-clone-nav d-none d-lg-inline-none text-start site-menu float-end">
+                <li class="active">
+                    <a href="index.html">
+                        Home
+                    </a>
+                </li>
+                <li class="has-children">
+                    <a href="categories.html">
+                        Categories
+                    </a>
+                    <ul class="dropdown">
+                        <li>
+                            <a href="#">
+                                Travel
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Food
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Technology
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Business
+                            </a>
+                        </li>
+                        <li class="has-children">
+                            <a href="#">
+                                Dropdown
+                            </a>
+                            <ul class="dropdown">
+                                <li>
+                                    <a href="#">
+                                        Sub Menu One
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Sub Menu Two
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Sub Menu Three
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        Travel
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Food
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Technology
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Business
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-			<footer class="site-footer">
-				<div class="container">
-					<div class="row justify-content-center copyright">
-						<div class="col-lg-7 text-center">
-							<div class="widget">
-								<ul class="social list-unstyled">
-									<li>
-										<a href="https://facebook.com" target="_blank">
-											<i class="fab fa-facebook-f"></i>
-										</a>
-									</li>
-									<li>
-										<a href="https://twitter.com" target="_blank">
-											<i class="fab fa-twitter"></i>
-										</a>
-									</li>
-									<li>
-										<a href="https://linkedin.com">
-											<i class="fab fa-linkedin-in"></i>
-										</a>
-									</li>
-									<li>
-										<a href="https://youtube.com">
-											<i class="fab fa-youtube"></i>
-										</a>
-									</li>
-								</ul>
-							</div>
-							<div class="widget">
-								<p>
-									Copyright ©
-									<script>
-										document.write(new Date().getFullYear());
-									</script>
-									All rights reserved | This template is made with
-									<i class="icon-heart text-danger" aria-hidden="true"></i>
-									by
-									<a href="https://colorlib.com" target="_blank" rel="nofollow noopener">Colorlib</a>
-								</p>
-								<div class="d-block">
-									<a href="#" class="m-2">Terms &amp; Conditions</a>/
-									<a href="#" class="m-2">Privacy Policy</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+{% block body %}{% endblock %}
 
-				<div id="overlayer" style="opacity: -0.1; display: none"></div>
-				<div class="loader" style="opacity: -0.1; display: none">
-					<div class="spinner-border" role="status">
-						<span class="visually-hidden">Loading...</span>
-					</div>
-				</div>
-			</footer>
+<footer class="site-footer">
+    <div class="container">
+        <div class="row justify-content-center copyright">
+            <div class="col-lg-7 text-center">
+                <div class="widget">
+                    <ul class="social list-unstyled">
+                        <li>
+                            <a href="https://facebook.com" target="_blank">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com" target="_blank">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://linkedin.com">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://youtube.com">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="widget">
+                    <p>
+                        Copyright ©
 
-			<script src="assets/js/bootstrap.bundle.min.js"></script>
-			<script src="assets/js/tiny-slider.js"></script>
-			<script src="assets/js/navbar.js"></script>
-			<script src="assets/js/custom.js"></script>
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>
+                        All rights reserved | This template is made with
 
-			{% block script %}{% endblock %}
-		</body>
-	</html>
+                        <i class="icon-heart text-danger" aria-hidden="true"></i>
+                        by
+
+                        <a href="https://colorlib.com" target="_blank" rel="nofollow noopener">
+                            Colorlib
+                        </a>
+                    </p>
+                    <div class="d-block">
+                        <a href="#" class="m-2">
+                            Terms &amp; Conditions
+                        </a>
+                        /
+
+                        <a href="#" class="m-2">
+                            Privacy Policy
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/tiny-slider.js"></script>
+<script src="assets/js/navbar.js"></script>
+<script src="assets/js/custom.js"></script>
+
+{% block script %}{% endblock %}
+</body>
+</html>
