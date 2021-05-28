@@ -21,7 +21,7 @@ class ArticlesRepository
      */
     public function getAll(): array
     {
-        $sql = 'SELECT * FROM article';
+        $sql = 'SELECT * FROM article ORDER BY updatedDate DESC';
         $this->DAL->execute($sql);
 
         $data = $this->DAL->fetchData('all');
