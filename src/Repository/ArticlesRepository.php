@@ -37,6 +37,7 @@ class ArticlesRepository
             $article_object->setSlug($article['slug']);
             $article_object->setPublishedDate(new \DateTime($article['publishedDate']));
             $article_object->setUpdatedDate(new \DateTime($article['updatedDate']));
+            $article_object->setThumbnailUrl($article['thumbnailUrl']);
 
             $articles[] = $article_object;
         }
