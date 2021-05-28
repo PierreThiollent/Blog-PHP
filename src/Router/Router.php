@@ -2,7 +2,9 @@
 
 namespace App\Router;
 
-class Router
+use App\Controller\AbstractController;
+
+class Router extends AbstractController
 {
     private string $url;
     private array $routes = [];
@@ -18,7 +20,20 @@ class Router
      *
      * @param string $path
      * @param \Closure|string $callable callback function
+     * @return Route
+     */
+    public function get(string $path, \Closure|string $callable): Route
+    {
+        return $this->add($path, $callable, 'GET');
+    }
+
+    /**
+     * Method to create a new GET route
+     *
+     * @param string $path
+     * @param \Closure|string $callable callback function
      * @param string $method HTTP_METHOD
+     * @return Route
      */
     private function add(string $path, \Closure|string $callable, string $method): Route
     {
@@ -29,21 +44,11 @@ class Router
     }
 
     /**
-     * Method to create a new GET route
-     *
-     * @param string $path
-     * @param \Closure|string $callable callback function
-     */
-    public function get(string $path, \Closure|string $callable): Route
-    {
-        return $this->add($path, $callable, 'GET');
-    }
-
-    /**
      * Method to create a new POST route
      *
      * @param string $path
      * @param \Closure|string $callable callback function
+     * @return Route
      */
     public function post(string $path, \Closure|string $callable): Route
     {
@@ -58,14 +63,20 @@ class Router
     public function run()
     {
         if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
-            throw new \Exception('REQUEST_METHOD does not exist');
+
+            header('HTTP/1.0 404 Not Found');
+
+            return $this->render('404.html.twig');
         }
+
         foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
             if ($route->match($this->url)) {
                 return $route->call();
             }
         }
 
-       throw new \Exception('REQUEST_METHOD does not exist');
+        header('HTTP/1.0 404 Not Found');
+
+        return $this->render('404.html.twig');
     }
 }
