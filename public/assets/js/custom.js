@@ -74,9 +74,10 @@
       var mostPopularSlider = tns({
         container: '#most-popular-center',
         items: 1,
+        startIndex: 1,
         mode: 'carousel',
         slideBy: 'page',
-        nav: true,
+        nav: false,
         controls: true,
         gutter: 50,
         edgePadding: 0,
