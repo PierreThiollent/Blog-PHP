@@ -13,14 +13,7 @@ class Article
     private \DateTime $publishedDate;
     private \DateTime $updatedDate;
     private string $thumbnailUrl;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->publishedDate = new \DateTime();
-    }
+    private int $categoryId;
 
     /**
      * Getter id
@@ -225,6 +218,29 @@ class Article
     public function setThumbnailUrl(string $thumbnailUrl): self
     {
         $this->thumbnailUrl = $thumbnailUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get category id.
+     *
+     * @return string|null
+     */
+    public function getCategoryId(): ?string
+    {
+        return $this->categoryId;
+    }
+
+    /**
+     * Set category id.
+     *
+     * @param  string $categoryId
+     * @return self
+     */
+    public function setCategoryId(string $categoryId): self
+    {
+        $this->categoryId = $categoryId;
 
         return $this;
     }
