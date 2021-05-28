@@ -11,8 +11,8 @@
         {% endblock %}
     </title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="assets/css/style.css"/>
-    <link rel="stylesheet" href="assets/css/tiny-slider.css"/>
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+    <link rel="stylesheet" href="/assets/css/tiny-slider.css"/>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
           integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     {% block stylesheets %}{% endblock %}
@@ -31,76 +31,9 @@
                     Home
                 </a>
             </li>
-            <li class="has-children">
-                <span class="arrow-collapse collapsed" data-bs-toggle="collapse" data-bs-target="#collapseItem0"></span>
-                <a href="categories.html">
-                    Categories
-                </a>
-                <ul class="collapse" id="collapseItem0">
-                    <li>
-                        <a href="#">
-                            Travel
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            Food
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            Technology
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            Business
-                        </a>
-                    </li>
-                    <li class="has-children">
-                        <span class="arrow-collapse collapsed" data-bs-toggle="collapse"
-                              data-bs-target="#collapseItem1"></span>
-                        <a href="#">
-                            Dropdown
-                        </a>
-                        <ul class="collapse" id="collapseItem1">
-                            <li>
-                                <a href="#">
-                                    Sub Menu One
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Sub Menu Two
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Sub Menu Three
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    Travel
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    Food
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    Technology
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    Business
+            <li class="">
+                <a href="/articles">
+                    Articles
                 </a>
             </li>
         </ul>
@@ -142,89 +75,13 @@
                                 </a>
                             </li>
                         </ul>
-                        <a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block"
+                        <span class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block"
                            data-toggle="collapse" data-target="#main-navbar">
                             <span></span>
-                        </a>
+                        </span>
                     </div>
                 </div>
             </div>
-            <ul class="js-clone-nav d-none d-lg-inline-none text-start site-menu float-end">
-                <li class="active">
-                    <a href="index.html">
-                        Home
-                    </a>
-                </li>
-                <li class="has-children">
-                    <a href="categories.html">
-                        Categories
-                    </a>
-                    <ul class="dropdown">
-                        <li>
-                            <a href="#">
-                                Travel
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Food
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Technology
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Business
-                            </a>
-                        </li>
-                        <li class="has-children">
-                            <a href="#">
-                                Dropdown
-                            </a>
-                            <ul class="dropdown">
-                                <li>
-                                    <a href="#">
-                                        Sub Menu One
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Sub Menu Two
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Sub Menu Three
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        Travel
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        Food
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        Technology
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        Business
-                    </a>
-                </li>
-            </ul>
         </div>
     </div>
 </nav>
@@ -236,8 +93,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h2 class="h4 fw-bold">
-                    Subscribe to newsletter
-                                        
+                    Subscribe to newsletter                
                 </h2>
             </div>
         </div>
@@ -313,10 +169,10 @@
     </div>
 </footer>
 
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/tiny-slider.js"></script>
-<script src="assets/js/navbar.js"></script>
-<script src="assets/js/custom.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/tiny-slider.js"></script>
+<script src="/assets/js/navbar.js"></script>
+<script src="/assets/js/custom.js"></script>
 
 {% block script %}{% endblock %}
 </body>
