@@ -4,14 +4,17 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use App\DAL;
+use App\Hydrator;
 
 class ArticlesRepository
 {
     private DAL $DAL;
+    private Hydrator $hydrator;
 
     public function __construct()
     {
         $this->DAL = new DAL();
+        $this->hydrator = new Hydrator();
     }
 
     /**
@@ -43,18 +46,7 @@ class ArticlesRepository
 
         foreach ($data as $article) {
             $article_object = new Article();
-
-            $article_object->setId($article['id']);
-            $article_object->setTitle($article['title']);
-            $article_object->setExcerpt($article['excerpt']);
-            $article_object->setContent($article['content']);
-            $article_object->setAuthorId($article['authorId']);
-            $article_object->setSlug($article['slug']);
-            $article_object->setPublishedDate(new \DateTime($article['publishedDate']));
-            $article_object->setUpdatedDate(new \DateTime($article['updatedDate']));
-            $article_object->setThumbnailUrl($article['thumbnailUrl']);
-            $article_object->setCategoryId($article['categoryId']);
-
+            $this->hydrator->hydrate($article_object, $article);
             $articles[] = $article_object;
         }
 
