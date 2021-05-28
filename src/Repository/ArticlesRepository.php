@@ -16,12 +16,27 @@ class ArticlesRepository
 
     /**
      * Get all articles
-     *
+     * @param  array     $order
      * @return Article[]
      */
-    public function getAll(): array
+    public function getAll(array $order = []): array
     {
-        $sql = 'SELECT * FROM article ORDER BY updatedDate DESC';
+        $sql = 'SELECT * FROM article';
+
+        if (!empty($order)) {
+            $sql .= ' ORDER BY ';
+
+            $i = 0;
+            foreach ($order as $columnName => $sens) {
+                if ($i === 0) {
+                    $sql .= "$columnName $sens";
+                } else {
+                    $sql .= ", $columnName $sens";
+                }
+                $i++;
+            }
+        }
+
         $this->DAL->execute($sql);
 
         $data = $this->DAL->fetchData('all');
@@ -38,6 +53,7 @@ class ArticlesRepository
             $article_object->setPublishedDate(new \DateTime($article['publishedDate']));
             $article_object->setUpdatedDate(new \DateTime($article['updatedDate']));
             $article_object->setThumbnailUrl($article['thumbnailUrl']);
+            $article_object->setCategoryId($article['categoryId']);
 
             $articles[] = $article_object;
         }
