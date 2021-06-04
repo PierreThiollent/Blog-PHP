@@ -24,11 +24,11 @@
                             <div class="content">
                                 <div class="post-meta mb-3">
                                     <a href="#" class="category">
-                                        Business
-                                    </a>
-                                    ,
-                                    <a href="#" class="category">
-                                        Travel
+                                        {% for category in categories %}
+                                            {% if article.categoryId == category.id  %}
+                                                {{category.name}}
+                                            {% endif %}
+                                        {% endfor %}
                                     </a>
                                     &mdash;
                                     <span class="date">
