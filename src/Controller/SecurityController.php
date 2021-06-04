@@ -49,8 +49,7 @@ class SecurityController extends AbstractController
                 mail(
                     $user->getEmail(),
                     'Confirmation de votre compte',
-                    "Pour confirmer cotre compte, veuillez cliquer sur le lien suivant.
-                    http://blog-php.local/confirmation/$user_id-$token"
+                    "Pour confirmer cotre compte, veuillez cliquer sur le lien suivant.\nhttps://blog-php.pierre-thiollent.fr/confirmation/$user_id-$token"
                 );
 
                 return $this->render(
