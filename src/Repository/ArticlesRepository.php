@@ -52,4 +52,22 @@ class ArticlesRepository
 
         return $articles;
     }
+
+    public function getOne(int $id): ?Article
+    {
+        $sql = "SELECT * FROM article WHERE id = $id";
+
+        $this->DAL->execute($sql);
+
+        $data = $this->DAL->fetchData();
+
+        if ($data) {
+            $article = new Article();
+            $this->hydrator->hydrate($article, $data);
+
+            return $article;
+        }
+
+        return null;
+    }
 }
