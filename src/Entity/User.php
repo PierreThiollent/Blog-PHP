@@ -13,6 +13,11 @@ class User
     private \DateTime $confirmedAt;
     private string $role;
 
+    public function __construct()
+    {
+        $this->role = 'user';
+    }
+
     /**
      * Getter id
      *
@@ -67,6 +72,19 @@ class User
     public function getLastname(): ?string
     {
         return $this->lastname;
+    }
+
+    /**
+     * Setter lastname
+     *
+     * @param  string $lastname
+     * @return self
+     */
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
     }
 
     /**
@@ -151,8 +169,8 @@ class User
     /**
      * Set the value of confirmedAt
      *
-     * @return self
      * @param  \DateTime $confirmedAt
+     * @return self
      */
     public function setConfirmedAt(\DateTime $confirmedAt): self
     {
