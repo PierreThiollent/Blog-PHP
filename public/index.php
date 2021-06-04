@@ -18,4 +18,11 @@ $router->get('/articles', 'ArticlesController->index');
 // Article detail page
 $router->get('/article/:id/:slug', 'ArticlesController->show');
 
+// User resgistration
+$router->get('/inscription', 'SecurityController->register');
+$router->post('/inscription', 'SecurityController->register');
+
+// User confirmation account
+$router->get('/confirmation/:id-:token', 'SecurityController->confirmAccount');
+
 $router->run();
