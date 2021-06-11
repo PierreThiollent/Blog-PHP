@@ -21,9 +21,9 @@ class UserRepository
      * Method to get one user by email
      *
      * @param  User $user
-     * @return bool
+     * @return bool|User
      */
-    public function userExist(User $user): bool
+    public function userExist(User $user): bool|User
     {
         $sql = 'SELECT * from user WHERE email = :email';
 
@@ -33,8 +33,11 @@ class UserRepository
         if (empty($data)) {
             return false;
         }
+        
+        $user_object = new User();
+        $this->hydrator->hydrate($user_object, $data[0]);
 
-        return true;
+        return $user_object;
     }
 
     /**  
