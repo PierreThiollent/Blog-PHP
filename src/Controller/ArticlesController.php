@@ -21,4 +21,15 @@ class ArticlesController extends AbstractController
 
         return $this->render('articles.html.twig', ['articles' => $articles]);
     }
+
+    public function show(int $id)
+    {
+        $article = $this->repository->getOne($id);
+
+        if (!$article) {
+            return $this->render('404.html.twig');
+        }
+
+        return $this->render('article_detail.html.twig', ['article' => $article]);
+    }
 }

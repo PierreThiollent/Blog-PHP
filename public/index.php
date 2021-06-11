@@ -15,4 +15,7 @@ $router->get('/', 'HomeController->index');
 // Articles page
 $router->get('/articles', 'ArticlesController->index');
 
+// Article detail page
+$router->get('/article/:id/:slug', 'ArticlesController->show');
+
 $router->run();
