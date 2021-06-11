@@ -21,12 +21,14 @@ class User
     /**
      * @var string
      * @Validate\isNotEmpty
+     * @Validate\isValidEmail
      */
     private string $email;
 
     /**
      * @var string
      * @Validate\isNotEmpty
+     * @Validate\isSecurePassword
      */
     private string $password;
 
