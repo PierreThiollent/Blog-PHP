@@ -32,7 +32,7 @@ class User
      */
     private string $password;
 
-    private string $confirmationToken;
+    private ?string $confirmationToken;
     private \DateTime $confirmedAt;
     private string $role;
 
@@ -172,7 +172,7 @@ class User
      * @param  string $confirmationToken
      * @return self
      */
-    public function setConfirmationToken(string $confirmationToken): self
+    public function setConfirmationToken(?string $confirmationToken): self
     {
         $this->confirmationToken = $confirmationToken;
 
@@ -195,7 +195,7 @@ class User
      * @param  \DateTime $confirmedAt
      * @return self
      */
-    public function setConfirmedAt(\DateTime $confirmedAt): self
+    public function setConfirmedAt(?\DateTime $confirmedAt): self
     {
         $this->confirmedAt = $confirmedAt;
 
