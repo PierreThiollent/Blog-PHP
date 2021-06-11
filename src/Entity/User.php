@@ -5,10 +5,31 @@ namespace App\Entity;
 class User
 {
     private int $id;
+
+    /**
+     * @var string
+     * @Validate\isNotEmpty
+     */
     private string $firstname;
+
+    /**
+     * @var string
+     * @Validate\isNotEmpty
+     */
     private string $lastname;
+
+    /**
+     * @var string
+     * @Validate\isNotEmpty
+     */
     private string $email;
+
+    /**
+     * @var string
+     * @Validate\isNotEmpty
+     */
     private string $password;
+
     private string $confirmationToken;
     private \DateTime $confirmedAt;
     private string $role;
