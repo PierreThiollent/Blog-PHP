@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use App\DAL;
+use App\Entity\Category;
 use App\Hydrator;
 
 class ArticlesRepository
@@ -24,7 +25,7 @@ class ArticlesRepository
      */
     public function getAll(array $order = []): array
     {
-        $sql = 'SELECT * FROM article';
+        $sql = 'SELECT * FROM article INNER JOIN category ON article.categoryId = category.id';
 
         if (!empty($order)) {
             $sql .= ' ORDER BY ';
@@ -41,12 +42,17 @@ class ArticlesRepository
         }
 
         $this->DAL->execute($sql);
-
         $data = $this->DAL->fetchData('all');
 
-        foreach ($data as $article) {
+        foreach ($data as &$article) {
+            $category = new Category();
+            $this->hydrator->hydrate($category, $article);
+
+            $article['category'] = $category;
+
             $article_object = new Article();
             $this->hydrator->hydrate($article_object, $article);
+
             $articles[] = $article_object;
         }
 

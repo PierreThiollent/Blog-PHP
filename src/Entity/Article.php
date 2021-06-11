@@ -13,7 +13,7 @@ class Article
     private \DateTime $publishedDate;
     private \DateTime $updatedDate;
     private string $thumbnailUrl;
-    private int $categoryId;
+    private Category $category;
 
     /**
      * Getter id
@@ -223,24 +223,24 @@ class Article
     }
 
     /**
-     * Get category id.
+     * Get category.
      *
-     * @return string|null
+     * @return Category|null
      */
-    public function getCategoryId(): ?string
+    public function getCategory(): ?Category
     {
-        return $this->categoryId;
+        return $this->category;
     }
 
     /**
-     * Set category id.
+     * Set category.
      *
-     * @param  string $categoryId
+     * @param  Category $category
      * @return self
      */
-    public function setCategoryId(string $categoryId): self
+    public function setCategory(Category $category): self
     {
-        $this->categoryId = $categoryId;
+        $this->category = $category;
 
         return $this;
     }

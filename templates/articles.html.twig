@@ -26,11 +26,7 @@
                             <div class="content">
                                 <div class="post-meta mb-3">
                                     <a href="#" class="category">
-                                        {% for category in categories %}
-                                            {% if article.categoryId == category.id  %}
-                                                {{category.name}}
-                                            {% endif %}
-                                        {% endfor %}
+                                        {{ article.category.name }}
                                     </a>
                                     &mdash;
                                     <span class="date">
