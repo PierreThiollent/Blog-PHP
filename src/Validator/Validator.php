@@ -1,6 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Validator;
+
+use App\Valdator\DockBlockReader;
 
 class Validator
 {
