@@ -33,8 +33,6 @@ class SecurityController extends AbstractController
             $validator = new Validator();
             $errors = $validator->validate($user, $_POST);
 
-            // dd($errors);
-
             if (!empty($errors)) {
                 return $this->render('register.html.twig', ['errors' => $errors]);
             }
@@ -84,10 +82,10 @@ class SecurityController extends AbstractController
         if (!$this->repository->confirmUser($id, $token)) {
             return $this->render(
                 'register.html.twig',
-                ['error' => 'Une erreur s\'est produite lors de la validation de votre compte. Votre lien de confirmation a dû expirer.']
+                ['error' => 'Une erreur s\'est produite lors de la validation de votre compte. Veuillez réessayer.']
             );
         };
 
-        $this->redirect('/');
+        $this->redirect('/connexion');
     }
 }
