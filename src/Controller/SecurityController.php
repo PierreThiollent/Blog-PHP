@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Helpers;
 use App\Hydrator;
 use App\Repository\UserRepository;
+use App\Validator;
 
 class SecurityController extends AbstractController
 {
@@ -28,6 +29,15 @@ class SecurityController extends AbstractController
     {
         if (!empty($_POST)) {
             $user = new User();
+
+            $validator = new Validator();
+            $errors = $validator->validate($user, $_POST);
+
+            // dd($errors);
+
+            if (!empty($errors)) {
+                return $this->render('register.html.twig', ['errors' => $errors]);
+            }
 
             $this->hydrator->hydrate($user, $_POST);
             $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
