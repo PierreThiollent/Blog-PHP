@@ -10,45 +10,45 @@
     <div class="row">
       <div class="col-12 col-lg-6 align-self-center mx-auto">
 
-        {% if message %}
-          <div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endif %}
+      {% include 'message.html.twig' %}
 
-        {% if error %}
-          <div class="alert alert-warning alert-dismissible fade show mt-5" role="alert">
-            {{ error|raw }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endif %}
+      {% include 'error.html.twig' %}
 
         <div class="m-3 m-lg-5">
           <div class="text-center mt-4 mb-5">
             <h1 class="h3">Inscription</h1>
           </div>
           <form action="" method="POST">
+
             <div class="mb-3">
               <label class="form-label" for="lastname">Nom *</label>
-              <input class="form-control" type="text" name="lastname" placeholder="Doe" required />
+              <input class="form-control mb-2" type="text" name="lastname" placeholder="Doe" required />
+              {% if errors.lastname %}<small class="text-danger">* {{ errors.lastname }}</small>{% endif %}
             </div>
+
             <div class="mb-3">
               <label class="form-label" for="firstname">Prénom *</label>
               <input class="form-control" type="text" name="firstname" placeholder="John" required />
+              {% if errors.firstname %}<span class="text-danger">{{ errors.firstname }}</span>{% endif %}
             </div>
+
             <div class="mb-3">
               <label class="form-label" form="email">Email *</label>
               <input class="form-control" type="email" name="email" placeholder="john.doe@gmail.com" required />
+              {% if errors.email %}<span class="text-danger">{{ errors.email }}</span>{% endif %}
             </div>
+
             <div class="mb-3">
               <label class="form-label" for="password">Mot de passe *</label>
               <input class="form-control" type="password" name="password" placeholder="************" required />
+              {% if errors.email %}<span class="text-danger">{{ errors.password }}</span>{% endif %}
             </div>
+
             <div class="text-center mt-4">
               <button type="submit" class="btn btn-primary w-25">S'inscrire</button>
             </div>
             <div class="text-center text-muted mt-2">Vous avez déjà un compte ? <a href="/connexion">Connexion</a></div>
+
           </form>
         </div>
       </div>
