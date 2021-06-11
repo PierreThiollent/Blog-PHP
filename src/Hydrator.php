@@ -16,7 +16,7 @@ class Hydrator
         foreach ($data as $key => &$value) {
             $setter = 'set' . ucfirst($key);
             if (method_exists($entity, $setter)) {
-                if (in_array($key, ['publishedDate', 'updatedDate'])) {
+                if (in_array($key, ['publishedDate', 'updatedDate', 'confirmedAt'])) {
                     $value = new \DateTime($value);
                 }
                 $entity->$setter($value);
