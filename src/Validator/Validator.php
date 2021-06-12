@@ -2,8 +2,6 @@
 
 namespace App\Validator;
 
-use App\Valdator\DockBlockReader;
-
 class Validator
 {
     /**
