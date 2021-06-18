@@ -32,13 +32,15 @@ class User
      */
     private string $password;
 
-    private string $confirmationToken;
+    private ?string $confirmationToken;
     private \DateTime $confirmedAt;
     private string $role;
+    private string $imageUrl;
 
     public function __construct()
     {
         $this->role = 'user';
+        $this->imageUrl = 'images/user-placeholder.jpg';
     }
 
     /**
@@ -172,7 +174,7 @@ class User
      * @param  string $confirmationToken
      * @return self
      */
-    public function setConfirmationToken(string $confirmationToken): self
+    public function setConfirmationToken(?string $confirmationToken): self
     {
         $this->confirmationToken = $confirmationToken;
 
@@ -195,7 +197,7 @@ class User
      * @param  \DateTime $confirmedAt
      * @return self
      */
-    public function setConfirmedAt(\DateTime $confirmedAt): self
+    public function setConfirmedAt(?\DateTime $confirmedAt): self
     {
         $this->confirmedAt = $confirmedAt;
 
@@ -221,6 +223,27 @@ class User
     public function setRole(string $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of imageUrl
+     */
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    /**
+     * Set the value of imageUrl
+     *
+     * @param  string $imageUrl
+     * @return self
+     */
+    public function setImageUrl(string $imageUrl): self
+    {
+        $this->imageUrl = $imageUrl;
 
         return $this;
     }

@@ -11,8 +11,6 @@ class Helpers
      */
     public static function generateToken(): string
     {
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-        return substr(str_shuffle(str_repeat($chars, 60)), 0, 60);
+        return bin2hex(openssl_random_pseudo_bytes(60));
     }
 }
