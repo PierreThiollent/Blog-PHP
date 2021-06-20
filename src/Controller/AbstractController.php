@@ -12,6 +12,7 @@ abstract class AbstractController
         $loader = new \Twig\Loader\FilesystemLoader('../templates/');
         $twig = new \Twig\Environment($loader, ['debug' => true]);
         $twig->addExtension(new \Twig\Extension\DebugExtension());
+        $twig->addGlobal('session', $_SESSION);
 
         echo $twig->render($template, $data);
     }
