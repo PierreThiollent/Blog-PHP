@@ -109,7 +109,7 @@ class SecurityController extends AbstractController
             // On stocke les infos du user en session
             $_SESSION['user'] = $user_data;
 
-            return $this->redirect('/');
+            return $this->redirect('/mon-compte');
         }
 
         return $this->render('login.html.twig');
@@ -132,5 +132,22 @@ class SecurityController extends AbstractController
         };
 
         $this->redirect('/connexion');
+    }
+
+    /**
+     * Logout
+     *
+     * @route /deconnexion
+     * @return void
+     */
+    public function logout()
+    {
+        if (!isset($_SESSION['user'])) {
+            return $this->redirect('/');
+        }
+
+        unset($_SESSION['user']);
+
+        return $this->redirect('/');
     }
 }
