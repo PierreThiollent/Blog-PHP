@@ -78,4 +78,23 @@ class UserRepository
 
         return $this->DAL->execute($sql, ['id'=> $user_id, 'confirmationToken' => $token]);
     }
+
+    /**
+     * Method to update user account
+     * 
+     * @param User $user
+     * @return bool
+     */
+    public function updateUser(User $user): bool
+    {
+        $sql = 'UPDATE user SET firstname = :firstname, lastname = :lastname, password = :password
+                WHERE email = :email';
+
+        return $this->DAL->execute($sql, [
+            'firstname' => $user->getFirstname(),
+            'lastname' => $user->getLastname(),
+            'password' => $user->getPassword(),
+            'email' => $user->getEmail(),
+        ]);
+    }
 }
