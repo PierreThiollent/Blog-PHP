@@ -6,7 +6,7 @@ class Category
 {
     private int $id;
     private string $name;
-    private string $slug;
+    private string $categorySlug;
 
     /**
      * Getter id
@@ -61,7 +61,7 @@ class Category
      */
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->categorySlug;
     }
 
     /**
@@ -70,9 +70,9 @@ class Category
      * @param  string $slug
      * @return self
      */
-    public function setSlug(string $slug): self
+    public function setSlug(string $categorySlug): self
     {
-        $this->slug = $slug;
+        $this->categorySlug = $categorySlug;
 
         return $this;
     }
