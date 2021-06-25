@@ -27,11 +27,13 @@ class DashboardController extends AbstractController
 
         if (!empty($_POST)) {
             $user = new User();
+            $this->repository = new UserRepository();
 
             // Si l'utilisateur n'a pas renseigné de nouveau mdp
             if ($_POST['password'] === '') {
+                $userPasswordHash = $this->repository->getUserPasswordHash($_SESSION['user']);
                 // On recupere son mdp en session
-                $_POST['password'] = $_SESSION['user']->getPassword();
+                $_POST['password'] = $userPasswordHash;
             }
 
             // On validate notre object user
@@ -50,16 +52,16 @@ class DashboardController extends AbstractController
             $this->hydrator->hydrate($user, $_POST);
 
             // Si l'utilisateur a renseigne un nouveau mdp
-            if ($_POST['password'] !== $_SESSION['user']->getPassword()) {
+            if ($_POST['password'] !== '') {
                 // On hashe le nouveau mdp
                 $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
             }
 
-            $this->repository = new UserRepository();
             $this->repository->updateUser($user);
 
             // On stocke les nouvelles infos du user en session
-            $_SESSION['user'] = $user;
+            $_SESSION['user']->setLastname($user->getLastname());
+            $_SESSION['user']->setFirstname($user->getFirstname());
 
             return $this->render('dashboard.html.twig', ['message' => 'Votre profil a bien été modifié.']);
         }
