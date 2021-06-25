@@ -7,9 +7,9 @@
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <div class="text-center">
-          <img src="/images/user-placeholder.jpg" alt="Image" class="author-pic img-fluid rounded-circle mx-auto" />
+          <img src="/{{ article.author.imageUrl }}" alt="Image" class="author-pic img-fluid rounded-circle mx-auto" />
         </div>
-        <span class="d-block text-center">Sergy Campbell</span>
+        <span class="d-block text-center">{{ article.author.lastname }}  {{ article.author.firstname }}</span>
         <span class="date d-block text-center small text-uppercase text-black-50 mb-5">
           {{ article.updatedDate|date('M d, y', "Europe/Paris") }}
         </span>
