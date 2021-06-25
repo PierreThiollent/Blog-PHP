@@ -7,7 +7,6 @@
     <title>
         {% block title %}
             [Dev] SuperBlog
-
         {% endblock %}
     </title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
@@ -36,16 +35,26 @@
                     Articles
                 </a>
             </li>
-            <li class="">
-                <a href="/inscription">
-                    S'inscrire
-                </a>
-            </li>
-            <li class="">
-                <a href="/connexion">
-                    Connexion
-                </a>
-            </li>
+            {% if session.user is null %}
+                <li class="">
+                    <a href="/inscription">
+                        S'inscrire
+                    </a>
+                </li>
+            {% endif %}
+            {% if session.user %}
+                <li class="">
+                    <a href="/mon-compte">
+                        Mon compte
+                    </a>
+                </li>
+            {% else %}
+                <li class="">
+                    <a href="/connexion">
+                        Connexion
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </div>

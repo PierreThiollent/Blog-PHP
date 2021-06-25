@@ -28,6 +28,12 @@ $router->post('/inscription', 'SecurityController->register');
 $router->get('/connexion', 'SecurityController->login');
 $router->post('/connexion', 'SecurityController->login');
 
+$router->get('/mon-compte', 'DashboardController->index');
+$router->post('/mon-compte', 'DashboardController->index');
+
+// Deconnexion
+$router->get('/deconnexion', 'SecurityController->logout');
+
 // User confirmation account
 $router->get('/confirmation/:id-:token', 'SecurityController->confirmAccount');
 
