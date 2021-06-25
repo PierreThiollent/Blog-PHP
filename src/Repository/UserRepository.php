@@ -25,7 +25,7 @@ class UserRepository
      */
     public function userExist(User $user): bool|User
     {
-        $sql = 'SELECT * from user WHERE email = :email';
+        $sql = 'SELECT id, email, firstname, lastname, role, imageUrl from user WHERE email = :email';
 
         $this->DAL->execute($sql, ['email' => $user->getEmail()]);
         $data = $this->DAL->fetchData('all');
@@ -96,5 +96,42 @@ class UserRepository
             'password' => $user->getPassword(),
             'email' => $user->getEmail(),
         ]);
+    }
+
+    /**
+     * Check if user account is confirmed
+     * 
+     * @param User $user
+     * @return bool
+     */
+    public function checkConfirmUser(User $user): bool
+    {
+        $sql = 'SELECT confirmationToken, confirmedAt from user WHERE email = :email';
+
+        $this->DAL->execute($sql, ['email' => $user->getEmail()]);
+        $data = $this->DAL->fetchData('all');
+
+        if (!is_null($data[0]['confirmationToken']) && is_null($data[0]['confirmedAt'])) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Check if password entered by user is correct
+     * 
+     * @param User $user
+     * @return string
+     */
+    public function getUserPasswordHash(User $user): string
+    {
+        $sql = 'SELECT password from user WHERE email = :email';
+
+        $this->DAL->execute($sql, ['email' => $user->getEmail()]);
+        $data = $this->DAL->fetchData('all');
+
+        return $data[0]['password'];
     }
 }
