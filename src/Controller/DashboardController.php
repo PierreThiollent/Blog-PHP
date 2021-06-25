@@ -28,12 +28,15 @@ class DashboardController extends AbstractController
         if (!empty($_POST)) {
             $user = new User();
             $this->repository = new UserRepository();
+            $passwordUpdated = false;
 
             // Si l'utilisateur n'a pas renseigné de nouveau mdp
             if ($_POST['password'] === '') {
                 $userPasswordHash = $this->repository->getUserPasswordHash($_SESSION['user']);
                 // On recupere son mdp en session
                 $_POST['password'] = $userPasswordHash;
+            } else {
+                $passwordUpdated = true;
             }
 
             // On validate notre object user
@@ -52,7 +55,7 @@ class DashboardController extends AbstractController
             $this->hydrator->hydrate($user, $_POST);
 
             // Si l'utilisateur a renseigne un nouveau mdp
-            if ($_POST['password'] !== '') {
+            if ($passwordUpdated) {
                 // On hashe le nouveau mdp
                 $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
             }
