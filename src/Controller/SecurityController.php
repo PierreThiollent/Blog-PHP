@@ -94,7 +94,7 @@ class SecurityController extends AbstractController
             }
 
             // Si le compte n'a pas été confirmé
-            if (!is_null($user_data->getConfirmationToken()) && is_null($user_data->getConfirmedAt())) {
+            if (!$this->repository->checkConfirmUser($user_data)) {
                 return $this->render(
                     'login.html.twig',
                     ['error' => "Votre compte n'a pas été confirmé, un email vous a été envoyé lors de la création de celui-ci, veuillez cliquer sur le lien contenu dans cet email."]
@@ -102,7 +102,7 @@ class SecurityController extends AbstractController
             }
 
             // Si le password ne match pas le hash stocké en base
-            if (!password_verify($_POST['password'], $user_data->getPassword())) {
+            if (!password_verify($_POST['password'], $this->repository->getUserPasswordHash($user_data))) {
                 return $this->render('login.html.twig', ['error' => 'Le couple email / mot de passe est incorrect.']);
             }
 
