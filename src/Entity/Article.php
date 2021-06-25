@@ -8,7 +8,7 @@ class Article
     private string $title;
     private string $excerpt;
     private string $content;
-    private int $authorId;
+    private User $author;
     private string $slug;
     private \DateTime $publishedDate;
     private \DateTime $updatedDate;
@@ -108,24 +108,24 @@ class Article
     }
 
     /**
-     * Get author id.
+     * Get author.
      *
      * @return int|null
      */
-    public function getAuthorId(): ?string
+    public function getAuthor(): ?User
     {
-        return $this->authorId;
+        return $this->author;
     }
 
     /**
-     * Set author id.
+     * Set author.
      *
-     * @param  int  $authorId
+     * @param  User $author
      * @return self
      */
-    public function setAuthorId(int $authorId): self
+    public function setAuthor(User $author): self
     {
-        $this->authorId = $authorId;
+        $this->author = $author;
 
         return $this;
     }
