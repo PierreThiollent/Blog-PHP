@@ -14,6 +14,7 @@ class Article
     private \DateTime $updatedDate;
     private string $thumbnailUrl;
     private Category $category;
+    private int $trending;
 
     /**
      * Getter id
@@ -241,6 +242,28 @@ class Article
     public function setCategory(Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of trending
+     * @return int
+     */
+    public function getTrending(): int
+    {
+        return $this->trending;
+    }
+
+    /**
+     * Set the value of trending
+     *
+     * @param  int  $trending
+     * @return self
+     */
+    public function setTrending(int $trending): self
+    {
+        $this->trending = $trending;
 
         return $this;
     }

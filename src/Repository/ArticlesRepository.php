@@ -24,9 +24,9 @@ class ArticlesRepository
      * @param  array     $order
      * @return Article[]
      */
-    public function getAll(array $order = []): array
+    public function getAll(array $order = [], ?int $limit = null): array
     {
-        $sql = 'SELECT article.id, title, excerpt, content, article.slug, publishedDate, updatedDate, thumbnailUrl, name, firstname, lastname 
+        $sql = 'SELECT article.id, title, excerpt, content, article.slug, publishedDate, updatedDate, thumbnailUrl, name, firstname, lastname, imageUrl 
                 FROM article 
                 INNER JOIN category ON article.categoryId = category.id 
                 INNER JOIN user ON article.authorId = user.id';
@@ -43,6 +43,10 @@ class ArticlesRepository
                 }
                 $i++;
             }
+        }
+
+        if (isset($limit)) {
+            $sql .= " LIMIT $limit";
         }
 
         $this->DAL->execute($sql);
@@ -64,14 +68,13 @@ class ArticlesRepository
 
             $articles[] = $article_object;
         }
-        dump($articles);
 
         return $articles;
     }
 
     public function getOne(int $id): ?Article
     {
-        $sql = "SELECT article.id, title, excerpt, content, article.slug, publishedDate, updatedDate, thumbnailUrl, firstname, lastname 
+        $sql = "SELECT article.id, title, excerpt, content, article.slug, publishedDate, updatedDate, thumbnailUrl, firstname, lastname, imageUrl
                 FROM article INNER JOIN user ON article.authorId = user.id WHERE article.id = $id";
 
         $this->DAL->execute($sql);
@@ -86,10 +89,117 @@ class ArticlesRepository
             $article = new Article();
             $this->hydrator->hydrate($article, $data);
 
-            dump($article);
             return $article;
         }
 
         return null;
+    }
+
+    /**
+     * Get trending articles
+     *
+     * @param  array    $order
+     * @param  int|null $limit
+     * @return array    Article[]
+     */
+    public function getTrending(array $order = [], ?int $limit = null): array
+    {
+        $sql = 'SELECT article.id, title, excerpt, content, article.slug, publishedDate, updatedDate, thumbnailUrl, name, firstname, lastname, imageUrl 
+                FROM article 
+                INNER JOIN category ON article.categoryId = category.id 
+                INNER JOIN user ON article.authorId = user.id
+                WHERE article.trending = 1';
+
+        if (!empty($order)) {
+            $sql .= ' ORDER BY ';
+
+            $i = 0;
+            foreach ($order as $columnName => $sens) {
+                if ($i === 0) {
+                    $sql .= "$columnName $sens";
+                } else {
+                    $sql .= ", $columnName $sens";
+                }
+                $i++;
+            }
+        }
+
+        if (isset($limit)) {
+            $sql .= " LIMIT $limit";
+        }
+
+        $this->DAL->execute($sql);
+        $data = $this->DAL->fetchData('all');
+
+        $articles = [];
+        
+        foreach ($data as &$article) {
+            $category = new Category();
+            $this->hydrator->hydrate($category, $article);
+
+            $article['category'] = $category;
+
+            $user = new User();
+            $this->hydrator->hydrate($user, $article);
+
+            $article['author'] = $user;
+
+            $article_object = new Article();
+            $this->hydrator->hydrate($article_object, $article);
+
+            $articles[] = $article_object;
+        }
+
+        return $articles;
+    }
+
+    public function getArticlesByCategory(int $category, array $order = [], ?int $limit = null): array
+    {
+        $sql = "SELECT article.id, title, excerpt, content, article.slug, publishedDate, updatedDate, thumbnailUrl, name, firstname, lastname, imageUrl 
+                FROM article 
+                INNER JOIN category ON article.categoryId = category.id 
+                INNER JOIN user ON article.authorId = user.id
+                WHERE article.categoryId = $category";
+
+        if (!empty($order)) {
+            $sql .= ' ORDER BY ';
+
+            $i = 0;
+            foreach ($order as $columnName => $sens) {
+                if ($i === 0) {
+                    $sql .= "$columnName $sens";
+                } else {
+                    $sql .= ", $columnName $sens";
+                }
+                $i++;
+            }
+        }
+
+        if (isset($limit)) {
+            $sql .= " LIMIT $limit";
+        }
+
+        $this->DAL->execute($sql);
+        $data = $this->DAL->fetchData('all');
+
+        $articles = [];
+        foreach ($data as &$article) {
+            $category = new Category();
+            $this->hydrator->hydrate($category, $article);
+
+            $article['category'] = $category;
+
+            $user = new User();
+            $this->hydrator->hydrate($user, $article);
+
+            $article['author'] = $user;
+
+            $article_object = new Article();
+            $this->hydrator->hydrate($article_object, $article);
+
+            $articles[] = $article_object;
+        }
+
+        return $articles;
     }
 }
