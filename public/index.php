@@ -37,4 +37,7 @@ $router->get('/deconnexion', 'SecurityController->logout');
 // User confirmation account
 $router->get('/confirmation/:id-:token', 'SecurityController->confirmAccount');
 
+// Add comment
+$router->post('/add-comment', 'CommentsController->new');
+
 $router->run();

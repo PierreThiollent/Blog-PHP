@@ -54,6 +54,8 @@ class DashboardController extends AbstractController
             $this->hydrator = new Hydrator();
             $this->hydrator->hydrate($user, $_POST);
 
+            $user->setImageUrl($_SESSION['user']->getImageUrl());
+
             // Si l'utilisateur a renseigne un nouveau mdp
             if ($passwordUpdated) {
                 // On hashe le nouveau mdp
