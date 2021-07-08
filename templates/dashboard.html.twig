@@ -1,60 +1,84 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Mon compte
+	Mon compte
 {% endblock %}
 
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
 
-    <div class="row">
-        <div class="col-12 col-lg-6 align-self-center mx-auto">
+	<div class="row">
+		<div class="col-12 col-lg-6 align-self-center mx-auto">
 
-            {% include 'message.html.twig' %}
-            {% include 'error.html.twig' %}
+			{% include 'message.html.twig' %}
+			{% include 'error.html.twig' %}
 
-            <div class="m-3 m-lg-5">
-                <div class="text-center mt-4 mb-5">
-                    <h1 class="h3">Modifier mon profil</h1>
-                </div>
-                <form action="" method="POST">
+			{% if session.user.role is same as ('admin') %}
+				<div class="row">
+					<div class="text-center mt-5 mb-5">
+						<h1 class="h3">Gestion des articles</h1>
+						<div class="mt-5 d-flex justify-content-around">
+							<a href="/admin/new-article" class="btn btn-primary">Ajouter un nouvel article</a>
+							<a href="/admin/list-articles" class="btn btn-primary">Gérer les articles</a>
+						</div>
+					</div>
+				</div>
+			{% endif %}
 
-                    <img src="{{ session.user.imageUrl }}" class="rounded-circle mx-auto d-block" alt="Image de profil">
+			<div class="m-3 m-lg-5">
+				<div class="text-center mt-4 mb-5">
+					<h2 class="h3">Modifier mon profil</h2>
+				</div>
+				<form action="" method="POST">
+					<img src="{{ session.user.imageUrl }}" class="rounded-circle mx-auto d-block" alt="Image de profil">
 
-                    <div class="mb-3">
-                        <label class="form-label" for="lastname">Nom</label>
-                        <input class="form-control mb-2" type="text" name="lastname" value="{{ session.user.lastname }}" required />
-                        {% if errors.lastname %}<small class="text-danger">* {{ errors.lastname }}</small>{% endif %}
-                    </div>
+					<div class="mb-3">
+						<label class="form-label" for="lastname">Nom</label>
+						<input class="form-control mb-2" type="text" name="lastname" value="{{ session.user.lastname }}" required/>
+						{% if errors.lastname %}
+							<small class="text-danger">*
+								{{ errors.lastname }}</small>
+						{% endif %}
+					</div>
 
-                    <div class="mb-3">
-                        <label class="form-label" for="firstname">Prénom</label>
-                        <input class="form-control mb-2" type="text" name="firstname" value="{{ session.user.firstname }}" required />
-                        {% if errors.firstname %}<small class="text-danger">* {{ errors.firstname }}</small>{% endif %}
-                    </div>
+					<div class="mb-3">
+						<label class="form-label" for="firstname">Prénom</label>
+						<input class="form-control mb-2" type="text" name="firstname" value="{{ session.user.firstname }}" required/>
+						{% if errors.firstname %}
+							<small class="text-danger">*
+								{{ errors.firstname }}</small>
+						{% endif %}
+					</div>
 
-                    <div class="mb-3">
-                        <label class="form-label" form="email">Email</label>
-                        <input class="form-control mb-2" type="email" name="email" value="{{ session.user.email }}" readonly="readonly" />
-                        {% if errors.email %}<small class="text-danger">* {{ errors.email }}</small>{% endif %}
-                    </div>
+					<div class="mb-3">
+						<label class="form-label" form="email">Email</label>
+						<input class="form-control mb-2" type="email" name="email" value="{{ session.user.email }}" readonly="readonly"/>
+						{% if errors.email %}
+							<small class="text-danger">*
+								{{ errors.email }}</small>
+						{% endif %}
+					</div>
 
-                    <div class="mb-3">
-                        <label class="form-label" for="password">Mot de passe</label>
-                        <input class="form-control mb-2" type="password" name="password" placeholder="************" />
-                        {% if errors.password %}<small class="text-danger">* {{ errors.password }}</small>{% endif %}
-                    </div>
+					<div class="mb-3">
+						<label class="form-label" for="password">Mot de passe</label>
+						<input class="form-control mb-2" type="password" name="password" placeholder="************"/>
+						{% if errors.password %}
+							<small class="text-danger">*
+								{{ errors.password }}</small>
+						{% endif %}
+					</div>
 
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-primary w-25">Modifier</button>
-                    </div>
-                </form>
+					<div class="text-center mt-4">
+						<button type="submit" class="btn btn-primary w-25">Modifier</button>
+					</div>
+				</form>
 
-              <a href="/deconnexion" class="mt-5 d-block" >Se deconnecter</a>
-            </div>
-        </div>
-    </div>
+				<a href="/deconnexion" class="mt-5 d-block">Se deconnecter</a>
+			</div>
+		</div>
+	</div>
 
-    {% block script %}{% endblock %}
 {% endblock %}
+
+{% block script %}{% endblock %}
