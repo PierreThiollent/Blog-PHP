@@ -40,4 +40,8 @@ $router->get('/confirmation/:id-:token', 'SecurityController->confirmAccount');
 // Add comment
 $router->post('/add-comment', 'CommentsController->new');
 
+// Add article
+$router->get('/admin/new-article', 'ArticlesController->new');
+$router->post('/admin/new-article', 'ArticlesController->new');
+
 $router->run();
