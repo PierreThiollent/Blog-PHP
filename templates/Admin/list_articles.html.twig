@@ -42,7 +42,8 @@
 								</button>
 							</td>
 							<td>
-								<button type="button" class="btn btn-danger delete-article" data-article-id="{{ article.id }}" data-bs-toggle="modal" data-bs-target="#delete-article">
+								<button type="button" class="btn btn-danger delete-article" data-article-id="{{ article.id }}" 
+										data-thumbnailUrl="{{ article.thumbnailUrl }}" data-bs-toggle="modal" data-bs-target="#delete-article">
 									<i class="fas fa-trash-alt"></i>
 								</button>
 							</td>
@@ -66,6 +67,7 @@
 				<div class="modal-footer">
 					<form action="/admin/delete-article" method="post">
 						<input class="articleId" name="articleId" type="hidden" value=""/>
+						<input class="thumbnailUrl" name="thumbnailUrl" type="hidden" value=""/>
 						<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Annuler</button>
 						<button type="submit" class="btn btn-danger">Supprimer</button>
 					</form>
