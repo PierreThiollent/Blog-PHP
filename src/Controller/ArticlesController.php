@@ -90,4 +90,15 @@ class ArticlesController extends AbstractController
 
         return $this->render('admin/new_article.html.twig', ['message' => 'Votre article a bien été publié', 'categories' => $categories]);
     }
+
+    public function manageArticles()
+    {
+        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+            return $this->render('404.html.twig');
+        }
+
+        $articles = $this->repository->getAll(['updatedDate' => 'DESC']);
+
+        return $this->render('admin/list_articles.html.twig', ['articles' => $articles]);
+    }
 }
