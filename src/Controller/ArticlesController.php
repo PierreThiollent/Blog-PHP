@@ -108,7 +108,7 @@ class ArticlesController extends AbstractController
             return $this->render('404.html.twig');
         }
 
-        if (!isset($_POST['articleId'])) {
+        if (!isset($_POST['articleId'], $_POST['thumbnailUrl'])) {
             return;
         }
 
@@ -116,6 +116,8 @@ class ArticlesController extends AbstractController
             // TODO : Faire passer un message d'erreur
             return $this->redirect('/admin/list-articles');
         }
+
+        unlink(realpath(__DIR__ . '/../..') . "/public{$_POST['thumbnailUrl']}");
 
         // TODO : Faire passer un message de confirmation
         return $this->redirect('/admin/list-articles');
