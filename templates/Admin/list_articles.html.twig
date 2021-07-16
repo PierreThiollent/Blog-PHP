@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestion des articles
+{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+
+	<div class="row">
+		<div class="col-12 col-lg-10 py-5 px-4 align-self-center mx-auto">
+
+			{% include 'message.html.twig' %}
+			{% include 'error.html.twig' %}
+
+			<div class="text-center mt-4 mb-5">
+				<h1 class="h3">Gestion des articles</h1>
+			</div>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">id</th>
+						<th scope="col">Image</th>
+						<th scope="col">Titre</th>
+						<th scope="col">Extrait</th>
+						<th scope="col">Modifier</th>
+						<th scope="col">Supprimer</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for article in articles %}
+						<tr>
+							<th scope="row">{{ article.id }}</th>
+							<td><img src="{{ article.thumbnailUrl }}" style="width: 100px; object-fit: cover;"></td>
+							<td>{{ article.title }}</td>
+							<td>{{ article.excerpt }}</td>
+							<td>
+								<button type="button" class="btn btn-primary">
+									<i class="fas fa-pencil"></i>
+								</button>
+							</td>
+							<td>
+								<button type="button" class="btn btn-danger delete-article" data-article-id="{{ article.id }}" data-bs-toggle="modal" data-bs-target="#delete-article">
+									<i class="fas fa-trash-alt"></i>
+								</button>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="modal fade" id="delete-article" tabindex="-1">
+		<div class="modal-dialog modal-dialog modal-dialog-centered">">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Supprimer l'article</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>Attention, vous êtes sur le point de supprimer un article, êtes-vous sur ?</p>
+				</div>
+				<div class="modal-footer">
+					<form action="/admin/delete-article" method="post">
+						<input class="articleId" name="articleId" type="hidden" value=""/>
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Annuler</button>
+						<button type="submit" class="btn btn-danger">Supprimer</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block script %}{% endblock %}
