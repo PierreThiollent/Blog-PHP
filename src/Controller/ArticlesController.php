@@ -101,4 +101,23 @@ class ArticlesController extends AbstractController
 
         return $this->render('admin/list_articles.html.twig', ['articles' => $articles]);
     }
+
+    public function deleteArticle()
+    {
+        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+            return $this->render('404.html.twig');
+        }
+
+        if (!isset($_POST['articleId'])) {
+            return;
+        }
+
+        if (!$this->repository->delete($_POST['articleId'])) {
+            // TODO : Faire passer un message d'erreur
+            return $this->redirect('/admin/list-articles');
+        }
+
+        // TODO : Faire passer un message de confirmation
+        return $this->redirect('/admin/list-articles');
+    }
 }
