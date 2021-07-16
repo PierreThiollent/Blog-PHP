@@ -105,4 +105,10 @@
     }
   };
   tinyslider();
+
+  // Ajout de l'id de larticle a supprimer dans la modale de suppression
+  document.querySelector('.delete-article').addEventListener('click', function () {
+    const articleId = this.getAttribute('data-article-id');
+    document.querySelector('.articleId').setAttribute('value', articleId);
+  });
 })();
