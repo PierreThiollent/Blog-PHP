@@ -5,21 +5,35 @@ namespace App\Entity;
 class Article
 {
     private int $id;
+
+    /**
+     * @Validate\isNotEmpty
+     */
     private string $title;
+
+    /**
+     * @Validate\isNotEmpty
+     */
     private string $excerpt;
+
+    /**
+     * @Validate\isNotEmpty
+     */
     private string $content;
     private User $author;
     private string $slug;
     private \DateTime $publishedDate;
     private \DateTime $updatedDate;
     private string $thumbnailUrl;
+
+    /**
+     * @Validate\isNotEmpty
+     */
     private Category $category;
     private int $trending;
 
     /**
-     * Getter id
-     *
-     * @return int|null
+     * Getter id.
      */
     public function getId(): ?int
     {
@@ -27,10 +41,7 @@ class Article
     }
 
     /**
-     * Setter id
-     *
-     * @param  int  $id
-     * @return self
+     * Setter id.
      */
     public function setId(int $id): self
     {
@@ -41,8 +52,6 @@ class Article
 
     /**
      * Get title.
-     *
-     * @return string|null
      */
     public function getTitle(): ?string
     {
@@ -51,9 +60,6 @@ class Article
 
     /**
      * Set title.
-     *
-     * @param  string $title
-     * @return self
      */
     public function setTitle(string $title): self
     {
@@ -64,8 +70,6 @@ class Article
 
     /**
      * Get excerpt.
-     *
-     * @return string|null
      */
     public function getExcerpt(): ?string
     {
@@ -74,9 +78,6 @@ class Article
 
     /**
      * Set excerpt.
-     *
-     * @param  string $excerpt
-     * @return self
      */
     public function setExcerpt(string $excerpt): self
     {
@@ -87,8 +88,6 @@ class Article
 
     /**
      * Get content.
-     *
-     * @return string|null
      */
     public function getContent(): ?string
     {
@@ -97,9 +96,6 @@ class Article
 
     /**
      * Set content.
-     *
-     * @param  string $content
-     * @return self
      */
     public function setContent(string $content): self
     {
@@ -110,8 +106,6 @@ class Article
 
     /**
      * Get author.
-     *
-     * @return int|null
      */
     public function getAuthor(): ?User
     {
@@ -120,9 +114,6 @@ class Article
 
     /**
      * Set author.
-     *
-     * @param  User $author
-     * @return self
      */
     public function setAuthor(User $author): self
     {
@@ -133,8 +124,6 @@ class Article
 
     /**
      * Get slug.
-     *
-     * @return string|null
      */
     public function getSlug(): ?string
     {
@@ -143,9 +132,6 @@ class Article
 
     /**
      * Set the value of slug.
-     *
-     * @param  string $slug
-     * @return self
      */
     public function setSlug(string $slug): self
     {
@@ -156,8 +142,6 @@ class Article
 
     /**
      * Get published date.
-     *
-     * @return \DateTime|null
      */
     public function getPublishedDate(): ?\DateTime
     {
@@ -167,8 +151,7 @@ class Article
     /**
      * Set published date.
      *
-     * @param  \DateTime $published_date
-     * @return self
+     * @param \DateTime $published_date
      */
     public function setPublishedDate(\DateTime $publishedDate): self
     {
@@ -179,8 +162,6 @@ class Article
 
     /**
      * Get updated date.
-     *
-     * @return \DateTime|null
      */
     public function getUpdatedDate(): ?\DateTime
     {
@@ -189,9 +170,6 @@ class Article
 
     /**
      * Set updated date.
-     *
-     * @param  \DateTime $updatedDate
-     * @return self
      */
     public function setUpdatedDate(\DateTime $updatedDate): self
     {
@@ -202,8 +180,6 @@ class Article
 
     /**
      * Get thumbnail url.
-     *
-     * @return string|null
      */
     public function getThumbnailUrl(): ?string
     {
@@ -212,9 +188,6 @@ class Article
 
     /**
      * Set thumbnail url.
-     *
-     * @param  string $thumbnailUrl
-     * @return self
      */
     public function setThumbnailUrl(string $thumbnailUrl): self
     {
@@ -225,8 +198,6 @@ class Article
 
     /**
      * Get category.
-     *
-     * @return Category|null
      */
     public function getCategory(): ?Category
     {
@@ -235,9 +206,6 @@ class Article
 
     /**
      * Set category.
-     *
-     * @param  Category $category
-     * @return self
      */
     public function setCategory(Category $category): self
     {
@@ -247,8 +215,7 @@ class Article
     }
 
     /**
-     * Get the value of trending
-     * @return int
+     * Get the value of trending.
      */
     public function getTrending(): int
     {
@@ -256,10 +223,7 @@ class Article
     }
 
     /**
-     * Set the value of trending
-     *
-     * @param  int  $trending
-     * @return self
+     * Set the value of trending.
      */
     public function setTrending(int $trending): self
     {

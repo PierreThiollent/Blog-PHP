@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Article;
 use App\DAL;
+use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\User;
 use App\Hydrator;
@@ -20,8 +20,8 @@ class ArticlesRepository
     }
 
     /**
-     * Get all articles
-     * @param  array     $order
+     * Get all articles.
+     *
      * @return Article[]
      */
     public function getAll(array $order = [], ?int $limit = null): array
@@ -41,7 +41,7 @@ class ArticlesRepository
                 } else {
                     $sql .= ", $columnName $sens";
                 }
-                $i++;
+                ++$i;
             }
         }
 
@@ -96,11 +96,9 @@ class ArticlesRepository
     }
 
     /**
-     * Get trending articles
+     * Get trending articles.
      *
-     * @param  array    $order
-     * @param  int|null $limit
-     * @return array    Article[]
+     * @return array Article[]
      */
     public function getTrending(array $order = [], ?int $limit = null): array
     {
@@ -120,7 +118,7 @@ class ArticlesRepository
                 } else {
                     $sql .= ", $columnName $sens";
                 }
-                $i++;
+                ++$i;
             }
         }
 
@@ -132,7 +130,7 @@ class ArticlesRepository
         $data = $this->DAL->fetchData('all');
 
         $articles = [];
-        
+
         foreach ($data as &$article) {
             $category = new Category();
             $this->hydrator->hydrate($category, $article);
@@ -153,9 +151,13 @@ class ArticlesRepository
         return $articles;
     }
 
+    /**
+     * Get articles by category id.
+     */
     public function getArticlesByCategory(int $category, array $order = [], ?int $limit = null): array
     {
-        $sql = "SELECT article.id, title, excerpt, content, article.slug, publishedDate, updatedDate, thumbnailUrl, name, firstname, lastname, imageUrl 
+        $sql = "SELECT article.id, title, excerpt, content, article.slug, publishedDate,
+                updatedDate, thumbnailUrl, name, firstname, lastname, imageUrl 
                 FROM article 
                 INNER JOIN category ON article.categoryId = category.id 
                 INNER JOIN user ON article.authorId = user.id
@@ -171,7 +173,7 @@ class ArticlesRepository
                 } else {
                     $sql .= ", $columnName $sens";
                 }
-                $i++;
+                ++$i;
             }
         }
 
@@ -201,5 +203,25 @@ class ArticlesRepository
         }
 
         return $articles;
+    }
+
+    /**
+     * Add new article.
+     */
+    public function add(Article $article): bool
+    {
+        $sql = 'INSERT INTO article (title, excerpt, content, authorId, slug, thumbnailUrl, categoryId, trending) 
+                VALUES (:title, :excerpt, :content, :authorId, :slug, :thumbnailUrl, :categoryId, :trending)';
+
+        return $this->DAL->execute($sql, [
+            'title'        => $article->getTitle(),
+            'excerpt'      => $article->getExcerpt(),
+            'content'      => $article->getContent(),
+            'authorId'     => $article->getAuthor()->getId(),
+            'slug'         => $article->getSlug(),
+            'thumbnailUrl' => $article->getThumbnailUrl(),
+            'categoryId'   => $article->getCategory()->getId(),
+            'trending'     => $article->getTrending(),
+        ]);
     }
 }

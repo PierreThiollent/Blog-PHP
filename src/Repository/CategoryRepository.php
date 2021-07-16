@@ -36,4 +36,27 @@ class CategoryRepository
 
         return $category;
     }
+
+    /**
+     * Get all categories
+     *
+     * @return Category[]
+     */
+    public function getAll(): array
+    {
+        $sql = "SELECT * FROM category";
+
+        $this->DAL->execute($sql);
+
+        $data = $this->DAL->fetchData('all');
+
+        foreach ($data as $category) {
+            $categoryObject = new Category();
+            $this->hydrator->hydrate($categoryObject, $category);
+
+            $categories[] = $categoryObject;
+        }
+
+        return $categories;
+    }
 }
