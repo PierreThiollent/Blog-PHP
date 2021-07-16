@@ -90,4 +90,36 @@ class ArticlesController extends AbstractController
 
         return $this->render('admin/new_article.html.twig', ['message' => 'Votre article a bien été publié', 'categories' => $categories]);
     }
+
+    public function manageArticles()
+    {
+        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+            return $this->render('404.html.twig');
+        }
+
+        $articles = $this->repository->getAll(['updatedDate' => 'DESC']);
+
+        return $this->render('admin/list_articles.html.twig', ['articles' => $articles]);
+    }
+
+    public function deleteArticle()
+    {
+        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+            return $this->render('404.html.twig');
+        }
+
+        if (!isset($_POST['articleId'], $_POST['thumbnailUrl'])) {
+            return;
+        }
+
+        if (!$this->repository->delete($_POST['articleId'])) {
+            // TODO : Faire passer un message d'erreur
+            return $this->redirect('/admin/list-articles');
+        }
+
+        unlink(realpath(__DIR__ . '/../..') . "/public{$_POST['thumbnailUrl']}");
+
+        // TODO : Faire passer un message de confirmation
+        return $this->redirect('/admin/list-articles');
+    }
 }

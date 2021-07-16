@@ -105,4 +105,12 @@
     }
   };
   tinyslider();
+
+  // Ajout de l'id de larticle a supprimer dans la modale de suppression
+  document.querySelector('.delete-article').addEventListener('click', function () {
+    const articleId = this.getAttribute('data-article-id');
+    const thumbnailUrl = this.getAttribute('data-thumbnailUrl');
+    document.querySelector('.articleId').setAttribute('value', articleId);
+    document.querySelector('.thumbnailUrl').setAttribute('value', thumbnailUrl);
+  });
 })();

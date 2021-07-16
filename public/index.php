@@ -44,4 +44,10 @@ $router->post('/add-comment', 'CommentsController->new');
 $router->get('/admin/new-article', 'ArticlesController->new');
 $router->post('/admin/new-article', 'ArticlesController->new');
 
+// Manage articles
+$router->get('/admin/list-articles', 'ArticlesController->manageArticles');
+
+// Delete article
+$router->post('/admin/delete-article', 'ArticlesController->deleteArticle');
+
 $router->run();

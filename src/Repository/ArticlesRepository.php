@@ -224,4 +224,14 @@ class ArticlesRepository
             'trending'     => $article->getTrending(),
         ]);
     }
+
+    /**
+     * Delete one article by id.
+     */
+    public function delete(int $articleId): bool
+    {
+        $sql = 'DELETE FROM article WHERE id = :id';
+
+        return $this->DAL->execute($sql, ['id' => $articleId]);
+    }
 }
