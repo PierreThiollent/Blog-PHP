@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Ajouter un article
+{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-12 col-lg-6 align-self-center mx-auto">
+
+			{% include 'message.html.twig' %}
+			{% include 'error.html.twig' %}
+
+			<div class="m-3 m-lg-5">
+				<div class="text-center mt-4 mb-5">
+					<h1 class="h3">Ajouter un article</h1>
+				</div>
+
+				<form action="" method="POST" enctype="multipart/form-data">
+					<div class="mb-3">
+						<label class="form-label" for="title">Titre *</label>
+						<input class="form-control mb-2" type="text" name="title" required/>
+						{% if errors.title %}
+							<small class="text-danger">*
+								{{ errors.title }}</small>
+						{% endif %}
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="excerpt">Extrait *</label>
+						<textarea class="form-control h-auto" name="excerpt" id="" cols="30" rows="2" required></textarea>
+						{% if errors.excerpt %}
+							<small class="text-danger">*
+								{{ errors.excerpt }}</small>
+						{% endif %}
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" form="content">Contenu *</label>
+						<textarea class="form-control h-auto" name="content" id="" cols="30" rows="8" required></textarea>
+						{% if errors.content %}
+							<small class="text-danger">*
+								{{ errors.content }}</small>
+						{% endif %}
+					</div>
+
+					<div class="mb-3">
+						<label for="thumbnailUrl" class="form-label">Image mise en avant *</label>
+						<input class="form-control border-0 rounded-0 p" type="file" id="thumbnailUrl" name="thumbnailUrl" required/>
+						{% if errors.thumbnailUrl %}
+							<small class="text-danger">*
+								{{ errors.thumbnailUrl }}
+							</small>
+						{% endif %}
+					</div>
+
+					<div class="mb-4">
+						<label for="category" class="form-label">Categorie *</label>
+						<select class="form-select" aria-label="Default select example" name="category" required>
+							<option selected value="">Categorie</option>
+							{% for category in categories %}
+								<option value="{{ category.id }}">{{ category.name }}</option>
+							{% endfor %}
+						</select>
+						{% if errors.category %}
+							<small class="text-danger">*
+								{{ errors.category }}
+							</small>
+						{% endif %}
+					</div>
+
+					<div class="form-check mb-5">
+						<input class="form-check-input" type="checkbox" value="1" id="trending" name="trending">
+						<label class="form-check-label" for="trending">
+							Mis en avant sur l'accueil
+						</label>
+					</div>
+
+					<div class="text-center mt-4">
+						<button type="submit" class="btn btn-primary w-25">Ajouter</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block script %}{% endblock %}
