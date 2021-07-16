@@ -50,4 +50,8 @@ $router->get('/admin/list-articles', 'ArticlesController->manageArticles');
 // Delete article
 $router->post('/admin/delete-article', 'ArticlesController->deleteArticle');
 
+// Contact
+$router->get('/contact', 'ContactController->index');
+$router->post('/contact', 'ContactController->index');
+
 $router->run();
