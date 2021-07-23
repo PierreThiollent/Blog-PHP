@@ -73,7 +73,7 @@ class ArticlesController extends AbstractController
         }
 
         if (!empty($errors)) {
-            return $this->render('admin/new_article.html.twig', ['errors' => $errors]);
+            return $this->render('admin/new_article.html.twig', ['errors' => $errors, 'post' => $_POST, 'categories' => $categories]);
         }
 
         $thumbnailName = time() . '-' . $_FILES['thumbnailUrl']['name'];
@@ -133,8 +133,6 @@ class ArticlesController extends AbstractController
         }
 
         $article = $this->repository->getOne((int) $id);
-
-        // dd($article);
 
         $categoryRepo = new CategoryRepository();
         $categories = $categoryRepo->getAll();
