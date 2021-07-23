@@ -2,14 +2,16 @@
 
 namespace App\Router;
 
+use Twig\Environment;
+
 class Route
 {
     private string $path;
-    private \Closure|string $callable;
+    private \Closure | string $callable;
     private array $matches = [];
     private array $params = [];
 
-    public function __construct(string $path, \Closure|string $callable)
+    public function __construct(string $path, \Closure | string $callable)
     {
         $this->path = trim($path, '/');
         $this->callable = $callable;
@@ -32,12 +34,12 @@ class Route
     /**
      * Method which call a controller method.
      */
-    public function call()
+    public function call(Environment $twig)
     {
         if (is_string($this->callable)) {
             $params = explode('->', $this->callable);
             $controller = 'App\\Controller\\' . $params[0];
-            $controller = new $controller();
+            $controller = new $controller($twig);
 
             return call_user_func_array([$controller, $params[1]], $this->matches);
         }
@@ -45,10 +47,6 @@ class Route
         return call_user_func_array($this->callable, $this->matches);
     }
 
-    /**
-     * @param array $match
-     * @return string
-     */
     private function paramMatch(array $match): string
     {
         if (isset($this->params[$match[1]])) {
