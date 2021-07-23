@@ -20,9 +20,10 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * Register new user
+     * Register new user.
      *
      * @route /inscription
+     *
      * @return void
      */
     public function register()
@@ -45,7 +46,8 @@ class SecurityController extends AbstractController
 
             if ($this->repository->userExist($user)) {
                 return $this->render('register.html.twig', [
-                    'error' => 'Un utilisateur avec cet email existe déjà. Vous pouvez vous <a href="/connexion">connecter</a> ou réinitialiser votre mot de passe si vous l\'avez oublié.'
+                    'error' => 'Un utilisateur avec cet email existe déjà. Vous pouvez vous <a href="/connexion">connecter</a> ou réinitialiser votre mot de passe si vous l\'avez oublié.',
+                    'post'  => $_POST,
                 ]);
             }
 
@@ -71,9 +73,10 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * Login
+     * Login.
      *
      * @route /connexion
+     *
      * @return void
      */
     public function login()
@@ -97,13 +100,13 @@ class SecurityController extends AbstractController
             if (!$this->repository->checkConfirmUser($user_data)) {
                 return $this->render(
                     'login.html.twig',
-                    ['error' => "Votre compte n'a pas été confirmé, un email vous a été envoyé lors de la création de celui-ci, veuillez cliquer sur le lien contenu dans cet email."]
+                    ['error' => "Votre compte n'a pas été confirmé, un email vous a été envoyé lors de la création de celui-ci, veuillez cliquer sur le lien contenu dans cet email.", 'post' => $_POST]
                 );
             }
 
             // Si le password ne match pas le hash stocké en base
             if (!password_verify($_POST['password'], $this->repository->getUserPasswordHash($user_data))) {
-                return $this->render('login.html.twig', ['error' => 'Le couple email / mot de passe est incorrect.']);
+                return $this->render('login.html.twig', ['error' => 'Le couple email / mot de passe est incorrect.', 'post' => $_POST]);
             }
 
             // On stocke les infos du user en session
@@ -116,10 +119,12 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * Confirm account
+     * Confirm account.
      *
      * @route /confirmation/:id-:token
+     *
      * @method GET
+     *
      * @return void
      */
     public function confirmAccount(string $id, string $token)
@@ -129,15 +134,16 @@ class SecurityController extends AbstractController
                 'register.html.twig',
                 ['error' => 'Une erreur s\'est produite lors de la validation de votre compte. Veuillez réessayer.']
             );
-        };
+        }
 
         $this->redirect('/connexion');
     }
 
     /**
-     * Logout
+     * Logout.
      *
      * @route /deconnexion
+     *
      * @return void
      */
     public function logout()

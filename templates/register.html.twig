@@ -1,59 +1,73 @@
-{% extends 'base.html.twig' %} 
+{% extends 'base.html.twig' %}
 
 {% block title %}
-    S'inscrire
-{% endblock %} 
+	S'inscrire
+{% endblock %}
 
-{% block stylesheets %}{% endblock %} 
+{% block stylesheets %}{% endblock %}
 
 {% block body %}
-    <div class="row">
-      <div class="col-12 col-lg-6 align-self-center mx-auto">
+	<div class="row">
+		<div class="col-12 col-lg-6 align-self-center mx-auto">
 
-      {% include 'message.html.twig' %}
+			{% include 'message.html.twig' %}
 
-      {% include 'error.html.twig' %}
+			{% include 'error.html.twig' %}
 
-        <div class="m-3 m-lg-5">
-          <div class="text-center mt-4 mb-5">
-            <h1 class="h3">Inscription</h1>
-          </div>
-          <form action="" method="POST">
+			<div class="m-3 m-lg-5">
+				<div class="text-center mt-4 mb-5">
+					<h1 class="h3">Inscription</h1>
+				</div>
+				<form action="" method="POST">
 
-            <div class="mb-3">
-              <label class="form-label" for="lastname">Nom *</label>
-              <input class="form-control mb-2" type="text" name="lastname" placeholder="Doe" required />
-              {% if errors.lastname %}<small class="text-danger">* {{ errors.lastname }}</small>{% endif %}
-            </div>
+					<div class="mb-3">
+						<label class="form-label" for="lastname">Nom *</label>
+						<input class="form-control mb-2" type="text" name="lastname" placeholder="Doe" {% if post.lastname %} value="{{ post.lastname}}" {% endif %} required/>
+						{% if errors.lastname %}
+							<small class="text-danger">*
+								{{ errors.lastname }}</small>
+						{% endif %}
+					</div>
 
-            <div class="mb-3">
-              <label class="form-label" for="firstname">Prénom *</label>
-              <input class="form-control mb-2" type="text" name="firstname" placeholder="John" required />
-              {% if errors.firstname %}<small class="text-danger">* {{ errors.firstname }}</small>{% endif %}
-            </div>
+					<div class="mb-3">
+						<label class="form-label" for="firstname">Prénom *</label>
+						<input class="form-control mb-2" type="text" name="firstname" placeholder="John" {% if post.firstname %} value="{{ post.firstname}}" {% endif %} required/>
+						{% if errors.firstname %}
+							<small class="text-danger">*
+								{{ errors.firstname }}</small>
+						{% endif %}
+					</div>
 
-            <div class="mb-3">
-              <label class="form-label" form="email">Email *</label>
-              <input class="form-control mb-2" type="email" name="email" placeholder="john.doe@gmail.com" required />
-              {% if errors.email %}<small class="text-danger">* {{ errors.email }}</small>{% endif %}
-            </div>
+					<div class="mb-3">
+						<label class="form-label" form="email">Email *</label>
+						<input class="form-control mb-2" type="email" name="email" placeholder="john.doe@gmail.com" required/>
+						{% if errors.email %}
+							<small class="text-danger">*
+								{{ errors.email }}</small>
+						{% endif %}
+					</div>
 
-            <div class="mb-3">
-              <label class="form-label" for="password">Mot de passe *</label>
-              <input class="form-control mb-2" type="password" name="password" placeholder="************" required />
-              {% if errors.password %}<small class="text-danger">* {{ errors.password }}</small>{% endif %}
-            </div>
+					<div class="mb-3">
+						<label class="form-label" for="password">Mot de passe *</label>
+						<input class="form-control mb-2" type="password" name="password" placeholder="************" required/>
+						{% if errors.password %}
+							<small class="text-danger">*
+								{{ errors.password }}</small>
+						{% endif %}
+					</div>
 
-            <div class="text-center mt-4">
-              <button type="submit" class="btn btn-primary w-25">S'inscrire</button>
-            </div>
-            <div class="text-center text-muted mt-2">Vous avez déjà un compte ? <a href="/connexion">Connexion</a></div>
+					<div class="text-center mt-4">
+						<button type="submit" class="btn btn-primary w-25">S'inscrire</button>
+					</div>
+					<div class="text-center text-muted mt-2">Vous avez déjà un compte ?
+						<a href="/connexion">Connexion</a>
+					</div>
 
-          </form>
-        </div>
-      </div>
-    </div>
+				</form>
+			</div>
+		</div>
+	</div>
 
-    {% block script %}{% endblock %} 
+	{% block script %}{% endblock %}
 
 {% endblock %}

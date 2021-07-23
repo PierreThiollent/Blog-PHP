@@ -21,7 +21,7 @@
 				<form action="" method="POST" enctype="multipart/form-data">
 					<div class="mb-3">
 						<label class="form-label" for="title">Titre *</label>
-						<input class="form-control mb-2" type="text" name="title" required/>
+						<input class="form-control mb-2" type="text" name="title" {% if post.title %} value="{{ post.title }}" {% endif %} required/>
 						{% if errors.title %}
 							<small class="text-danger">*
 								{{ errors.title }}</small>
@@ -30,7 +30,11 @@
 
 					<div class="mb-3">
 						<label class="form-label" for="excerpt">Extrait *</label>
-						<textarea class="form-control h-auto" name="excerpt" id="" cols="30" rows="2" required></textarea>
+						<textarea class="form-control h-auto" name="excerpt" id="" cols="30" rows="2" required>
+							{% if post.excerpt %}
+								{{ post.excerpt }}
+							{% endif %}
+						</textarea>
 						{% if errors.excerpt %}
 							<small class="text-danger">*
 								{{ errors.excerpt }}</small>
@@ -39,7 +43,11 @@
 
 					<div class="mb-3">
 						<label class="form-label" form="content">Contenu *</label>
-						<textarea class="form-control h-auto" name="content" id="" cols="30" rows="8" required></textarea>
+						<textarea class="form-control h-auto" name="content" id="" cols="30" rows="8" required>
+							{% if post.content %}
+								{{ post.content }}
+							{% endif %}
+						</textarea>
 						{% if errors.content %}
 							<small class="text-danger">*
 								{{ errors.content }}</small>
@@ -48,7 +56,7 @@
 
 					<div class="mb-3">
 						<label for="thumbnailUrl" class="form-label">Image mise en avant *</label>
-						<input class="form-control border-0 rounded-0 p" type="file" id="thumbnailUrl" name="thumbnailUrl" required/>
+						<input class="form-control border-0 rounded-0 p" type="file" id="thumbnailUrl" name="thumbnailUrl"/>
 						{% if errors.thumbnailUrl %}
 							<small class="text-danger">*
 								{{ errors.thumbnailUrl }}
@@ -59,9 +67,9 @@
 					<div class="mb-4">
 						<label for="category" class="form-label">Categorie *</label>
 						<select class="form-select" aria-label="Default select example" name="category" required>
-							<option selected value="">Categorie</option>
+							<option value="">Categorie</option>
 							{% for category in categories %}
-								<option value="{{ category.id }}">{{ category.name }}</option>
+								<option value="{{ category.id }}" {% if post.category.name == category.name %} selected {% endif %}>{{ category.name }}</option>
 							{% endfor %}
 						</select>
 						{% if errors.category %}
@@ -72,7 +80,7 @@
 					</div>
 
 					<div class="form-check mb-5">
-						<input class="form-check-input" type="checkbox" value="1" id="trending" name="trending">
+						<input class="form-check-input" type="checkbox" value="1" id="trending" name="trending" {% if post.trending %} checked {% endif %}>
 						<label class="form-check-label" for="trending">
 							Mis en avant sur l'accueil
 						</label>
