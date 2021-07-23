@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Hydrator;
 use App\Repository\CommentRepository;
 use App\Validator\Validator;
+use Twig\Environment;
 
 class CommentsController extends AbstractController
 {
@@ -13,11 +14,12 @@ class CommentsController extends AbstractController
     private Hydrator $hydrator;
     private CommentRepository $repository;
 
-    public function __construct()
+    public function __construct(Environment $twig)
     {
         $this->validator = new Validator();
         $this->hydrator = new Hydrator();
         $this->repository = new CommentRepository();
+        parent::__construct($twig);
     }
 
     /**

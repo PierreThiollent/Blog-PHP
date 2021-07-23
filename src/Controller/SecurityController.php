@@ -7,16 +7,18 @@ use App\Helpers;
 use App\Hydrator;
 use App\Repository\UserRepository;
 use App\Validator\Validator;
+use Twig\Environment;
 
 class SecurityController extends AbstractController
 {
     private UserRepository $repository;
     private Hydrator $hydrator;
 
-    public function __construct()
+    public function __construct(Environment $twig)
     {
         $this->repository = new UserRepository();
         $this->hydrator = new Hydrator();
+        parent::__construct($twig);
     }
 
     /**

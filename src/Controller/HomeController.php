@@ -3,10 +3,16 @@
 namespace App\Controller;
 
 use App\Repository\ArticlesRepository;
+use Twig\Environment;
 
 class HomeController extends AbstractController
 {
     private ArticlesRepository $repository;
+
+    public function __construct(Environment $twig)
+    {
+        parent::__construct($twig);
+    }
 
     public function index()
     {
@@ -19,9 +25,9 @@ class HomeController extends AbstractController
 
         return $this->render('index.html.twig', [
             'trendingArticles' => $trendingArticles,
-            'latestsArticles' => $latestArticles,
-            'sportArticles' => $sportArticles,
-            'foodArticles' => $foodArticles,
+            'latestsArticles'  => $latestArticles,
+            'sportArticles'    => $sportArticles,
+            'foodArticles'     => $foodArticles,
         ]);
     }
 }

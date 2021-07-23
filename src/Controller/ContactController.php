@@ -2,8 +2,15 @@
 
 namespace App\Controller;
 
+use Twig\Environment;
+
 class ContactController extends AbstractController
 {
+    public function __construct(Environment $twig)
+    {
+        parent::__construct($twig);
+    }
+
     public function index()
     {
         if (empty($_POST)) {
