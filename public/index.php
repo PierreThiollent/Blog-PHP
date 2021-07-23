@@ -9,6 +9,10 @@ use App\Router\Router;
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env.local');
 $dotenv->load();
 
+if ($_ENV['env'] === 'prod') {
+    error_reporting(0);
+}
+
 $router = new Router($_GET['url']);
 
 // Homepage route
@@ -49,6 +53,10 @@ $router->get('/admin/list-articles', 'ArticlesController->manageArticles');
 
 // Delete article
 $router->post('/admin/delete-article', 'ArticlesController->deleteArticle');
+
+// Update article
+$router->get('/admin/update-article-:id', 'ArticlesController->update');
+$router->post('/admin/update-article-:id', 'ArticlesController->update');
 
 // Contact
 $router->get('/contact', 'ContactController->index');
