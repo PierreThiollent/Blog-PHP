@@ -5,6 +5,9 @@ require_once '../vendor/autoload.php';
 session_start();
 
 use App\Router\Router;
+use Twig\Environment;
+use Twig\Extension\DebugExtension;
+use Twig\Loader\FilesystemLoader;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env.local');
 $dotenv->load();
@@ -13,7 +16,12 @@ if ($_ENV['env'] === 'prod') {
     error_reporting(0);
 }
 
-$router = new Router($_GET['url']);
+$loader = new FilesystemLoader('../templates/');
+$twig = new Environment($loader, ['debug' => true]);
+$twig->addExtension(new DebugExtension());
+$twig->addGlobal('session', $_SESSION);
+
+$router = new Router($_GET['url'], $twig);
 
 // Homepage route
 $router->get('/', 'HomeController->index');
