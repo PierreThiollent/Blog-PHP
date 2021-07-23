@@ -37,13 +37,12 @@
 							<td>{{ article.title }}</td>
 							<td>{{ article.excerpt }}</td>
 							<td>
-								<button type="button" class="btn btn-primary">
+								<a href="/admin/update-article-{{ article.id }}" class="btn btn-primary icon-pencil">
 									<i class="fas fa-pencil"></i>
-								</button>
+								</a>
 							</td>
 							<td>
-								<button type="button" class="btn btn-danger delete-article" data-article-id="{{ article.id }}" 
-										data-thumbnailUrl="{{ article.thumbnailUrl }}" data-bs-toggle="modal" data-bs-target="#delete-article">
+								<button type="button" class="btn btn-danger delete-article" data-article-id="{{ article.id }}" data-thumbnailurl="{{ article.thumbnailUrl }}" data-bs-toggle="modal" data-bs-target="#delete-article">
 									<i class="fas fa-trash-alt"></i>
 								</button>
 							</td>

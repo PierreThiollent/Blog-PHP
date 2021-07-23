@@ -74,13 +74,20 @@ class ArticlesRepository
 
     public function getOne(int $id): ?Article
     {
-        $sql = "SELECT article.id, title, excerpt, content, article.slug, publishedDate, updatedDate, thumbnailUrl, firstname, lastname, imageUrl
-                FROM article INNER JOIN user ON article.authorId = user.id WHERE article.id = $id";
+        $sql = "SELECT article.id, title, excerpt, content, article.slug, publishedDate, updatedDate, thumbnailUrl, firstname, lastname, imageUrl, name, trending
+                FROM article 
+                INNER JOIN category ON article.categoryId = category.id 
+                INNER JOIN user ON article.authorId = user.id WHERE article.id = $id";
 
         $this->DAL->execute($sql);
         $data = $this->DAL->fetchData();
 
         if ($data) {
+            $category = new Category();
+            $this->hydrator->hydrate($category, $data);
+
+            $data['category'] = $category;
+
             $user = new User();
             $this->hydrator->hydrate($user, $data);
 
@@ -222,6 +229,23 @@ class ArticlesRepository
             'thumbnailUrl' => $article->getThumbnailUrl(),
             'categoryId'   => $article->getCategory()->getId(),
             'trending'     => $article->getTrending(),
+        ]);
+    }
+
+    public function update(Article $article): bool
+    {
+        $sql = 'UPDATE article SET title = :title, excerpt = :excerpt, content = :content, authorId = :authorId, slug = :slug, thumbnailUrl = :thumbnailUrl, categoryId = :categoryId, trending = :trending WHERE id = :id';
+
+        return $this->DAL->execute($sql, [
+            'title'        => $article->getTitle(),
+            'excerpt'      => $article->getExcerpt(),
+            'content'      => $article->getContent(),
+            'authorId'     => $article->getAuthor()->getId(),
+            'slug'         => $article->getSlug(),
+            'thumbnailUrl' => $article->getThumbnailUrl(),
+            'categoryId'   => $article->getCategory()->getId(),
+            'trending'     => $article->getTrending(),
+            'id'           => $article->getId(),
         ]);
     }
 
