@@ -19,7 +19,7 @@ abstract class AbstractController
     /**
      * Render twig template.
      */
-    public function render(string $template, array $data = [])
+    protected function render(string $template, array $data = []): string
     {
         try {
             return $this->twig->render($template, $data);
