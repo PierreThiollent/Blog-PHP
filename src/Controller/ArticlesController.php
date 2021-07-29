@@ -8,6 +8,7 @@ use App\Hydrator;
 use App\Repository\ArticlesRepository;
 use App\Repository\CategoryRepository;
 use App\Validator\Validator;
+use Twig\Environment;
 
 class ArticlesController extends AbstractController
 {
@@ -16,12 +17,13 @@ class ArticlesController extends AbstractController
     private Validator $validator;
     private Helpers $helpers;
 
-    public function __construct()
+    public function __construct(Environment $twig)
     {
         $this->repository = new ArticlesRepository();
         $this->hydrator = new Hydrator();
         $this->validator = new Validator();
         $this->helpers = new Helpers();
+        parent::__construct($twig);
     }
 
     public function index()

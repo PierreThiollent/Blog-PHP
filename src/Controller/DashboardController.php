@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Hydrator;
 use App\Repository\UserRepository;
 use App\Validator\Validator;
+use Twig\Environment;
 
 class DashboardController extends AbstractController
 {
@@ -13,10 +14,16 @@ class DashboardController extends AbstractController
     private Hydrator $hydrator;
     private UserRepository $repository;
 
+    public function __construct(Environment $twig)
+    {
+        parent::__construct($twig);
+    }
+
     /**
-     * Dashboard
+     * Dashboard.
      *
      * @route /mon-compte
+     *
      * @method GET - POST
      */
     public function index()

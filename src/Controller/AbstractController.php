@@ -2,19 +2,30 @@
 
 namespace App\Controller;
 
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+
 abstract class AbstractController
 {
+    protected Environment $twig;
+
+    public function __construct(Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
     /**
      * Render twig template.
      */
-    public function render(string $template, array $data = [])
+    protected function render(string $template, array $data = []): string
     {
-        $loader = new \Twig\Loader\FilesystemLoader('../templates/');
-        $twig = new \Twig\Environment($loader, ['debug' => true]);
-        $twig->addExtension(new \Twig\Extension\DebugExtension());
-        $twig->addGlobal('session', $_SESSION);
-
-        echo $twig->render($template, $data);
+        try {
+            return $this->twig->render($template, $data);
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
