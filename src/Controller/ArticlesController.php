@@ -7,6 +7,7 @@ use App\Helpers;
 use App\Hydrator;
 use App\Repository\ArticlesRepository;
 use App\Repository\CategoryRepository;
+use App\Service\FileUploader;
 use App\Validator\Validator;
 use Twig\Environment;
 
@@ -16,6 +17,7 @@ class ArticlesController extends AbstractController
     private Hydrator $hydrator;
     private Validator $validator;
     private Helpers $helpers;
+    private FileUploader $fileUploader;
 
     public function __construct(Environment $twig)
     {
@@ -23,6 +25,7 @@ class ArticlesController extends AbstractController
         $this->hydrator = new Hydrator();
         $this->validator = new Validator();
         $this->helpers = new Helpers();
+        $this->fileUploader = new FileUploader(['image/png', 'image/jpeg', '.image/jpg']);
         parent::__construct($twig);
     }
 
@@ -59,32 +62,25 @@ class ArticlesController extends AbstractController
 
         $article = new Article();
 
-        $_POST['author'] = $_SESSION['user'];
-        isset($_POST['trending']) ? $_POST['trending'] = (int) $_POST['trending'] : $_POST['trending'] = 0;
+        $article->setAuthor($_SESSION['user']);
+        $article->setTrending($_POST['trending'] ? 1 : 0);
 
         $errors = $this->validator->validate($article, $_POST);
+        $upload = $this->fileUploader->upload($_FILES['thumbnailUrl']);
 
-        if (!isset($errors['category'])) {
-            $_POST['category'] = $categoryRepo->getById((int) $_POST['category']);
+        if (!empty($errors) || is_array($upload)) {
+            return $this->render('admin/new_article.html.twig', [
+                'errors'     => array_merge($errors, $upload),
+                'post'       => $_POST,
+                'categories' => $categories,
+            ]);
         }
 
-        if ($_FILES['thumbnailUrl']['size'] <= 0) {
-            $errors['thumbnailUrl'] = 'Vous devez renseigner une image mise en avant';
-        } elseif (!in_array($_FILES['thumbnailUrl']['type'], ['image/jpeg', 'image/png'])) {
-            $errors['thumbnailUrl'] = "L'image importée n'est pas valide. Extensions acceptées : .png, .jpg et .jpeg";
-        }
-
-        if (!empty($errors)) {
-            return $this->render('admin/new_article.html.twig', ['errors' => $errors, 'post' => $_POST, 'categories' => $categories]);
-        }
-
-        $thumbnailName = time() . '-' . $_FILES['thumbnailUrl']['name'];
-        move_uploaded_file($_FILES['thumbnailUrl']['tmp_name'], __DIR__ . "/../../public/images/$thumbnailName");
-
+        $_POST['category'] = $categoryRepo->getById((int) $_POST['category']);
         $this->hydrator->hydrate($article, $_POST);
 
         $article->setSlug($this->helpers->slugify($article->getTitle()));
-        $article->setThumbnailUrl("/images/$thumbnailName");
+        $article->setThumbnailUrl("/images/$upload");
 
         if (!$this->repository->add($article)) {
             return $this->render('admin/new_article.html.twig', [
@@ -93,7 +89,10 @@ class ArticlesController extends AbstractController
             ]);
         }
 
-        return $this->render('admin/new_article.html.twig', ['message' => 'Votre article a bien été publié', 'categories' => $categories]);
+        return $this->render('admin/new_article.html.twig', [
+            'message'    => 'Votre article a bien été publié',
+            'categories' => $categories,
+        ]);
     }
 
     public function manageArticles()
@@ -107,7 +106,7 @@ class ArticlesController extends AbstractController
         return $this->render('admin/list_articles.html.twig', ['articles' => $articles]);
     }
 
-    public function deleteArticle()
+    public function delete()
     {
         if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
             return $this->render('404.html.twig');
@@ -122,7 +121,8 @@ class ArticlesController extends AbstractController
             return $this->redirect('/admin/list-articles');
         }
 
-        unlink(realpath(__DIR__ . '/../..') . "/public{$_POST['thumbnailUrl']}");
+        // TODO a retester
+        $this->fileUploader->remove("/public{$_POST['thumbnailUrl']}");
 
         // TODO : Faire passer un message de confirmation
         return $this->redirect('/admin/list-articles');
@@ -145,33 +145,36 @@ class ArticlesController extends AbstractController
 
         $newArticle = new Article();
 
-        $_POST['author'] = $_SESSION['user'];
-        isset($_POST['trending']) ? $_POST['trending'] = (int) $_POST['trending'] : $_POST['trending'] = 0;
+        $newArticle->setAuthor($_SESSION['user']);
+        $newArticle->setTrending($_POST['trending'] ? 1 : 0);
 
         $errors = $this->validator->validate($newArticle, $_POST);
 
-        if (!isset($errors['category'])) {
-            $_POST['category'] = $categoryRepo->getById((int) $_POST['category']);
-        }
-
-        if (isset($_FILES['thumbnailUrl']['size']) && $_FILES['thumbnailUrl']['size'] > 0) {
-            if (!in_array($_FILES['thumbnailUrl']['type'], ['image/jpeg', 'image/png'])) {
-                $errors['thumbnailUrl'] = "L'image importée n'est pas valide. Extensions acceptées : .png, .jpg et .jpeg";
-            }
-        }
-
         if (!empty($errors)) {
-            return $this->render('admin/update_article.html.twig', ['errors' => $errors, 'article' => $_POST, 'categories' => $categories]);
+            return $this->render('admin/update_article.html.twig', [
+                'errors'     => $errors,
+                'article'    => $_POST,
+                'categories' => $categories,
+            ]);
         }
+
+        $_POST['category'] = $categoryRepo->getById((int) $_POST['category']);
 
         if (isset($_FILES['thumbnailUrl']['size']) && $_FILES['thumbnailUrl']['size'] > 0) {
             // Supprimer l'ancienne image
-            unlink(realpath(__DIR__ . '/../../public') . $article->getThumbnailUrl());
+            $this->fileUploader->remove($article->getThumbnailUrl());
 
-            $thumbnailName = time() . '-' . $_FILES['thumbnailUrl']['name'];
-            move_uploaded_file($_FILES['thumbnailUrl']['tmp_name'], __DIR__ . "/../../public/images/$thumbnailName");
+            $upload = $this->fileUploader->upload($_FILES['thumbnailUrl']);
 
-            $newArticle->setThumbnailUrl("/images/$thumbnailName");
+            if (is_array($upload)) {
+                return $this->render('admin/update_article.html.twig', [
+                    'errors'     => $upload,
+                    'article'    => $_POST,
+                    'categories' => $categories,
+                ]);
+            }
+
+            $newArticle->setThumbnailUrl("/images/$upload");
         } else {
             $newArticle->setThumbnailUrl($article->getThumbnailUrl());
         }
@@ -189,6 +192,10 @@ class ArticlesController extends AbstractController
             ]);
         }
 
-        return $this->render('admin/update_article.html.twig', ['message' => 'Votre article a bien été mis à jour', 'categories' => $categories, 'article' => $newArticle]);
+        return $this->render('admin/update_article.html.twig', [
+            'message'    => 'Votre article a bien été mis à jour',
+            'categories' => $categories,
+            'article'    => $newArticle,
+        ]);
     }
 }
