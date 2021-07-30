@@ -35,7 +35,7 @@ class DAL
      */
     public function isConnected(): bool
     {
-        return null !== $this->db;
+        return $this->db !== null;
     }
 
     /**
@@ -51,9 +51,7 @@ class DAL
     /**
      * Method to execute an SQL query.
      *
-     * @param  string       $query
-     * @param  array|object $data
-     * @return bool
+     * @param array|object $data
      */
     public function execute(string $query, $data = []): bool
     {
@@ -76,8 +74,7 @@ class DAL
     /**
      * Method to get SQL result.
      *
-     * @param  string|null $method all (fetchAll) or null (fetch)
-     * @return array|null
+     * @param string|null $method all (fetchAll) or null (fetch)
      */
     public function fetchData(?string $method = null): ?array
     {
@@ -87,10 +84,22 @@ class DAL
 
         try {
             if ($method === 'all') {
-                return $this->lastRequest->fetchAll(\PDO::FETCH_ASSOC);
+                $data = $this->lastRequest->fetchAll(\PDO::FETCH_ASSOC);
+
+                if (!$data) {
+                    return null;
+                }
+
+                return $data;
             }
 
-            return $this->lastRequest->fetch(\PDO::FETCH_ASSOC);
+            $data = $this->lastRequest->fetch(\PDO::FETCH_ASSOC);
+
+            if (!$data) {
+                return null;
+            }
+
+            return $data;
         } catch (\PDOException $e) {
             echo $e->getMessage();
 
