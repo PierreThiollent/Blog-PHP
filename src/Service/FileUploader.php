@@ -8,7 +8,7 @@ class FileUploader
 
     public function __construct(array $extensions)
     {
-        $this->path = realpath(__DIR__ . '/../../public/images');
+        $this->path = realpath(__DIR__ . '/../../public/');
         $this->extensions = $extensions;
     }
 
@@ -25,7 +25,7 @@ class FileUploader
         }
 
         $thumbnailName = time() . '-' . $file['name'];
-        move_uploaded_file($file['tmp_name'], "$this->path/$thumbnailName");
+        move_uploaded_file($file['tmp_name'], "$this->path/images/$thumbnailName");
 
         return $thumbnailName;
     }
