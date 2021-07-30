@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestion des commentaires
+{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+
+	<div class="row">
+		<div class="col-12 col-lg-10 py-5 px-4 align-self-center mx-auto">
+
+			{% include 'message.html.twig' %}
+			{% include 'error.html.twig' %}
+
+			<div class="text-center mt-4 mb-5">
+				<h1 class="h3">Gestion des commentaires</h1>
+			</div>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">id</th>
+						<th scope="col">Contenu</th>
+						<th scope="col">Date de publication</th>
+						<th scope="col">Auteur</th>
+						<th scope="col">Validé</th>
+						<th scope="col">Valider</th>
+						<th scope="col">Supprimer</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for comment in comments %}
+						<tr>
+							<th scope="row">{{ comment.id }}</th>
+							<td>{{ comment.content }}</td>
+							<td>{{ comment.publishedAt|date('d/m/Y', 'Europe/Paris') }}</td>
+							<td>
+								{{ comment.author.firstname }}
+								{{ comment.author.lastname }}
+							</td>
+							<td>
+								{% if comment.isValidated %}
+									<span>Oui</span>
+								{% else %}
+									<span>Non</span>
+								{% endif %}
+							</td>
+							<td>
+								{% if comment.isValidated != 1 %}
+									<button type="button" class="btn btn-success validate-comment" data-comment-id="{{ comment.id }}" data-bs-toggle="modal" data-bs-target="#validate-comment">
+										<i class="fas fa-check-circle"></i>
+									</button>
+								{% endif %}
+							</td>
+							<td>
+								<button type="button" class="btn btn-danger delete-comment" data-comment-id="{{ comment.id }}" data-bs-toggle="modal" data-bs-target="#delete-comment">
+									<i class="fas fa-trash-alt"></i>
+								</button>
+							</td>
+						{% endfor %}
+					</tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="modal fade" id="validate-comment" tabindex="-1">
+		<div class="modal-dialog modal-dialog modal-dialog-centered">">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Valider le commentaire</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>Voulez-vous valider ce commentaire ?</p>
+				</div>
+				<div class="modal-footer">
+					<form action="" method="GET">
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Annuler</button>
+						<button type="submit" class="btn btn-success">Valider</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="/assets/js/comments.js"></script>
+{% endblock %}
