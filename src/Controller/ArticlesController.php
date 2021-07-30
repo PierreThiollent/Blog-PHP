@@ -125,7 +125,7 @@ class ArticlesController extends AbstractController
             return $this->redirect('/admin/list-articles');
         }
 
-        $this->fileUploader->remove("/public{$_POST['thumbnailUrl']}");
+        $this->fileUploader->remove($_POST['thumbnailUrl']);
 
         // TODO : Faire passer un message de confirmation
         return $this->redirect('/admin/list-articles');
