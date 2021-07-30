@@ -67,7 +67,7 @@ class ArticlesController extends AbstractController
         $article = new Article();
 
         $article->setAuthor($_SESSION['user']);
-        $article->setTrending($_POST['trending'] ? 1 : 0);
+        $article->setTrending(isset($_POST['trending']) ? 1 : 0);
 
         $errors = $this->validator->validate($article, $_POST);
         $upload = $this->fileUploader->upload($_FILES['thumbnailUrl']);
