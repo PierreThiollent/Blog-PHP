@@ -25,6 +25,8 @@ class ContactController extends AbstractController
             if ($key === 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                 $errors[$key] = 'Vous devez renseigner un email valide';
             }
+
+            $value = htmlspecialchars($value);
         }
 
         if (!empty($errors)) {
