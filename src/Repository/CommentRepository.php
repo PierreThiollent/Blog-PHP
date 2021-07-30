@@ -33,6 +33,9 @@ class CommentRepository
         ]);
     }
 
+    /**
+     * Get all published comments.
+     */
     public function getAll(array $order = []): array
     {
         $sql = 'SELECT comment.id, content, publishedAt, isValidated, authorId, articleId, firstname, lastname
@@ -73,7 +76,7 @@ class CommentRepository
     }
 
     /**
-     * Method to validate comment.
+     * Validate a comment.
      */
     public function validate(int $id): bool
     {
@@ -82,6 +85,9 @@ class CommentRepository
         return $this->DAL->execute($sql, ['id' => $id]);
     }
 
+    /**
+     * Get comments of one article.
+     */
     public function getArticleComments(int $articleId): array
     {
         $sql = 'SELECT comment.id, content, publishedAt, isValidated, authorId, articleId, firstname, lastname, imageUrl
@@ -119,5 +125,15 @@ class CommentRepository
         }
 
         return $comments;
+    }
+
+    /**
+     * Delete comment.
+     */
+    public function delete(int $id): bool
+    {
+        $sql = 'DELETE FROM comment WHERE id = :id';
+
+        return $this->DAL->execute($sql, ['id' => $id]);
     }
 }
