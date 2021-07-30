@@ -52,4 +52,28 @@ class CommentsController extends AbstractController
 
         return $this->render('message.html.twig', ['message' => 'Votre commentaire a bien été ajouté, il est en attente de validation.']);
     }
+
+    public function manageComments()
+    {
+        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+            return $this->render('404.html.twig');
+        }
+
+        $comments = $this->repository->getAll(['publishedAt' => 'DESC']);
+
+        return $this->render('admin/list_comments.html.twig', ['comments' => $comments]);
+    }
+
+    public function validate(int $id): bool
+    {
+        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+            return $this->render('404.html.twig');
+        }
+
+        if (!$this->repository->validate($id)) {
+            return $this->redirect('/admin/list-comments');
+        }
+
+        return $this->redirect('/admin/list-comments');
+    }
 }
