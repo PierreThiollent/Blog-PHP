@@ -2,14 +2,11 @@
 
 namespace App\Router;
 
-use App\Controller\AbstractController;
 use Twig\Environment;
 
-class Router extends AbstractController
+class Router
 {
-    private string $url;
     private array $routes = [];
-    protected Environment $twig;
 
     public function __construct(string $url, Environment $twig)
     {
@@ -29,6 +26,16 @@ class Router extends AbstractController
     }
 
     /**
+     * Method to create a new POST route.
+     *
+     * @param \Closure|string $callable callback function
+     */
+    public function post(string $path, \Closure | string $callable): Route
+    {
+        return $this->add($path, $callable, 'POST');
+    }
+
+    /**
      * Method to create a new GET route.
      *
      * @param \Closure|string $callable callback function
@@ -43,26 +50,14 @@ class Router extends AbstractController
     }
 
     /**
-     * Method to create a new POST route.
-     *
-     * @param \Closure|string $callable callback function
-     */
-    public function post(string $path, \Closure | string $callable): Route
-    {
-        return $this->add($path, $callable, 'POST');
-    }
-
-    /**
      * Method to run our router.
-     *
-     * @throws \Exception
      */
     public function run()
     {
         if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
             header('HTTP/1.0 404 Not Found');
 
-            return $this->render('404.html.twig');
+            return $this->twig->render('404.html.twig');
         }
 
         foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
@@ -73,6 +68,6 @@ class Router extends AbstractController
 
         header('HTTP/1.0 404 Not Found');
 
-        return $this->render('404.html.twig');
+        return $this->twig->render('404.html.twig');
     }
 }
