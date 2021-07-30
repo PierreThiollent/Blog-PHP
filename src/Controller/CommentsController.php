@@ -71,9 +71,26 @@ class CommentsController extends AbstractController
         }
 
         if (!$this->repository->validate($id)) {
+            // TODO pass an error alert
             return $this->redirect('/admin/list-comments');
         }
 
+        // TODO pass a confirmation alert
+        return $this->redirect('/admin/list-comments');
+    }
+
+    public function delete(int $id): bool
+    {
+        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+            return $this->render('404.html.twig');
+        }
+
+        if (!$this->repository->delete($id)) {
+            // TODO pass an error alert
+            return $this->redirect('/admin/list-comments');
+        }
+
+        // TODO pass a confirmation alert
         return $this->redirect('/admin/list-comments');
     }
 }
