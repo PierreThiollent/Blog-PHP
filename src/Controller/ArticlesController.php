@@ -7,6 +7,7 @@ use App\Helpers;
 use App\Hydrator;
 use App\Repository\ArticlesRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Service\FileUploader;
 use App\Validator\Validator;
 use Twig\Environment;
@@ -14,6 +15,7 @@ use Twig\Environment;
 class ArticlesController extends AbstractController
 {
     private ArticlesRepository $repository;
+    private CommentRepository $commentRepository;
     private Hydrator $hydrator;
     private Validator $validator;
     private Helpers $helpers;
@@ -22,6 +24,7 @@ class ArticlesController extends AbstractController
     public function __construct(Environment $twig)
     {
         $this->repository = new ArticlesRepository();
+        $this->commentRepository = new CommentRepository();
         $this->hydrator = new Hydrator();
         $this->validator = new Validator();
         $this->helpers = new Helpers();
@@ -39,12 +42,13 @@ class ArticlesController extends AbstractController
     public function show(int $id)
     {
         $article = $this->repository->getOne($id);
+        $comments = $this->commentRepository->getArticleComments($id);
 
         if (!$article) {
             return $this->render('404.html.twig');
         }
 
-        return $this->render('article_detail.html.twig', ['article' => $article]);
+        return $this->render('article_detail.html.twig', ['article' => $article, 'comments' => $comments]);
     }
 
     public function new()
@@ -121,7 +125,6 @@ class ArticlesController extends AbstractController
             return $this->redirect('/admin/list-articles');
         }
 
-        // TODO a retester
         $this->fileUploader->remove("/public{$_POST['thumbnailUrl']}");
 
         // TODO : Faire passer un message de confirmation
