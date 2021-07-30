@@ -3,243 +3,259 @@
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
-    {# Trending section #}
-    <div class="section pt-5 pb-0">
-        <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-7 text-center">
-                    <h2 class="heading">
-                        Trending
-                    </h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="posts-slide-wrap">
-                        <div class="tns-outer" id="posts-slide-ow">
-                            <div class="tns-liveregion tns-visually-hidden" aria-live="polite" aria-atomic="true">
-                                slide
-                                <span class="current">
-                                    2
-                                </span>
-                                of 4
-                            </div>
-                            <div id="posts-slide-mw" class="tns-ovh">
-                                <div class="tns-inner" id="posts-slide-iw">
-                                    <div class="posts-slide tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal"
-                                         id="posts-slide"
-                                         style="transform: translate3d(-16.6667%, 0px, 0px); transition-duration: 0s">
 
-                                        {% for trendingArticle in trendingArticles %}
-                                            <div class="item tns-item {% if loop.index is same as (0) %}tns-slide-active{% endif %}" id="posts-slide-item{{ loop.index }}" {% if loop.index != 0 %} aria-hidden="true"{% endif %}>
-                                            	<div class="post-entry d-lg-flex">
-                                            		<div class="me-lg-5 thumbnail mb-4 mb-lg-0">
-                                                        <a href="/article/{{ trendingArticle.id }}/{{ trendingArticle.slug }}">
-                                                            <img src="{{ trendingArticle.thumbnailUrl }}" alt="Image" class="img-fluid"/>
-                                            			</a>
-                                            		</div>
-                                            		<div class="content align-self-center">
-                                            			<div class="post-meta mb-3">
-                                            				<a href="#" class="category">
-                                                                {{ trendingArticle.category.name }}
-                                            				</a>
-                                            				—
-                                            				<span class="date">
-                                                                {{ trendingArticle.updatedDate|date('M d, y', "Europe/Paris") }}
-                                            				</span>
-                                            			</div>
-                                            			<h2 class="heading">
-                                                            <a href="/article/{{ trendingArticle.id }}/{{ trendingArticle.slug }}">
-                                                                {{ trendingArticle.title }}
-                                            				</a>
-                                            			</h2>
-                                            			<p>
-                                            				{{ trendingArticle.excerpt }}
-                                            			</p>
-                                            			<a href="#" class="post-author d-flex align-items-center">
-                                            				<div class="author-pic">
-                                                                <img src="/{{ trendingArticle.author.imageUrl }}" alt="Image"/>
-                                            				</div>
-                                            				<div class="text">
-                                            					<strong>
-                                                                    {{ trendingArticle.author.lastname }} {{ trendingArticle.author.firstname }}
-                                            					</strong>
-                                            					<span>
-                                            						Author
-                                            					</span>
-                                            				</div>
-                                            			</a>
-                                            		</div>
-                                            	</div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="section pt-5 pb-5 mt-5">
+		<div class="container" style="max-width: 1280px;padding-left: 50px;padding-right: 50px;margin-left: auto;margin-right: auto;">
+			<h1 class="heading">Pierre Thiollent</h1>
+			<p class="lead fs-5">
+				Développeur web à Rouen, France.
+			</p>
 
-    {# Latests articles #}
-    <div class="section mt-5">
-        <div class="container">
-            <div class="row g-5">
-                {% for article in latestsArticles %}
-                    <div class="col-lg-4">
-                        <div class="post-entry d-block small-post-entry-v">
-                            <div class="thumbnail">
-                                <a href="/article/{{ article.id }}/{{ article.slug }}">
-                                    <img src="{{ article.thumbnailUrl }}" alt="Image" class="img-fluid w-100" style="height: 230px; object-fit: cover;"/>
-                                </a>
-                            </div>
-                            <div class="content">
-                                <div class="post-meta mb-1">
-                                    <a href="#" class="category">
-                                        {{ article.category.name }}
-                                    </a>                                    
-                                    —
-                                    <span class="date">
-                                        {{ article.updatedDate|date('M d, y', "Europe/Paris") }} 
-                                    </span>
-                                </div>
-                                <h2 class="heading mb-3">
-                                    <a href="/article/{{ article.id }}/{{ article.slug }}">
-                                        {{ article.title }}
-                                    </a>
-                                </h2>
-                                <p>
-                                    {{ article.excerpt }}
-                                </p>
-                                <a href="#" class="post-author d-flex align-items-center">
-                                    <div class="author-pic">
-                                        <img src="{{ article.author.imageUrl }}" alt="Image"/>
-                                    </div>
-                                    <div class="text">
-                                        <strong>
-                                            {{ article.author.lastname }} {{ article.author.firstname }}
-                                        </strong>
-                                        <span>
-                                            Author
-                                        </span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>                       
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+			<p class="mt-5 w-75">Bonjour, je m'appelle Pierre Thiollent et je suis développeur web à Rouen. Ce blog a été réalisé dans le cadre de mon parcours développeur d'applications PHP / Symfony chez
+				<a href="https://openclassrooms.com/" target="_blank">OpenClassrooms</a>
+			</p>
+		</div>
+	</div>
+	{# Trending section #}
+	<div class="section pt-5 pb-0">
+		<div class="container">
+			<div class="row justify-content-center mb-5">
+				<div class="col-lg-7 text-center">
+					<h2 class="heading">
+						Trending
+					</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="posts-slide-wrap">
+						<div class="tns-outer" id="posts-slide-ow">
+							<div class="tns-liveregion tns-visually-hidden" aria-live="polite" aria-atomic="true">
+								slide
+								<span class="current">
+									2
+								</span>
+								of 4
+							</div>
+							<div id="posts-slide-mw" class="tns-ovh">
+								<div class="tns-inner" id="posts-slide-iw">
+									<div class="posts-slide tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal" id="posts-slide" style="transform: translate3d(-16.6667%, 0px, 0px); transition-duration: 0s">
 
-    {# Articles by category section #}
-    <div class="section">
-        <div class="container">
-            <div class="row g-5">
+										{% for trendingArticle in trendingArticles %}
+											<div class="item tns-item {% if loop.index is same as (0) %}tns-slide-active{% endif %}" id="posts-slide-item{{ loop.index }}" {% if loop.index != 0 %} aria-hidden="true" {% endif %}>
+												<div class="post-entry d-lg-flex">
+													<div class="me-lg-5 thumbnail mb-4 mb-lg-0">
+														<a href="/article/{{ trendingArticle.id }}/{{ trendingArticle.slug }}">
+															<img src="{{ trendingArticle.thumbnailUrl }}" alt="Image" class="img-fluid"/>
+														</a>
+													</div>
+													<div class="content align-self-center">
+														<div class="post-meta mb-3">
+															<a href="#" class="category">
+																{{ trendingArticle.category.name }}
+															</a>
+															—
+															<span class="date">
+																{{ trendingArticle.updatedDate|date('M d, y', "Europe/Paris") }}
+															</span>
+														</div>
+														<h2 class="heading">
+															<a href="/article/{{ trendingArticle.id }}/{{ trendingArticle.slug }}">
+																{{ trendingArticle.title }}
+															</a>
+														</h2>
+														<p>
+															{{ trendingArticle.excerpt }}
+														</p>
+														<a href="#" class="post-author d-flex align-items-center">
+															<div class="author-pic">
+																<img src="/{{ trendingArticle.author.imageUrl }}" alt="Image"/>
+															</div>
+															<div class="text">
+																<strong>
+																	{{ trendingArticle.author.lastname }}
+																	{{ trendingArticle.author.firstname }}
+																</strong>
+																<span>
+																	Author
+																</span>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-                {# Sport articles section #}
-                <div class="col-lg-6">
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <h2 class="h4 fw-bold">
-                                Sport
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        {% for sportArticle in sportArticles %}
-                            <div class="col-lg-12">
-                                <div class="post-entry d-md-flex xsmall-horizontal mb-5">
-                                    <div class="me-md-3 thumbnail mb-3 mb-md-0">
-                                        <img src="{{ sportArticle.thumbnailUrl }}" alt="Image" class="img-fluid">
-                                    </div>
-                                    <div class="content">
-                                        <div class="post-meta mb-1">
-                                            <a href="#" class="category">
-                                                {{ sportArticle.category.name }}
-                                            </a>
-                                            —
-                                            <span class="date">
-                                                {{ sportArticle.updatedDate|date('M d, y', "Europe/Paris") }}
-                                            </span>
-                                        </div>
-                                        <h2 class="heading">
-                                            <a href="/article/{{ sportArticle.id }}/{{ sportArticle.slug }}">
-                                                {{ sportArticle.title }}
-                                            </a>
-                                        </h2>
-                                        <a href="#" class="post-author d-flex align-items-center">
-                                            <div class="author-pic">
-                                                <img src="/{{ sportArticle.author.imageUrl }}" alt="Image"/>
-                                            </div>
-                                            <div class="text">
-                                                <strong>
-                                                    {{ sportArticle.author.lastname }} {{ sportArticle.author.firstname }}
-                                                </strong>
-                                                <span>
-                                                    Author
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
+	{# Latests articles #}
+	<div class="section mt-5">
+		<div class="container">
+			<div class="row g-5">
+				{% for article in latestsArticles %}
+					<div class="col-lg-4">
+						<div class="post-entry d-block small-post-entry-v">
+							<div class="thumbnail">
+								<a href="/article/{{ article.id }}/{{ article.slug }}">
+									<img src="{{ article.thumbnailUrl }}" alt="Image" class="img-fluid w-100" style="height: 230px; object-fit: cover;"/>
+								</a>
+							</div>
+							<div class="content">
+								<div class="post-meta mb-1">
+									<a href="#" class="category">
+										{{ article.category.name }}
+									</a>
+									—
+									<span class="date">
+										{{ article.updatedDate|date('M d, y', "Europe/Paris") }}
+									</span>
+								</div>
+								<h2 class="heading mb-3">
+									<a href="/article/{{ article.id }}/{{ article.slug }}">
+										{{ article.title }}
+									</a>
+								</h2>
+								<p>
+									{{ article.excerpt }}
+								</p>
+								<a href="#" class="post-author d-flex align-items-center">
+									<div class="author-pic">
+										<img src="{{ article.author.imageUrl }}" alt="Image"/>
+									</div>
+									<div class="text">
+										<strong>
+											{{ article.author.lastname }}
+											{{ article.author.firstname }}
+										</strong>
+										<span>
+											Author
+										</span>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 
-                {# Food articles section #}
-                <div class="col-lg-6">
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <h2 class="h4 fw-bold">
-                                Food
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        {% for foodArticle in foodArticles %}
-                            <div class="col-lg-12">
-                                <div class="post-entry d-md-flex xsmall-horizontal mb-5">
-                                    <div class="me-md-3 thumbnail mb-3 mb-md-0">
-                                        <img src="{{ foodArticle.thumbnailUrl }}" alt="Image" class="img-fluid"/>
-                                    </div>
-                                    <div class="content">
-                                        <div class="post-meta mb-1">
-                                            <a href="#" class="category">
-                                                {{ foodArticle.category.name }}
-                                            </a>
-                                            —
-                                            <span class="date">
-                                                {{ foodArticle.updatedDate|date('M d, y', "Europe/Paris") }}
-                                            </span>
-                                        </div>
-                                        <h2 class="heading">
-                                            <a href="/article/{{ foodArticle.id }}/{{ foodArticle.slug }}">
-                                                {{ foodArticle.title }}
-                                            </a>
-                                        </h2>
-                                        <a href="#" class="post-author d-flex align-items-center">
-                                            <div class="author-pic">
-                                                <img src="/{{ foodArticle.author.imageUrl }}" alt="Image"></div>
-                                            <div class="text">
-                                                <strong>
-                                                    {{ foodArticle.author.lastname }} {{ foodArticle.author.firstname }}
-                                                </strong>
-                                                <span>Author</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	{# Articles by category section #}
+	<div class="section">
+		<div class="container">
+			<div
+				class="row g-5">
 
-    {% block script %}{% endblock %}
+				{# Sport articles section #}
+				<div class="col-lg-6">
+					<div class="row mb-4">
+						<div class="col-12">
+							<h2 class="h4 fw-bold">
+								Sport
+							</h2>
+						</div>
+					</div>
+					<div class="row justify-content-center">
+						{% for sportArticle in sportArticles %}
+							<div class="col-lg-12">
+								<div class="post-entry d-md-flex xsmall-horizontal mb-5">
+									<div class="me-md-3 thumbnail mb-3 mb-md-0">
+										<img src="{{ sportArticle.thumbnailUrl }}" alt="Image" class="img-fluid">
+									</div>
+									<div class="content">
+										<div class="post-meta mb-1">
+											<a href="#" class="category">
+												{{ sportArticle.category.name }}
+											</a>
+											—
+											<span class="date">
+												{{ sportArticle.updatedDate|date('M d, y', "Europe/Paris") }}
+											</span>
+										</div>
+										<h2 class="heading">
+											<a href="/article/{{ sportArticle.id }}/{{ sportArticle.slug }}">
+												{{ sportArticle.title }}
+											</a>
+										</h2>
+										<a href="#" class="post-author d-flex align-items-center">
+											<div class="author-pic">
+												<img src="/{{ sportArticle.author.imageUrl }}" alt="Image"/>
+											</div>
+											<div class="text">
+												<strong>
+													{{ sportArticle.author.lastname }}
+													{{ sportArticle.author.firstname }}
+												</strong>
+												<span>
+													Author
+												</span>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+
+				{# Food articles section #}
+				<div class="col-lg-6">
+					<div class="row mb-4">
+						<div class="col-12">
+							<h2 class="h4 fw-bold">
+								Food
+							</h2>
+						</div>
+					</div>
+					<div class="row justify-content-center">
+						{% for foodArticle in foodArticles %}
+							<div class="col-lg-12">
+								<div class="post-entry d-md-flex xsmall-horizontal mb-5">
+									<div class="me-md-3 thumbnail mb-3 mb-md-0">
+										<img src="{{ foodArticle.thumbnailUrl }}" alt="Image" class="img-fluid"/>
+									</div>
+									<div class="content">
+										<div class="post-meta mb-1">
+											<a href="#" class="category">
+												{{ foodArticle.category.name }}
+											</a>
+											—
+											<span class="date">
+												{{ foodArticle.updatedDate|date('M d, y', "Europe/Paris") }}
+											</span>
+										</div>
+										<h2 class="heading">
+											<a href="/article/{{ foodArticle.id }}/{{ foodArticle.slug }}">
+												{{ foodArticle.title }}
+											</a>
+										</h2>
+										<a href="#" class="post-author d-flex align-items-center">
+											<div class="author-pic">
+												<img src="/{{ foodArticle.author.imageUrl }}" alt="Image"></div>
+											<div class="text">
+												<strong>
+													{{ foodArticle.author.lastname }}
+													{{ foodArticle.author.firstname }}
+												</strong>
+												<span>Author</span>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% block script %}{% endblock %}
 {% endblock %}
