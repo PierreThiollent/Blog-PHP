@@ -112,16 +112,18 @@ class CommentRepository
 
         $comments = [];
 
-        foreach ($data as &$comment) {
-            $user = new User();
-            $this->hydrator->hydrate($user, $comment);
+        if ($data) {
+            foreach ($data as &$comment) {
+                $user = new User();
+                $this->hydrator->hydrate($user, $comment);
 
-            $comment['author'] = $user;
+                $comment['author'] = $user;
 
-            $comment_object = new Comment();
-            $this->hydrator->hydrate($comment_object, $comment);
+                $comment_object = new Comment();
+                $this->hydrator->hydrate($comment_object, $comment);
 
-            $comments[] = $comment_object;
+                $comments[] = $comment_object;
+            }
         }
 
         return $comments;
