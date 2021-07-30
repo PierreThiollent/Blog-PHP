@@ -4,14 +4,10 @@ namespace App;
 
 class Hydrator
 {
-    private const DATES = ['publishedDate', 'updatedDate', 'confirmedAt'];
+    private const DATES = ['publishedDate', 'updatedDate', 'confirmedAt', 'publishedAt'];
 
     /**
-     * Method to hydrate entity
-     *
-     * @param  object $entity
-     * @param  array  $data
-     * @return void
+     * Method to hydrate entity.
      */
     public function hydrate(object $entity, array $data): void
     {
