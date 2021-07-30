@@ -151,6 +151,22 @@ class Routes
                     'method'     => 'index',
                 ],
             ],
+
+            'manage-comments' => [
+                'GET' => [
+                    'path'       => '/admin/list-comments',
+                    'controller' => 'CommentsController',
+                    'method'     => 'manageComments',
+                ],
+            ],
+
+            'validate-comment' => [
+                'GET' => [
+                    'path'       => '/admin/validate-comment-:id',
+                    'controller' => 'CommentsController',
+                    'method'     => 'validate',
+                ],
+            ],
         ];
     }
 }
