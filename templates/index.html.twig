@@ -22,7 +22,7 @@
 			<div class="row justify-content-center mb-5">
 				<div class="col-lg-7 text-center">
 					<h2 class="heading">
-						Trending
+						Mis en avant
 					</h2>
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 															</a>
 															—
 															<span class="date">
-																{{ trendingArticle.updatedDate|date('M d, y', "Europe/Paris") }}
+																{{ trendingArticle.updatedDate|date('d/m/y', "Europe/Paris") }}
 															</span>
 														</div>
 														<h2 class="heading">
@@ -114,7 +114,7 @@
 									</a>
 									—
 									<span class="date">
-										{{ article.updatedDate|date('M d, y', "Europe/Paris") }}
+										{{ article.updatedDate|date('d/m/y', "Europe/Paris") }}
 									</span>
 								</div>
 								<h2 class="heading mb-3">
@@ -176,7 +176,7 @@
 											</a>
 											—
 											<span class="date">
-												{{ sportArticle.updatedDate|date('M d, y', "Europe/Paris") }}
+												{{ sportArticle.updatedDate|date('d/m/y', "Europe/Paris") }}
 											</span>
 										</div>
 										<h2 class="heading">
@@ -228,7 +228,7 @@
 											</a>
 											—
 											<span class="date">
-												{{ foodArticle.updatedDate|date('M d, y', "Europe/Paris") }}
+												{{ foodArticle.updatedDate|date('d/m/y', "Europe/Paris") }}
 											</span>
 										</div>
 										<h2 class="heading">
