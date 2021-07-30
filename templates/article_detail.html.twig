@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ article.title }}
+{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+	<div class="section post-section pt-5">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8">
+					<div class="text-center">
+						<img src="/{{ article.author.imageUrl }}" alt="Image" class="author-pic img-fluid rounded-circle mx-auto"/>
+					</div>
+					<span class="d-block text-center">{{ article.author.lastname }}
+						{{ article.author.firstname }}</span>
+					<span class="date d-block text-center small text-uppercase text-black-50 mb-5">
+						{{ article.updatedDate|date('M d, y', "Europe/Paris") }}
+					</span>
+					<h2 class="heading text-center">{{ article.title }}</h2>
+					<p class="lead mb-4 text-center">
+						{{ article.excerpt }}
+					</p>
+					<img src="{{ article.thumbnailUrl }}" alt="Image" class="img-fluid rounded mb-4 d-block mx-auto"/>
+					<p>
+						{{ article.content }}
+					</p>
+					<hr class="my-5">
+					<div class="post-comments mb-5">
+						<header>
+							<h3 class="h6">Commentaires
+								<span class="no-of-comments">({{ comments|length }})</span>
+							</h3>
+						</header>
+
+						{% if comments %}
+							{% for comment in comments %}
+								{% include 'comment.html.twig' %}
+							{% endfor %}
+						{% else %}
+							<p>Aucun commentaire.</p>
+						{% endif %}
+					</div>
+
+					{% if session.user %}
+						<div class="add-comment">
+							<header>
+								<h3 class="h6 mb-4">Ajouter un commentaire</h3>
+							</header>
+							<form id="add-comment" action="" class="commenting-form" method="POST">
+								<div class="row">
+									<div class="form-group col-md-12 mb-2">
+										<input type="text" name="username" id="username" placeholder="{{ session.user.firstname }} {{ session.user.lastname }}" class="form-control" value="{{ session.user.firstname }} {{ session.user.lastname }}" required>
+									</div>
+									<div class="form-group col-md-12">
+										<textarea name="content" id="usercomment" placeholder="Commentaire" class="form-control" required></textarea>
+									</div>
+									<div class="form-group col-md-12 mt-2">
+										<input type="hidden" name="authorId" value="{{ session.user.id }}"/>
+										<input type="hidden" name="articleId" value="{{ article.id }}"/>
+										<input type="submit" class="btn btn-primary" />
+									</div>
+								</div>
+							</form>
+						</div>
+
+					{% else %}
+						<p>Vous souhaitez publier un commentaire ? Veuillez vous
+							<a href="/connexion">connecter.</a>
+						</p>
+					{% endif %}
+
+					<div class="row mt-5 pt-5 border-top">
+						<div class="col-12">
+							<span class="fw-bold text-black small mb-1">Share</span>
+							<ul class="social list-unstyled">
+								<li>
+									<a href="https://facebook.com" target="_blank">
+										<i class="fab fa-facebook-f align-baseline"></i>
+									</a>
+								</li>
+								<li>
+									<a href="https://twitter.com" target="_blank">
+										<i class="fab fa-twitter align-baseline"></i>
+									</a>
+								</li>
+								<li>
+									<a href="https://linkedin.com" target="_blank">
+										<i class="fab fa-linkedin align-baseline"></i>
+									</a>
+								</li>
+								<li>
+									<a href="https://pinterest.com" target="_blank">
+										<i class="fab fa-pinterest align-baseline"></i>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section pb-0">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h2 class="heading">Related</h2>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-lg-12">
+					<div class="post-entry d-md-flex small-horizontal mb-5">
+						<div class="me-md-5 thumbnail mb-3 mb-md-0">
+							<img src="/images/img_2.jpg" alt="Image" class="img-fluid"/>
+						</div>
+						<div class="content">
+							<div class="post-meta mb-3">
+								<a href="#" class="category">Business</a>,
+								<a href="#" class="category">Travel</a>
+								&mdash;
+								<span class="date">July 2, 2020</span>
+							</div>
+							<h2 class="heading">
+								<a href="single.html">Your most unhappy customers are your greatest source of learning.</a>
+							</h2>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+							<a href="#" class="post-author d-flex align-items-center">
+								<div class="author-pic">
+									<img src="/images/user-placeholder.jpg" alt="Image"/>
+								</div>
+								<div class="text">
+									<strong>Sergy Campbell</strong>
+									<span>Author, 26 published post</span>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<div class="post-entry d-md-flex small-horizontal mb-5">
+						<div class="me-md-5 thumbnail mb-3 mb-md-0">
+							<img src="/images/img_3.jpg" alt="Image" class="img-fluid"/>
+						</div>
+						<div class="content">
+							<div class="post-meta mb-3">
+								<a href="#" class="category">Business</a>,
+								<a href="#" class="category">Travel</a>
+								&mdash;
+								<span class="date">July 2, 2020</span>
+							</div>
+							<h2 class="heading">
+								<a href="single.html">Your most unhappy customers are your greatest source of learning.</a>
+							</h2>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+							<a href="#" class="post-author d-flex align-items-center">
+								<div class="author-pic">
+									<img src="/images/user-placeholder.jpg" alt="Image"/>
+								</div>
+								<div class="text">
+									<strong>Sergy Campbell</strong>
+									<span>Author, 26 published post</span>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<div class="post-entry d-md-flex small-horizontal mb-5">
+						<div class="me-md-5 thumbnail mb-3 mb-md-0">
+							<img src="/images/img_4.jpg" alt="Image" class="img-fluid"/>
+						</div>
+						<div class="content">
+							<div class="post-meta mb-3">
+								<a href="#" class="category">Business</a>,
+								<a href="#" class="category">Travel</a>
+								&mdash;
+								<span class="date">July 2, 2020</span>
+							</div>
+							<h2 class="heading">
+								<a href="single.html">Your most unhappy customers are your greatest source of learning.</a>
+							</h2>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+							<a href="#" class="post-author d-flex align-items-center">
+								<div class="author-pic">
+									<img src="/images/user-placeholder.jpg" alt="Image"/>
+								</div>
+								<div class="text">
+									<strong>Sergy Campbell</strong>
+									<span>Author, 26 published post</span>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="/assets/js/comments.js"></script>
+{% endblock %}

@@ -1,0 +1,16 @@
+<div class="comment">
+	<div class="comment-header d-flex justify-content-between">
+		<div class="user d-flex align-items-center">
+			<div class="image">
+				<img src="/{{ comment.author.imageUrl }}" alt="..." class="img-fluid rounded-circle" style="height: 20px;">
+			</div>
+			<div class="title ms-2">
+				<strong>{{ comment.author.firstname }}
+					{{ comment.author.lastname }}</strong>
+			</div>
+		</div>
+	</div>
+	<div class="comment-body">
+		<p>{{ comment.content }}</p>
+	</div>
+</div>

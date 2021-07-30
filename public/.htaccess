@@ -1,0 +1,6 @@
+RewriteEngine on
+
+# If the file does not exist
+RewriteCond %{REQUEST_FILENAME} !-f
+# No matter the url, Apache will redirect to index.php? Url = REQUEST_FILENAME
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
