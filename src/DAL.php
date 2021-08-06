@@ -24,7 +24,7 @@ class DAL
             $this->db = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';port=' . $_ENV['DB_PORT'] . ';dbname=' . $_ENV['DB_NAME'] . ';charset=' . $_ENV['DB_CHARSET'] . ';', $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']);
             $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
-            echo 'Erreur ! : ' . $e->getMessage();
+            throw new \PDOException($e->getMessage());
         }
 
         return $this->isConnected();
