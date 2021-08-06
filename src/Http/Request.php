@@ -4,7 +4,7 @@ namespace App\Http;
 
 class Request
 {
-    protected array $query;
+    private array $query;
 
     public function __construct()
     {
