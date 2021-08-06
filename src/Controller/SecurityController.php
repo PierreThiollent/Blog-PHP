@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Helpers;
+use App\Http\Request;
 use App\Hydrator;
 use App\Repository\UserRepository;
 use App\Validator\Validator;
@@ -14,11 +15,11 @@ class SecurityController extends AbstractController
     private UserRepository $repository;
     private Hydrator $hydrator;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Request $request)
     {
         $this->repository = new UserRepository();
         $this->hydrator = new Hydrator();
-        parent::__construct($twig);
+        parent::__construct($twig, $request);
     }
 
     /**
@@ -30,18 +31,18 @@ class SecurityController extends AbstractController
      */
     public function register()
     {
-        if (!empty($_POST)) {
+        if (!empty($this->request->getPostParams())) {
             $user = new User();
 
             $validator = new Validator();
-            $errors = $validator->validate($user, $_POST);
+            $errors = $validator->validate($user, $this->request->getPostParams());
 
             if (!empty($errors)) {
                 return $this->render('register.html.twig', ['errors' => $errors]);
             }
 
-            $this->hydrator->hydrate($user, $_POST);
-            $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
+            $this->hydrator->hydrate($user, $this->request->getPostParams());
+            $user->setPassword(password_hash($this->request->getPostParam('password'), PASSWORD_DEFAULT));
 
             $token = Helpers::generateToken();
             $user->setConfirmationToken($token);
@@ -49,7 +50,7 @@ class SecurityController extends AbstractController
             if ($this->repository->userExist($user)) {
                 return $this->render('register.html.twig', [
                     'error' => 'Un utilisateur avec cet email existe déjà. Vous pouvez vous <a href="/connexion">connecter</a> ou réinitialiser votre mot de passe si vous l\'avez oublié.',
-                    'post'  => $_POST,
+                    'post'  => $this->request->getPostParams(),
                 ]);
             }
 
@@ -87,9 +88,9 @@ class SecurityController extends AbstractController
             return $this->redirect('/mon-compte');
         }
 
-        if (!empty($_POST)) {
+        if (!empty($this->request->getPostParams())) {
             $user = new User();
-            $this->hydrator->hydrate($user, $_POST);
+            $this->hydrator->hydrate($user, $this->request->getPostParams());
 
             $user_data = $this->repository->userExist($user);
 
@@ -102,13 +103,13 @@ class SecurityController extends AbstractController
             if (!$this->repository->checkConfirmUser($user_data)) {
                 return $this->render(
                     'login.html.twig',
-                    ['error' => "Votre compte n'a pas été confirmé, un email vous a été envoyé lors de la création de celui-ci, veuillez cliquer sur le lien contenu dans cet email.", 'post' => $_POST]
+                    ['error' => "Votre compte n'a pas été confirmé, un email vous a été envoyé lors de la création de celui-ci, veuillez cliquer sur le lien contenu dans cet email.", 'post' => $this->request->getPostParams()]
                 );
             }
 
             // Si le password ne match pas le hash stocké en base
-            if (!password_verify($_POST['password'], $this->repository->getUserPasswordHash($user_data))) {
-                return $this->render('login.html.twig', ['error' => 'Le couple email / mot de passe est incorrect.', 'post' => $_POST]);
+            if (!password_verify($this->request->getPostParam('password'), $this->repository->getUserPasswordHash($user_data))) {
+                return $this->render('login.html.twig', ['error' => 'Le couple email / mot de passe est incorrect.', 'post' => $this->request->getPostParams()]);
             }
 
             // On stocke les infos du user en session

@@ -10,9 +10,6 @@ use Twig\Error\SyntaxError;
 
 abstract class AbstractController
 {
-    protected Environment $twig;
-    protected Request $request;
-
     public function __construct(Environment $twig, Request $request)
     {
         $this->twig = $twig;

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Helpers;
+use App\Http\Request;
 use App\Hydrator;
 use App\Repository\ArticlesRepository;
 use App\Repository\CategoryRepository;
@@ -21,7 +22,7 @@ class ArticlesController extends AbstractController
     private Helpers $helpers;
     private FileUploader $fileUploader;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Request $request)
     {
         $this->repository = new ArticlesRepository();
         $this->commentRepository = new CommentRepository();
@@ -29,7 +30,7 @@ class ArticlesController extends AbstractController
         $this->validator = new Validator();
         $this->helpers = new Helpers();
         $this->fileUploader = new FileUploader(['image/png', 'image/jpeg', '.image/jpg']);
-        parent::__construct($twig);
+        parent::__construct($twig, $request);
     }
 
     public function index()
@@ -60,28 +61,29 @@ class ArticlesController extends AbstractController
         $categoryRepo = new CategoryRepository();
         $categories = $categoryRepo->getAll();
 
-        if (empty($_POST)) {
+        if (empty($this->request->getPostParams())) {
             return $this->render('admin/new_article.html.twig', ['categories' => $categories]);
         }
 
         $article = new Article();
 
         $article->setAuthor($_SESSION['user']);
-        $article->setTrending(isset($_POST['trending']) ? 1 : 0);
+        $article->setTrending($this->request->getPostParam('trending') ? 1 : 0);
 
-        $errors = $this->validator->validate($article, $_POST);
+        $errors = $this->validator->validate($article, $this->request->getPostParams());
         $upload = $this->fileUploader->upload($_FILES['thumbnailUrl']);
 
         if (!empty($errors) || is_array($upload)) {
             return $this->render('admin/new_article.html.twig', [
                 'errors'     => array_merge($errors, $upload),
-                'post'       => $_POST,
+                'post'       => $this->request->getPostParams(),
                 'categories' => $categories,
             ]);
         }
 
-        $_POST['category'] = $categoryRepo->getById((int) $_POST['category']);
-        $this->hydrator->hydrate($article, $_POST);
+        $this->request->setPostParam('category', $categoryRepo->getById((int) $this->request->getPostParams('category')));
+
+        $this->hydrator->hydrate($article, $this->request->getPostParams());
 
         $article->setSlug($this->helpers->slugify($article->getTitle()));
         $article->setThumbnailUrl("/images/$upload");
@@ -116,16 +118,16 @@ class ArticlesController extends AbstractController
             return $this->render('404.html.twig');
         }
 
-        if (!isset($_POST['articleId'], $_POST['thumbnailUrl'])) {
+        if ($this->request->getPostParam('articleId') === null || $this->request->getPostParam('thumbnailUrl') === null) {
             return;
         }
 
-        if (!$this->repository->delete($_POST['articleId'])) {
+        if (!$this->repository->delete($this->request->getPostParam('articleId'))) {
             // TODO : Faire passer un message d'erreur
             return $this->redirect('/admin/list-articles');
         }
 
-        $this->fileUploader->remove($_POST['thumbnailUrl']);
+        $this->fileUploader->remove($this->request->getPostParam('thumbnailUrl'));
 
         // TODO : Faire passer un message de confirmation
         return $this->redirect('/admin/list-articles');
@@ -142,26 +144,26 @@ class ArticlesController extends AbstractController
         $categoryRepo = new CategoryRepository();
         $categories = $categoryRepo->getAll();
 
-        if (empty($_POST)) {
+        if (empty($this->request->getPostParams())) {
             return $this->render('admin/update_article.html.twig', ['article' => $article, 'categories' => $categories]);
         }
 
         $newArticle = new Article();
 
         $newArticle->setAuthor($_SESSION['user']);
-        $newArticle->setTrending($_POST['trending'] ? 1 : 0);
+        $newArticle->setTrending($this->request->getPostParam('trending') ? 1 : 0);
 
-        $errors = $this->validator->validate($newArticle, $_POST);
+        $errors = $this->validator->validate($newArticle, $this->request->getPostParams());
 
         if (!empty($errors)) {
             return $this->render('admin/update_article.html.twig', [
                 'errors'     => $errors,
-                'article'    => $_POST,
+                'article'    => $this->request->getPostParams(),
                 'categories' => $categories,
             ]);
         }
 
-        $_POST['category'] = $categoryRepo->getById((int) $_POST['category']);
+        $this->request->setPostParam('category', $categoryRepo->getById((int) $this->request->getPostParams('category')));
 
         if (isset($_FILES['thumbnailUrl']['size']) && $_FILES['thumbnailUrl']['size'] > 0) {
             // Supprimer l'ancienne image
@@ -172,7 +174,7 @@ class ArticlesController extends AbstractController
             if (is_array($upload)) {
                 return $this->render('admin/update_article.html.twig', [
                     'errors'     => $upload,
-                    'article'    => $_POST,
+                    'article'    => $this->request->getPostParams(),
                     'categories' => $categories,
                 ]);
             }
@@ -182,7 +184,7 @@ class ArticlesController extends AbstractController
             $newArticle->setThumbnailUrl($article->getThumbnailUrl());
         }
 
-        $this->hydrator->hydrate($newArticle, $_POST);
+        $this->hydrator->hydrate($newArticle, $this->request->getPostParams());
 
         $newArticle->setSlug($this->helpers->slugify($article->getTitle()));
         $newArticle->setId($article->getId());
@@ -191,7 +193,7 @@ class ArticlesController extends AbstractController
             return $this->render('admin/update_article.html.twig', [
                 'error'      => "Une erreur s'est produite pendant la modification de l'article, veuillez réessayer.",
                 'categories' => $categories,
-                'article'    => $_POST,
+                'article'    => $this->request->getPostParams(),
             ]);
         }
 

@@ -2,22 +2,23 @@
 
 namespace App\Controller;
 
+use App\Http\Request;
 use Twig\Environment;
 
 class ContactController extends AbstractController
 {
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Request $request)
     {
-        parent::__construct($twig);
+        parent::__construct($twig, $request);
     }
 
     public function index()
     {
-        if (empty($_POST)) {
+        if (empty($this->request->getPostParams())) {
             return $this->render('contact.html.twig');
         }
 
-        foreach ($_POST as $key => &$value) {
+        foreach ($this->request->getPostParams() as $key => &$value) {
             if ($value === '') {
                 $errors[$key] = 'Le champ ne doit pas être vide.';
             }
@@ -26,6 +27,7 @@ class ContactController extends AbstractController
                 $errors[$key] = 'Vous devez renseigner un email valide';
             }
 
+            // Sanitize data
             $value = htmlspecialchars($value);
         }
 
@@ -33,10 +35,15 @@ class ContactController extends AbstractController
             return $this->render('contact.html.twig', ['errors' => $errors]);
         }
 
+        $nom = $this->request->getPostParam('nom');
+        $prenom = $this->request->getPostParam('prenom');
+        $email = $this->request->getPostParam('email');
+        $message = $this->request->getPostParam('message');
+
         $mail = mail(
             'pierre.thiollent76@gmail.com',
             'Nouveau mail reçu depuis le formulaire de contact Superblog.',
-            "Vous avez reçu un mail depuis le formulaire de contact.<br><br>Nom : {$_POST['nom']} {$_POST['prenom']}<br>Email : {$_POST['email']}<br>Message : {$_POST['message']}",
+            "Vous avez reçu un mail depuis le formulaire de contact.<br><br>Nom : $nom $prenom<br>Email : $email<br>Message : $message",
             implode("\r\n", ['From: contact@superblog.fr', 'Content-type: text/html; charset=utf-8'])
         );
 

@@ -5,6 +5,7 @@ require_once '../vendor/autoload.php';
 session_start();
 
 use App\Config\Routes;
+use App\Http\Request;
 use App\Router\Router;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
@@ -19,10 +20,13 @@ if ($_ENV['env'] === 'prod') {
 
 $loader = new FilesystemLoader(__DIR__ . '/../templates/');
 $twig = new Environment($loader, ['debug' => true]);
+
 $twig->addExtension(new DebugExtension());
 $twig->addGlobal('session', $_SESSION);
 
-$router = new Router($_GET['url'], $twig);
+$request = new Request();
+
+$router = new Router($request->getParam('url'), $twig, $request);
 
 foreach (Routes::getRoutes() as $name => $route) {
     foreach ($route as $methode => $params) {

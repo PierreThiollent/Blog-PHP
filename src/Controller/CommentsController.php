@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Http\Request;
 use App\Hydrator;
 use App\Repository\CommentRepository;
 use App\Validator\Validator;
@@ -14,12 +15,12 @@ class CommentsController extends AbstractController
     private Hydrator $hydrator;
     private CommentRepository $repository;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Request $request)
     {
         $this->validator = new Validator();
         $this->hydrator = new Hydrator();
         $this->repository = new CommentRepository();
-        parent::__construct($twig);
+        parent::__construct($twig, $request);
     }
 
     /**
@@ -29,12 +30,12 @@ class CommentsController extends AbstractController
      */
     public function new()
     {
-        if (empty($_POST)) {
+        if (empty($this->request->getPostParams())) {
             return;
         }
 
         $comment = new Comment();
-        $errors = $this->validator->validate($comment, $_POST);
+        $errors = $this->validator->validate($comment, $this->request->getPostParams());
 
         if (!empty($errors)) {
             foreach ($errors as $error) { ?>
@@ -43,7 +44,7 @@ class CommentsController extends AbstractController
             exit;
         }
 
-        $this->hydrator->hydrate($comment, $_POST);
+        $this->hydrator->hydrate($comment, $this->request->getPostParams());
         $comment->setAuthor($_SESSION['user']);
 
         if (!$this->repository->add($comment)) {

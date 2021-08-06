@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Http\Request;
 use App\Repository\ArticlesRepository;
 use Twig\Environment;
 
@@ -9,9 +10,9 @@ class HomeController extends AbstractController
 {
     private ArticlesRepository $repository;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Request $request)
     {
-        parent::__construct($twig);
+        parent::__construct($twig, $request);
     }
 
     public function index()

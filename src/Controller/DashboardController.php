@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Http\Request;
 use App\Hydrator;
 use App\Repository\UserRepository;
 use App\Validator\Validator;
@@ -14,9 +15,9 @@ class DashboardController extends AbstractController
     private Hydrator $hydrator;
     private UserRepository $repository;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Request $request)
     {
-        parent::__construct($twig);
+        parent::__construct($twig, $request);
     }
 
     /**
@@ -32,41 +33,41 @@ class DashboardController extends AbstractController
             return $this->redirect('/connexion');
         }
 
-        if (!empty($_POST)) {
+        if (!empty($this->request->getPostParams())) {
             $user = new User();
             $this->repository = new UserRepository();
             $passwordUpdated = false;
 
             // Si l'utilisateur n'a pas renseigné de nouveau mdp
-            if ($_POST['password'] === '') {
+            if ($this->request->getPostParam('password') === '') {
                 $userPasswordHash = $this->repository->getUserPasswordHash($_SESSION['user']);
                 // On recupere son mdp en session
-                $_POST['password'] = $userPasswordHash;
+                $this->request->setPostParam('password', $userPasswordHash);
             } else {
                 $passwordUpdated = true;
             }
 
             // On validate notre object user
             $this->validator = new Validator();
-            $errors = $this->validator->validate($user, $_POST);
+            $errors = $this->validator->validate($user, $this->request->getPostParams());
 
             if (!empty($errors)) {
                 return $this->render(
                     'dashboard.html.twig',
-                    ['errors' => $errors, 'post_data' => $_POST]
+                    ['errors' => $errors, 'post_data' => $this->request->getPostParams()]
                 );
             }
 
             // On hydrate notre user
             $this->hydrator = new Hydrator();
-            $this->hydrator->hydrate($user, $_POST);
+            $this->hydrator->hydrate($user, $this->request->getPostParams());
 
             $user->setImageUrl($_SESSION['user']->getImageUrl());
 
             // Si l'utilisateur a renseigne un nouveau mdp
             if ($passwordUpdated) {
                 // On hashe le nouveau mdp
-                $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
+                $user->setPassword(password_hash($this->request->getPostParam('password'), PASSWORD_DEFAULT));
             }
 
             $this->repository->updateUser($user);
