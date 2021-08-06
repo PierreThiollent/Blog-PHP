@@ -3,13 +3,14 @@
 namespace App\Controller;
 
 use App\Http\Request;
+use App\Http\Session;
 use Twig\Environment;
 
 class ContactController extends AbstractController
 {
-    public function __construct(Environment $twig, Request $request)
+    public function __construct(Environment $twig, Request $request, Session $session)
     {
-        parent::__construct($twig, $request);
+        parent::__construct($twig, $request, $session);
     }
 
     public function index()

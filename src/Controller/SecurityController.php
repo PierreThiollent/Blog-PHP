@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Helpers;
 use App\Http\Request;
+use App\Http\Session;
 use App\Hydrator;
 use App\Repository\UserRepository;
 use App\Validator\Validator;
@@ -15,11 +16,11 @@ class SecurityController extends AbstractController
     private UserRepository $repository;
     private Hydrator $hydrator;
 
-    public function __construct(Environment $twig, Request $request)
+    public function __construct(Environment $twig, Request $request, Session $session)
     {
         $this->repository = new UserRepository();
         $this->hydrator = new Hydrator();
-        parent::__construct($twig, $request);
+        parent::__construct($twig, $request, $session);
     }
 
     /**
@@ -84,7 +85,7 @@ class SecurityController extends AbstractController
      */
     public function login()
     {
-        if (isset($_SESSION['user'])) {
+        if (!is_null($this->session->get('user'))) {
             return $this->redirect('/mon-compte');
         }
 
@@ -113,7 +114,7 @@ class SecurityController extends AbstractController
             }
 
             // On stocke les infos du user en session
-            $_SESSION['user'] = $user_data;
+            $this->session->set('user', $user_data);
 
             return $this->redirect('/mon-compte');
         }
@@ -151,11 +152,11 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        if (!isset($_SESSION['user'])) {
+        if (is_null($this->session->get('user'))) {
             return $this->redirect('/');
         }
 
-        unset($_SESSION['user']);
+        $this->session->remove('user');
 
         return $this->redirect('/');
     }

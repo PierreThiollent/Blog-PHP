@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Http\Request;
+use App\Http\Session;
 use App\Hydrator;
 use App\Repository\CommentRepository;
 use App\Validator\Validator;
@@ -15,12 +16,12 @@ class CommentsController extends AbstractController
     private Hydrator $hydrator;
     private CommentRepository $repository;
 
-    public function __construct(Environment $twig, Request $request)
+    public function __construct(Environment $twig, Request $request, Session $session)
     {
         $this->validator = new Validator();
         $this->hydrator = new Hydrator();
         $this->repository = new CommentRepository();
-        parent::__construct($twig, $request);
+        parent::__construct($twig, $request, $session);
     }
 
     /**
@@ -45,7 +46,7 @@ class CommentsController extends AbstractController
         }
 
         $this->hydrator->hydrate($comment, $this->request->getPostParams());
-        $comment->setAuthor($_SESSION['user']);
+        $comment->setAuthor($this->session->get('user'));
 
         if (!$this->repository->add($comment)) {
             return $this->render('error.html.twig', ['error' => "Une erreur s'est produite pendant l'ajout de votre commentaire, veuillez réessayer."]);
@@ -56,7 +57,7 @@ class CommentsController extends AbstractController
 
     public function manageComments()
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -67,7 +68,7 @@ class CommentsController extends AbstractController
 
     public function validate(int $id): bool
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -82,7 +83,7 @@ class CommentsController extends AbstractController
 
     public function delete(int $id): bool
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Http\Request;
+use App\Http\Session;
 use App\Hydrator;
 use App\Repository\UserRepository;
 use App\Validator\Validator;
@@ -15,9 +16,9 @@ class DashboardController extends AbstractController
     private Hydrator $hydrator;
     private UserRepository $repository;
 
-    public function __construct(Environment $twig, Request $request)
+    public function __construct(Environment $twig, Request $request, Session $session)
     {
-        parent::__construct($twig, $request);
+        parent::__construct($twig, $request, $session);
     }
 
     /**
@@ -29,7 +30,7 @@ class DashboardController extends AbstractController
      */
     public function index()
     {
-        if (!isset($_SESSION['user'])) {
+        if (is_null($this->session->get('user'))) {
             return $this->redirect('/connexion');
         }
 
@@ -40,7 +41,7 @@ class DashboardController extends AbstractController
 
             // Si l'utilisateur n'a pas renseigné de nouveau mdp
             if ($this->request->getPostParam('password') === '') {
-                $userPasswordHash = $this->repository->getUserPasswordHash($_SESSION['user']);
+                $userPasswordHash = $this->repository->getUserPasswordHash($this->session->get('user'));
                 // On recupere son mdp en session
                 $this->request->setPostParam('password', $userPasswordHash);
             } else {
@@ -62,7 +63,7 @@ class DashboardController extends AbstractController
             $this->hydrator = new Hydrator();
             $this->hydrator->hydrate($user, $this->request->getPostParams());
 
-            $user->setImageUrl($_SESSION['user']->getImageUrl());
+            $user->setImageUrl($this->session->get('user')->getImageUrl());
 
             // Si l'utilisateur a renseigne un nouveau mdp
             if ($passwordUpdated) {
@@ -73,8 +74,7 @@ class DashboardController extends AbstractController
             $this->repository->updateUser($user);
 
             // On stocke les nouvelles infos du user en session
-            $_SESSION['user']->setLastname($user->getLastname());
-            $_SESSION['user']->setFirstname($user->getFirstname());
+            $this->session->set('user', $user);
 
             return $this->render('dashboard.html.twig', ['message' => 'Votre profil a bien été modifié.']);
         }

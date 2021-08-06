@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Http\Request;
+use App\Http\Session;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -10,7 +11,7 @@ use Twig\Error\SyntaxError;
 
 abstract class AbstractController
 {
-    public function __construct(Environment $twig, Request $request, $session)
+    public function __construct(Environment $twig, Request $request, Session $session)
     {
         $this->twig = $twig;
         $this->request = $request;

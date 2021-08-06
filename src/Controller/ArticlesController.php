@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Helpers;
 use App\Http\Request;
+use App\Http\Session;
 use App\Hydrator;
 use App\Repository\ArticlesRepository;
 use App\Repository\CategoryRepository;
@@ -22,7 +23,7 @@ class ArticlesController extends AbstractController
     private Helpers $helpers;
     private FileUploader $fileUploader;
 
-    public function __construct(Environment $twig, Request $request)
+    public function __construct(Environment $twig, Request $request, Session $session)
     {
         $this->repository = new ArticlesRepository();
         $this->commentRepository = new CommentRepository();
@@ -30,7 +31,7 @@ class ArticlesController extends AbstractController
         $this->validator = new Validator();
         $this->helpers = new Helpers();
         $this->fileUploader = new FileUploader(['image/png', 'image/jpeg', '.image/jpg']);
-        parent::__construct($twig, $request);
+        parent::__construct($twig, $request, $session);
     }
 
     public function index()
@@ -54,7 +55,7 @@ class ArticlesController extends AbstractController
 
     public function new()
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -67,7 +68,7 @@ class ArticlesController extends AbstractController
 
         $article = new Article();
 
-        $article->setAuthor($_SESSION['user']);
+        $article->setAuthor($this->session->get('user'));
         $article->setTrending($this->request->getPostParam('trending') ? 1 : 0);
 
         $errors = $this->validator->validate($article, $this->request->getPostParams());
@@ -103,7 +104,7 @@ class ArticlesController extends AbstractController
 
     public function manageArticles()
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -114,7 +115,7 @@ class ArticlesController extends AbstractController
 
     public function delete()
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -135,7 +136,7 @@ class ArticlesController extends AbstractController
 
     public function update(int $id)
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -150,7 +151,7 @@ class ArticlesController extends AbstractController
 
         $newArticle = new Article();
 
-        $newArticle->setAuthor($_SESSION['user']);
+        $newArticle->setAuthor($this->session->get('user'));
         $newArticle->setTrending($this->request->getPostParam('trending') ? 1 : 0);
 
         $errors = $this->validator->validate($newArticle, $this->request->getPostParams());
