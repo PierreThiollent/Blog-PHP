@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Http\File;
 use App\Http\Request;
 use App\Http\Session;
 use Twig\Environment;
@@ -11,11 +12,12 @@ use Twig\Error\SyntaxError;
 
 abstract class AbstractController
 {
-    public function __construct(Environment $twig, Request $request, Session $session)
+    public function __construct(Environment $twig, Request $request, Session $session, File $file)
     {
         $this->twig = $twig;
         $this->request = $request;
         $this->session = $session;
+        $this->file = $file;
     }
 
     /**

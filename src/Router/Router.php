@@ -2,6 +2,7 @@
 
 namespace App\Router;
 
+use App\Http\File;
 use App\Http\Request;
 use App\Http\Session;
 use Twig\Environment;
@@ -10,12 +11,13 @@ class Router
 {
     private array $routes = [];
 
-    public function __construct(string $url, Environment $twig, Request $request, Session $session)
+    public function __construct(string $url, Environment $twig, Request $request, Session $session, File $files)
     {
         $this->url = $url;
         $this->twig = $twig;
         $this->request = $request;
         $this->session = $session;
+        $this->files = $files;
     }
 
     /**
@@ -66,7 +68,7 @@ class Router
 
         foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
             if ($route->match($this->url)) {
-                return $route->call($this->twig, $this->request, $this->session);
+                return $route->call($this->twig, $this->request, $this->session, $this->files);
             }
         }
 
