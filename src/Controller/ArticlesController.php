@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Helpers;
+use App\Http\File;
 use App\Http\Request;
 use App\Http\Session;
 use App\Hydrator;
@@ -23,7 +24,7 @@ class ArticlesController extends AbstractController
     private Helpers $helpers;
     private FileUploader $fileUploader;
 
-    public function __construct(Environment $twig, Request $request, Session $session)
+    public function __construct(Environment $twig, Request $request, Session $session, File $files)
     {
         $this->repository = new ArticlesRepository();
         $this->commentRepository = new CommentRepository();
@@ -31,7 +32,7 @@ class ArticlesController extends AbstractController
         $this->validator = new Validator();
         $this->helpers = new Helpers();
         $this->fileUploader = new FileUploader(['image/png', 'image/jpeg', '.image/jpg']);
-        parent::__construct($twig, $request, $session);
+        parent::__construct($twig, $request, $session, $files);
     }
 
     public function index()
@@ -55,7 +56,7 @@ class ArticlesController extends AbstractController
 
     public function new()
     {
-        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
+        if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -72,7 +73,7 @@ class ArticlesController extends AbstractController
         $article->setTrending($this->request->getPostParam('trending') ? 1 : 0);
 
         $errors = $this->validator->validate($article, $this->request->getPostParams());
-        $upload = $this->fileUploader->upload($_FILES['thumbnailUrl']);
+        $upload = $this->fileUploader->upload($this->files->get('thumbnailUrl'));
 
         if (!empty($errors) || is_array($upload)) {
             return $this->render('admin/new_article.html.twig', [
@@ -104,7 +105,7 @@ class ArticlesController extends AbstractController
 
     public function manageArticles()
     {
-        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
+        if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -115,7 +116,7 @@ class ArticlesController extends AbstractController
 
     public function delete()
     {
-        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
+        if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -136,7 +137,7 @@ class ArticlesController extends AbstractController
 
     public function update(int $id)
     {
-        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
+        if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -166,11 +167,11 @@ class ArticlesController extends AbstractController
 
         $this->request->setPostParam('category', $categoryRepo->getById((int) $this->request->getPostParams('category')));
 
-        if (isset($_FILES['thumbnailUrl']['size']) && $_FILES['thumbnailUrl']['size'] > 0) {
+        if ($this->files->get('thumbnailUrl') !== null && $this->files->getFileSize('thumbnailUrl') > 0) {
             // Supprimer l'ancienne image
             $this->fileUploader->remove($article->getThumbnailUrl());
 
-            $upload = $this->fileUploader->upload($_FILES['thumbnailUrl']);
+            $upload = $this->fileUploader->upload($this->files->get('thumbnailUrl'));
 
             if (is_array($upload)) {
                 return $this->render('admin/update_article.html.twig', [

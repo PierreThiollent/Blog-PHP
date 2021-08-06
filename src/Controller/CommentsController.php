@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Http\File;
 use App\Http\Request;
 use App\Http\Session;
 use App\Hydrator;
@@ -16,12 +17,12 @@ class CommentsController extends AbstractController
     private Hydrator $hydrator;
     private CommentRepository $repository;
 
-    public function __construct(Environment $twig, Request $request, Session $session)
+    public function __construct(Environment $twig, Request $request, Session $session, File $files)
     {
         $this->validator = new Validator();
         $this->hydrator = new Hydrator();
         $this->repository = new CommentRepository();
-        parent::__construct($twig, $request, $session);
+        parent::__construct($twig, $request, $session, $files);
     }
 
     /**
@@ -57,7 +58,7 @@ class CommentsController extends AbstractController
 
     public function manageComments()
     {
-        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
+        if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -68,7 +69,7 @@ class CommentsController extends AbstractController
 
     public function validate(int $id): bool
     {
-        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
+        if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -83,7 +84,7 @@ class CommentsController extends AbstractController
 
     public function delete(int $id): bool
     {
-        if (is_null($this->session->get('user')) || $this->session->get('user')->getRole() !== 'admin') {
+        if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 

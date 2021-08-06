@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Http\File;
 use App\Http\Request;
 use App\Http\Session;
 use App\Hydrator;
@@ -16,9 +17,9 @@ class DashboardController extends AbstractController
     private Hydrator $hydrator;
     private UserRepository $repository;
 
-    public function __construct(Environment $twig, Request $request, Session $session)
+    public function __construct(Environment $twig, Request $request, Session $session, File $files)
     {
-        parent::__construct($twig, $request, $session);
+        parent::__construct($twig, $request, $session, $files);
     }
 
     /**
@@ -30,7 +31,7 @@ class DashboardController extends AbstractController
      */
     public function index()
     {
-        if (is_null($this->session->get('user'))) {
+        if ($this->session->get('user') === null) {
             return $this->redirect('/connexion');
         }
 
@@ -63,7 +64,10 @@ class DashboardController extends AbstractController
             $this->hydrator = new Hydrator();
             $this->hydrator->hydrate($user, $this->request->getPostParams());
 
+            // On ecrase les propriétés par defaut d'un user
             $user->setImageUrl($this->session->get('user')->getImageUrl());
+            $user->setId($this->session->get('user')->getId());
+            $user->setRole($this->session->get('user')->getRole());
 
             // Si l'utilisateur a renseigne un nouveau mdp
             if ($passwordUpdated) {

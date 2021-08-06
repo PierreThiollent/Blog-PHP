@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Http\File;
 use App\Http\Request;
 use App\Http\Session;
 use App\Repository\ArticlesRepository;
@@ -11,9 +12,9 @@ class HomeController extends AbstractController
 {
     private ArticlesRepository $repository;
 
-    public function __construct(Environment $twig, Request $request, Session $session)
+    public function __construct(Environment $twig, Request $request, Session $session, File $files)
     {
-        parent::__construct($twig, $request, $session);
+        parent::__construct($twig, $request, $session, $files);
     }
 
     public function index()
