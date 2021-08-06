@@ -44,7 +44,7 @@
 						{% endif %}
 					</div>
 
-					{% if session.user %}
+					{% if session.get('user') %}
 						<div class="add-comment">
 							<header>
 								<h3 class="h6 mb-4">Ajouter un commentaire</h3>
@@ -52,13 +52,13 @@
 							<form id="add-comment" action="" class="commenting-form" method="POST">
 								<div class="row">
 									<div class="form-group col-md-12 mb-2">
-										<input type="text" name="username" id="username" placeholder="{{ session.user.firstname }} {{ session.user.lastname }}" class="form-control" value="{{ session.user.firstname }} {{ session.user.lastname }}" required>
+										<input type="text" name="username" id="username" placeholder="{{ session.get('user').firstname }} {{ session.get('user').lastname }}" class="form-control" value="{{ session.get('user').firstname }} {{ session.get('user').lastname }}" required>
 									</div>
 									<div class="form-group col-md-12">
 										<textarea name="content" id="usercomment" placeholder="Commentaire" class="form-control" required></textarea>
 									</div>
 									<div class="form-group col-md-12 mt-2">
-										<input type="hidden" name="authorId" value="{{ session.user.id }}"/>
+										<input type="hidden" name="authorId" value="{{ session.get('user').id }}"/>
 										<input type="hidden" name="articleId" value="{{ article.id }}"/>
 										<input type="submit" class="btn btn-primary"/>
 									</div>
