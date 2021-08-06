@@ -5,10 +5,7 @@ namespace App\Validator;
 class Validator
 {
     /**
-     * Method to validate entity
-     *
-     * @param object $entity
-     * @param array  $data
+     * Method to validate entity.
      */
     public function validate(object $entity, array $data): array
     {
@@ -20,7 +17,7 @@ class Validator
         foreach ($validations as $property_name => $constraints) {
             foreach ($constraints as $constraint) {
                 if (method_exists($this, $constraint)) {
-                    if (!is_null($this->$constraint($data[$property_name]))) {
+                    if ($this->$constraint($data[$property_name]) !== null) {
                         $errors[$property_name] = $this->$constraint($data[$property_name]);
                     }
                 } else {
@@ -33,9 +30,8 @@ class Validator
     }
 
     /**
-     * Method to check if field is not empty
+     * Method to check if field is not empty.
      *
-     * @param  string      $value
      * @return string|void
      */
     public function isNotEmpty(string $value)
@@ -46,9 +42,8 @@ class Validator
     }
 
     /**
-     * Method to check if an email is valid
+     * Method to check if an email is valid.
      *
-     * @param  string      $email
      * @return string|void
      */
     public function isValidEmail(string $email)
@@ -59,9 +54,8 @@ class Validator
     }
 
     /**
-     * Method to check if a password is secure
+     * Method to check if a password is secure.
      *
-     * @param  string      $password
      * @return string|void
      */
     public function isSecurePassword(string $password)
