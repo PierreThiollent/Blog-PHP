@@ -2,16 +2,20 @@
 
 namespace App\Router;
 
+use App\Http\Request;
 use Twig\Environment;
 
 class Router
 {
     private array $routes = [];
+    private Environment $twig;
+    private Request $request;
 
-    public function __construct(string $url, Environment $twig)
+    public function __construct(string $url, Environment $twig, Request $request)
     {
         $this->url = $url;
         $this->twig = $twig;
+        $this->request = $request;
     }
 
     /**
@@ -62,7 +66,7 @@ class Router
 
         foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
             if ($route->match($this->url)) {
-                return $route->call($this->twig);
+                return $route->call($this->twig, $this->request);
             }
         }
 
