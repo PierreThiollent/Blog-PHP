@@ -55,4 +55,9 @@ class Request
     {
         $this->query['POST'][$name] = $value;
     }
+
+    public function getMethod()
+    {
+        return $_SERVER['REQUEST_METHOD'];
+    }
 }

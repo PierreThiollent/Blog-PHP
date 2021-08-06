@@ -60,13 +60,13 @@ class Router
      */
     public function run()
     {
-        if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
+        if (!isset($this->routes[$this->request->getMethod()])) {
             header('HTTP/1.0 404 Not Found');
 
             return $this->twig->render('404.html.twig');
         }
 
-        foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
+        foreach ($this->routes[$this->request->getMethod()] as $route) {
             if ($route->match($this->url)) {
                 return $route->call($this->twig, $this->request, $this->session, $this->files);
             }
