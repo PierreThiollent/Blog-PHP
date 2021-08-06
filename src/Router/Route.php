@@ -7,8 +7,6 @@ use Twig\Environment;
 
 class Route
 {
-    private string $path;
-    private \Closure | string $callable;
     private array $matches = [];
     private array $params = [];
 
