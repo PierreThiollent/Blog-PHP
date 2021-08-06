@@ -10,10 +10,11 @@ use Twig\Error\SyntaxError;
 
 abstract class AbstractController
 {
-    public function __construct(Environment $twig, Request $request)
+    public function __construct(Environment $twig, Request $request, $session)
     {
         $this->twig = $twig;
         $this->request = $request;
+        $this->session = $session;
     }
 
     /**

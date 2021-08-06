@@ -3,19 +3,19 @@
 namespace App\Router;
 
 use App\Http\Request;
+use App\Http\Session;
 use Twig\Environment;
 
 class Router
 {
     private array $routes = [];
-    private Environment $twig;
-    private Request $request;
 
-    public function __construct(string $url, Environment $twig, Request $request)
+    public function __construct(string $url, Environment $twig, Request $request, Session $session)
     {
         $this->url = $url;
         $this->twig = $twig;
         $this->request = $request;
+        $this->session = $session;
     }
 
     /**
@@ -66,7 +66,7 @@ class Router
 
         foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
             if ($route->match($this->url)) {
-                return $route->call($this->twig, $this->request);
+                return $route->call($this->twig, $this->request, $this->session);
             }
         }
 

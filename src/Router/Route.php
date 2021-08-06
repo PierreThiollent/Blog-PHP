@@ -3,6 +3,7 @@
 namespace App\Router;
 
 use App\Http\Request;
+use App\Http\Session;
 use Twig\Environment;
 
 class Route
@@ -33,12 +34,12 @@ class Route
     /**
      * Method which call a controller method.
      */
-    public function call(Environment $twig, Request $request)
+    public function call(Environment $twig, Request $request, Session $session)
     {
         if (is_string($this->callable)) {
             $params = explode('->', $this->callable);
             $controller = 'App\\Controller\\' . $params[0];
-            $controller = new $controller($twig, $request);
+            $controller = new $controller($twig, $request, $session);
 
             return call_user_func_array([$controller, $params[1]], $this->matches);
         }
