@@ -32,12 +32,12 @@ class CommentsController extends AbstractController
      */
     public function new()
     {
-        if (empty($this->request->getPostParams())) {
-            return;
+        if (empty($this->request->getParams('POST'))) {
+            return null;
         }
 
         $comment = new Comment();
-        $errors = $this->validator->validate($comment, $this->request->getPostParams());
+        $errors = $this->validator->validate($comment, $this->request->getParams('POST'));
 
         if (!empty($errors)) {
             foreach ($errors as $error) { ?>
@@ -46,7 +46,7 @@ class CommentsController extends AbstractController
             exit;
         }
 
-        $this->hydrator->hydrate($comment, $this->request->getPostParams());
+        $this->hydrator->hydrate($comment, $this->request->getParams('POST'));
         $comment->setAuthor($this->session->get('user'));
 
         if (!$this->repository->add($comment)) {
@@ -56,7 +56,7 @@ class CommentsController extends AbstractController
         return $this->render('message.html.twig', ['message' => 'Votre commentaire a bien été ajouté, il est en attente de validation.']);
     }
 
-    public function manageComments()
+    public function manageComments(): string
     {
         if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
@@ -73,7 +73,7 @@ class CommentsController extends AbstractController
             return $this->render('404.html.twig');
         }
 
-        if (!$this->repository->validate($id)) {
+        if (!$this->repository->validate((int) $id)) {
             // TODO pass an error alert
             return $this->redirect('/admin/list-comments');
         }

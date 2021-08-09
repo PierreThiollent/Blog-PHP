@@ -2,6 +2,8 @@
 
 namespace App;
 
+use JetBrains\PhpStorm\Pure;
+
 class DAL
 {
     /**
@@ -26,8 +28,11 @@ class DAL
         } catch (\PDOException $e) {
             throw new \PDOException($e->getMessage());
         }
+    }
 
-        return $this->isConnected();
+    #[Pure] public function __invoke(): bool
+    {
+       return $this->isConnected();
     }
 
     /**

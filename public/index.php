@@ -29,11 +29,11 @@ $twig->addGlobal('session', $session);
 $request = new Request();
 $files = new File();
 
-$router = new Router($request->getParam('url'), $twig, $request, $session, $files);
+$router = new Router($request->getParam('GET', 'url'), $twig, $request, $session, $files);
 
 foreach (Routes::getRoutes() as $name => $route) {
-    foreach ($route as $methode => $params) {
-        $router->$methode($params['path'], "{$params['controller']}->{$params['method']}");
+    foreach ($route as $method => $params) {
+        $router->$method($params['path'], "{$params['controller']}->{$params['method']}");
     }
 }
 

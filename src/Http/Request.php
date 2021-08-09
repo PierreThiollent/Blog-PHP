@@ -9,51 +9,24 @@ class Request
     public function __construct()
     {
         $this->query = [
-            'GET'  => $_GET,
+            'GET' => $_GET,
             'POST' => $_POST,
         ];
     }
 
-    /**
-     * Get GET param by name.
-     */
-    public function getParam(string $name): ?string
+    public function getParam(string $method, string $name): ?string
     {
-        return $this->query['GET'][$name] ?? null;
+        return $this->query[$method][$name] ?? null;
     }
 
-    /**
-     * GET params.
-     */
-    public function getParams(): array
+    public function getParams(string $method): array
     {
-        return $this->query['GET'];
+        return $this->query[$method];
     }
 
-    /**
-     * Get POST data by name.
-     */
-    public function getPostParam(string $name): ?string
+    public function setParam(string $method, string $name, mixed $value): void
     {
-        return $this->query['POST'][$name] ?? null;
-    }
-
-    /**
-     * Get POST datas.
-     */
-    public function getPostParams(): array
-    {
-        return $this->query['POST'];
-    }
-
-    public function setParam(string $name, string $value): void
-    {
-        $this->query['GET'][$name] = $value;
-    }
-
-    public function setPostParam(string $name, mixed $value): void
-    {
-        $this->query['POST'][$name] = $value;
+        $this->query[$method][$name] = $value;
     }
 
     public function getMethod()

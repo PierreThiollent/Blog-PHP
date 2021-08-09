@@ -13,11 +13,7 @@ class Session
 
     public function get(string $key): mixed
     {
-        if (array_key_exists($key, $_SESSION)) {
-            return $_SESSION[$key];
-        }
-
-        return null;
+        return $_SESSION[$key] ?? null;
     }
 
     public function set(string $key, mixed $value): void
@@ -29,4 +25,6 @@ class Session
     {
         unset($_SESSION[$key]);
     }
+
+
 }

@@ -16,9 +16,11 @@
   },
   "require": {
     "twig/twig": "^3.0",
-    "vlucas/phpdotenv": "^5.3"
+    "vlucas/phpdotenv": "^5.3",
+    "ext-pdo": "*"
   },
   "require-dev": {
+    "roave/security-advisories": "dev-latest",
     "symfony/var-dumper": "^5.2"
   }
 }

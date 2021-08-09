@@ -1,110 +1,116 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ article.title }}
+    {{ article.title }}
 {% endblock %}
 
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
-	<div class="section post-section pt-5">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-lg-8">
-					<div class="text-center">
-						<img src="/{{ article.author.imageUrl }}" alt="Image" class="author-pic img-fluid rounded-circle mx-auto"/>
-					</div>
-					<span class="d-block text-center">{{ article.author.lastname }}
-						{{ article.author.firstname }}</span>
-					<span class="date d-block text-center small text-uppercase text-black-50 mb-5">
+    <div class="section post-section pt-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="text-center">
+                        <img src="/{{ article.author.imageUrl }}" alt="Image"
+                             class="author-pic img-fluid rounded-circle mx-auto"/>
+                    </div>
+                    <span class="d-block text-center">{{ article.author.lastname }}
+                        {{ article.author.firstname }}</span>
+                    <span class="date d-block text-center small text-uppercase text-black-50 mb-5">
 						{{ article.updatedDate|date('d/m/Y', "Europe/Paris") }}
 					</span>
-					<h2 class="heading text-center">{{ article.title }}</h2>
-					<p class="lead mb-4 text-center">
-						{{ article.excerpt }}
-					</p>
-					<img src="{{ article.thumbnailUrl }}" alt="Image" class="img-fluid rounded mb-4 d-block mx-auto"/>
-					<p>
-						{{ article.content }}
-					</p>
-					<hr class="my-5">
-					<div class="post-comments mb-5">
-						<header>
-							<h3 class="h6">Commentaires
-								<span class="no-of-comments">({{ comments|length }})</span>
-							</h3>
-						</header>
+                    <h2 class="heading text-center">{{ article.title }}</h2>
+                    <p class="lead mb-4 text-center">
+                        {{ article.excerpt }}
+                    </p>
+                    <img src="{{ article.thumbnailUrl }}" alt="Image" class="img-fluid rounded mb-4 d-block mx-auto"/>
+                    <p>
+                        {{ article.content }}
+                    </p>
+                    <hr class="my-5">
+                    <div class="post-comments mb-5">
+                        <header>
+                            <h3 class="h6">Commentaires
+                                <span class="no-of-comments">({{ comments|length }})</span>
+                            </h3>
+                        </header>
 
-						{% if comments %}
-							{% for comment in comments %}
-								{% include 'comment.html.twig' %}
-							{% endfor %}
-						{% else %}
-							<p>Aucun commentaire.</p>
-						{% endif %}
-					</div>
+                        {% if comments %}
+                            {% for comment in comments %}
+                                {% include 'comment.html.twig' %}
+                            {% endfor %}
+                        {% else %}
+                            <p>Aucun commentaire.</p>
+                        {% endif %}
+                    </div>
 
-					{% if session.get('user') %}
-						<div class="add-comment">
-							<header>
-								<h3 class="h6 mb-4">Ajouter un commentaire</h3>
-							</header>
-							<form id="add-comment" action="" class="commenting-form" method="POST">
-								<div class="row">
-									<div class="form-group col-md-12 mb-2">
-										<input type="text" name="username" id="username" placeholder="{{ session.get('user').firstname }} {{ session.get('user').lastname }}" class="form-control" value="{{ session.get('user').firstname }} {{ session.get('user').lastname }}" required>
-									</div>
-									<div class="form-group col-md-12">
-										<textarea name="content" id="usercomment" placeholder="Commentaire" class="form-control" required></textarea>
-									</div>
-									<div class="form-group col-md-12 mt-2">
-										<input type="hidden" name="authorId" value="{{ session.get('user').id }}"/>
-										<input type="hidden" name="articleId" value="{{ article.id }}"/>
-										<input type="submit" class="btn btn-primary"/>
-									</div>
-								</div>
-							</form>
-						</div>
+                    {% if session.get('user') %}
+                        <div class="add-comment">
+                            <header>
+                                <h3 class="h6 mb-4">Ajouter un commentaire</h3>
+                            </header>
+                            <form id="add-comment" action="" class="commenting-form" method="POST">
+                                <div class="row">
+                                    <div class="form-group col-md-12 mb-2">
+                                        <input type="text" name="username" id="username"
+                                               placeholder="{{ session.get('user').firstname }} {{ session.get('user').lastname }}"
+                                               class="form-control"
+                                               value="{{ session.get('user').firstname }} {{ session.get('user').lastname }}"
+                                               required>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <textarea name="content" id="usercomment" placeholder="Commentaire"
+                                                  class="form-control" required></textarea>
+                                    </div>
+                                    <div class="form-group col-md-12 mt-2">
+                                        <input type="hidden" name="authorId" value="{{ session.get('user').id }}"/>
+                                        <input type="hidden" name="articleId" value="{{ article.id }}"/>
+                                        <input type="submit" class="btn btn-primary"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
 
-					{% else %}
-						<p>Vous souhaitez publier un commentaire ? Veuillez vous
-							<a href="/connexion">connecter.</a>
-						</p>
-					{% endif %}
+                    {% else %}
+                        <p>Vous souhaitez publier un commentaire ? Veuillez vous
+                            <a href="/connexion">connecter.</a>
+                        </p>
+                    {% endif %}
 
-					<div class="row mt-5 pt-5 border-top">
-						<div class="col-12">
-							<span class="fw-bold text-black small mb-1">Share</span>
-							<ul class="social list-unstyled">
-								<li>
-									<a href="https://facebook.com" target="_blank">
-										<i class="fab fa-facebook-f align-baseline"></i>
-									</a>
-								</li>
-								<li>
-									<a href="https://twitter.com" target="_blank">
-										<i class="fab fa-twitter align-baseline"></i>
-									</a>
-								</li>
-								<li>
-									<a href="https://linkedin.com" target="_blank">
-										<i class="fab fa-linkedin align-baseline"></i>
-									</a>
-								</li>
-								<li>
-									<a href="https://pinterest.com" target="_blank">
-										<i class="fab fa-pinterest align-baseline"></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                    <div class="row mt-5 pt-5 border-top">
+                        <div class="col-12">
+                            <span class="fw-bold text-black small mb-1">Share</span>
+                            <ul class="social list-unstyled">
+                                <li>
+                                    <a href="https://facebook.com" target="_blank">
+                                        <i class="fab fa-facebook-f align-baseline"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://twitter.com" target="_blank">
+                                        <i class="fab fa-twitter align-baseline"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://linkedin.com" target="_blank">
+                                        <i class="fab fa-linkedin align-baseline"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://pinterest.com" target="_blank">
+                                        <i class="fab fa-pinterest align-baseline"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block script %}
-	<script src="/assets/js/comments.js"></script>
+    <script src="/assets/js/comments.js"></script>
 {% endblock %}

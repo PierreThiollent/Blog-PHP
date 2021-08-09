@@ -35,14 +35,14 @@ class ArticlesController extends AbstractController
         parent::__construct($twig, $request, $session, $files);
     }
 
-    public function index()
+    public function index(): string
     {
         $articles = $this->repository->getAll(['updatedDate' => 'DESC']);
 
         return $this->render('articles.html.twig', ['articles' => $articles]);
     }
 
-    public function show(int $id)
+    public function show(int $id): string
     {
         $article = $this->repository->getOne($id);
         $comments = $this->commentRepository->getArticleComments($id);
@@ -54,7 +54,7 @@ class ArticlesController extends AbstractController
         return $this->render('article_detail.html.twig', ['article' => $article, 'comments' => $comments]);
     }
 
-    public function new()
+    public function new(): string
     {
         if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
@@ -63,47 +63,47 @@ class ArticlesController extends AbstractController
         $categoryRepo = new CategoryRepository();
         $categories = $categoryRepo->getAll();
 
-        if (empty($this->request->getPostParams())) {
+        if (empty($this->request->getParams('POST'))) {
             return $this->render('admin/new_article.html.twig', ['categories' => $categories]);
         }
 
         $article = new Article();
 
         $article->setAuthor($this->session->get('user'));
-        $article->setTrending($this->request->getPostParam('trending') ? 1 : 0);
+        $article->setTrending($this->request->getParam('POST', 'trending') ? 1 : 0);
 
-        $errors = $this->validator->validate($article, $this->request->getPostParams());
+        $errors = $this->validator->validate($article, $this->request->getParams('POST'));
         $upload = $this->fileUploader->upload($this->files->get('thumbnailUrl'));
 
         if (!empty($errors) || is_array($upload)) {
             return $this->render('admin/new_article.html.twig', [
-                'errors'     => array_merge($errors, $upload),
-                'post'       => $this->request->getPostParams(),
+                'errors' => array_merge($errors, $upload),
+                'post' => $this->request->getParams('POST'),
                 'categories' => $categories,
             ]);
         }
 
-        $this->request->setPostParam('category', $categoryRepo->getById((int) $this->request->getPostParams('category')));
+        $this->request->setParam('POST', 'category', $categoryRepo->getById((int)$this->request->getParam('POST', 'category')));
 
-        $this->hydrator->hydrate($article, $this->request->getPostParams());
+        $this->hydrator->hydrate($article, $this->request->getParams('POST'));
 
-        $article->setSlug($this->helpers->slugify($article->getTitle()));
+        $article->setSlug($this->helpers::slugify($article->getTitle()));
         $article->setThumbnailUrl("/images/$upload");
 
         if (!$this->repository->add($article)) {
             return $this->render('admin/new_article.html.twig', [
-                'error'      => "Une erreur s'est produite pendant la publication de l'article, veuillez réessayer.",
+                'error' => "Une erreur s'est produite pendant la publication de l'article, veuillez réessayer.",
                 'categories' => $categories,
             ]);
         }
 
         return $this->render('admin/new_article.html.twig', [
-            'message'    => 'Votre article a bien été publié',
+            'message' => 'Votre article a bien été publié',
             'categories' => $categories,
         ]);
     }
 
-    public function manageArticles()
+    public function manageArticles(): string
     {
         if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
@@ -120,52 +120,52 @@ class ArticlesController extends AbstractController
             return $this->render('404.html.twig');
         }
 
-        if ($this->request->getPostParam('articleId') === null || $this->request->getPostParam('thumbnailUrl') === null) {
-            return;
+        if ($this->request->getParam('POST', 'articleId') === null || $this->request->getParam('POST', 'thumbnailUrl') === null) {
+            return null;
         }
 
-        if (!$this->repository->delete($this->request->getPostParam('articleId'))) {
+        if (!$this->repository->delete($this->request->getParam('POST', 'articleId'))) {
             // TODO : Faire passer un message d'erreur
             return $this->redirect('/admin/list-articles');
         }
 
-        $this->fileUploader->remove($this->request->getPostParam('thumbnailUrl'));
+        $this->fileUploader->remove($this->request->getParam('POST', 'thumbnailUrl'));
 
         // TODO : Faire passer un message de confirmation
         return $this->redirect('/admin/list-articles');
     }
 
-    public function update(int $id)
+    public function update(int $id): string
     {
         if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
-        $article = $this->repository->getOne((int) $id);
+        $article = $this->repository->getOne((int)$id);
 
         $categoryRepo = new CategoryRepository();
         $categories = $categoryRepo->getAll();
 
-        if (empty($this->request->getPostParams())) {
+        if (empty($this->request->getParams('POST'))) {
             return $this->render('admin/update_article.html.twig', ['article' => $article, 'categories' => $categories]);
         }
 
         $newArticle = new Article();
 
         $newArticle->setAuthor($this->session->get('user'));
-        $newArticle->setTrending($this->request->getPostParam('trending') ? 1 : 0);
+        $newArticle->setTrending($this->request->getParam('POST', 'trending') ? 1 : 0);
 
-        $errors = $this->validator->validate($newArticle, $this->request->getPostParams());
+        $errors = $this->validator->validate($newArticle, $this->request->getParams('POST'));
 
         if (!empty($errors)) {
             return $this->render('admin/update_article.html.twig', [
-                'errors'     => $errors,
-                'article'    => $this->request->getPostParams(),
+                'errors' => $errors,
+                'article' => $this->request->getParams('POST'),
                 'categories' => $categories,
             ]);
         }
 
-        $this->request->setPostParam('category', $categoryRepo->getById((int) $this->request->getPostParams('category')));
+        $this->request->setParam('POST', 'category', $categoryRepo->getById((int)$this->request->getParam('POST', 'category')));
 
         if ($this->files->get('thumbnailUrl') !== null && $this->files->getFileSize('thumbnailUrl') > 0) {
             // Supprimer l'ancienne image
@@ -175,8 +175,8 @@ class ArticlesController extends AbstractController
 
             if (is_array($upload)) {
                 return $this->render('admin/update_article.html.twig', [
-                    'errors'     => $upload,
-                    'article'    => $this->request->getPostParams(),
+                    'errors' => $upload,
+                    'article' => $this->request->getParams('POST'),
                     'categories' => $categories,
                 ]);
             }
@@ -186,23 +186,23 @@ class ArticlesController extends AbstractController
             $newArticle->setThumbnailUrl($article->getThumbnailUrl());
         }
 
-        $this->hydrator->hydrate($newArticle, $this->request->getPostParams());
+        $this->hydrator->hydrate($newArticle, $this->request->getParams('POST'));
 
         $newArticle->setSlug($this->helpers->slugify($article->getTitle()));
         $newArticle->setId($article->getId());
 
         if (!$this->repository->update($newArticle)) {
             return $this->render('admin/update_article.html.twig', [
-                'error'      => "Une erreur s'est produite pendant la modification de l'article, veuillez réessayer.",
+                'error' => "Une erreur s'est produite pendant la modification de l'article, veuillez réessayer.",
                 'categories' => $categories,
-                'article'    => $this->request->getPostParams(),
+                'article' => $this->request->getParams('POST'),
             ]);
         }
 
         return $this->render('admin/update_article.html.twig', [
-            'message'    => 'Votre article a bien été mis à jour',
+            'message' => 'Votre article a bien été mis à jour',
             'categories' => $categories,
-            'article'    => $newArticle,
+            'article' => $newArticle,
         ]);
     }
 }

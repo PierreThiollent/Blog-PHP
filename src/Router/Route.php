@@ -11,6 +11,8 @@ class Route
 {
     private array $matches = [];
     private array $params = [];
+    private \Closure|string $callable;
+    private string $path;
 
     public function __construct(string $path, \Closure | string $callable)
     {

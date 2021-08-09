@@ -11,13 +11,13 @@ class Router
 {
     private array $routes = [];
 
-    public function __construct(string $url, Environment $twig, Request $request, Session $session, File $files)
-    {
-        $this->url = $url;
-        $this->twig = $twig;
-        $this->request = $request;
-        $this->session = $session;
-        $this->files = $files;
+    public function __construct(
+        private string $url,
+        private Environment $twig,
+        private Request $request,
+        private Session $session,
+        private File $files
+    ) {
     }
 
     /**
@@ -26,7 +26,7 @@ class Router
      *
      * @param \Closure|string $callable callback function
      */
-    public function get(string $path, \Closure | string $callable): Route
+    public function get(string $path, \Closure|string $callable): Route
     {
         return $this->add($path, $callable, 'GET');
     }
@@ -36,7 +36,7 @@ class Router
      *
      * @param \Closure|string $callable callback function
      */
-    public function post(string $path, \Closure | string $callable): Route
+    public function post(string $path, \Closure|string $callable): Route
     {
         return $this->add($path, $callable, 'POST');
     }
@@ -45,9 +45,9 @@ class Router
      * Method to create a new GET route.
      *
      * @param \Closure|string $callable callback function
-     * @param string          $method   HTTP_METHOD
+     * @param string $method HTTP_METHOD
      */
-    private function add(string $path, \Closure | string $callable, string $method): Route
+    private function add(string $path, \Closure|string $callable, string $method): Route
     {
         $route = new Route($path, $callable);
         $this->routes[$method][] = $route;

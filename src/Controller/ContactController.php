@@ -14,13 +14,13 @@ class ContactController extends AbstractController
         parent::__construct($twig, $request, $session, $files);
     }
 
-    public function index()
+    public function index(): string
     {
-        if (empty($this->request->getPostParams())) {
+        if (empty($this->request->getParams('POST'))) {
             return $this->render('contact.html.twig');
         }
 
-        foreach ($this->request->getPostParams() as $key => &$value) {
+        foreach ($this->request->getParams('POST') as $key => &$value) {
             if ($value === '') {
                 $errors[$key] = 'Le champ ne doit pas être vide.';
             }
@@ -37,10 +37,10 @@ class ContactController extends AbstractController
             return $this->render('contact.html.twig', ['errors' => $errors]);
         }
 
-        $nom = $this->request->getPostParam('nom');
-        $prenom = $this->request->getPostParam('prenom');
-        $email = $this->request->getPostParam('email');
-        $message = $this->request->getPostParam('message');
+        $nom = $this->request->getParam('POST', 'nom');
+        $prenom = $this->request->getParam('POST', 'prenom');
+        $email = $this->request->getParam('POST', 'email');
+        $message = $this->request->getParam('POST', 'message');
 
         $mail = mail(
             'pierre.thiollent76@gmail.com',

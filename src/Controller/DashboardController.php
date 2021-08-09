@@ -13,9 +13,6 @@ use Twig\Environment;
 
 class DashboardController extends AbstractController
 {
-    private Validator $validator;
-    private Hydrator $hydrator;
-    private UserRepository $repository;
 
     public function __construct(Environment $twig, Request $request, Session $session, File $files)
     {
@@ -35,34 +32,34 @@ class DashboardController extends AbstractController
             return $this->redirect('/connexion');
         }
 
-        if (!empty($this->request->getPostParams())) {
+        if (!empty($this->request->getParams('POST'))) {
             $user = new User();
-            $this->repository = new UserRepository();
+            $repository = new UserRepository();
             $passwordUpdated = false;
 
             // Si l'utilisateur n'a pas renseigné de nouveau mdp
-            if ($this->request->getPostParam('password') === '') {
-                $userPasswordHash = $this->repository->getUserPasswordHash($this->session->get('user'));
+            if ($this->request->getParam('POST', 'password') === '') {
+                $userPasswordHash = $repository->getUserPasswordHash($this->session->get('user'));
                 // On recupere son mdp en session
-                $this->request->setPostParam('password', $userPasswordHash);
+                $this->request->setParam('POST', 'password', $userPasswordHash);
             } else {
                 $passwordUpdated = true;
             }
 
             // On validate notre object user
-            $this->validator = new Validator();
-            $errors = $this->validator->validate($user, $this->request->getPostParams());
+            $validator = new Validator();
+            $errors = $validator->validate($user, $this->request->getParams('POST'));
 
             if (!empty($errors)) {
                 return $this->render(
                     'dashboard.html.twig',
-                    ['errors' => $errors, 'post_data' => $this->request->getPostParams()]
+                    ['errors' => $errors, 'post_data' => $this->request->getParams('POST')]
                 );
             }
 
             // On hydrate notre user
-            $this->hydrator = new Hydrator();
-            $this->hydrator->hydrate($user, $this->request->getPostParams());
+            $hydrator = new Hydrator();
+            $hydrator->hydrate($user, $this->request->getParams('POST'));
 
             // On ecrase les propriétés par defaut d'un user
             $user->setImageUrl($this->session->get('user')->getImageUrl());
@@ -72,10 +69,10 @@ class DashboardController extends AbstractController
             // Si l'utilisateur a renseigne un nouveau mdp
             if ($passwordUpdated) {
                 // On hashe le nouveau mdp
-                $user->setPassword(password_hash($this->request->getPostParam('password'), PASSWORD_DEFAULT));
+                $user->setPassword(password_hash($this->request->getParam('POST', 'password'), PASSWORD_DEFAULT));
             }
 
-            $this->repository->updateUser($user);
+            $repository->updateUser($user);
 
             // On stocke les nouvelles infos du user en session
             $this->session->set('user', $user);

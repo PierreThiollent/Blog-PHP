@@ -2,20 +2,17 @@
 
 namespace App\Http;
 
+
 class File
 {
     public function get(string $key)
     {
-        if (array_key_exists($key, $_SESSION)) {
-            return $_SESSION[$key];
-        }
-
-        return null;
+        return $_FILES[$key] ?? null;
     }
 
-    public function getFileZise(string $key): int
+    public function getFileSize(string $key): int
     {
-        if (array_key_exists($key, $_SESSION)) {
+        if (array_key_exists($key, $_FILES)) {
             return $this->get($key)['size'];
         }
 
