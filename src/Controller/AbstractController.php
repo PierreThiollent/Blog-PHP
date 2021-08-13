@@ -12,7 +12,12 @@ use Twig\Error\SyntaxError;
 
 abstract class AbstractController
 {
-    public function __construct(Environment $twig, Request $request, Session $session, File $files)
+    public function __construct(
+        protected Environment $twig,
+        protected Request     $request,
+        protected Session     $session,
+        protected File        $files
+    )
     {
         $this->twig = $twig;
         $this->request = $request;
