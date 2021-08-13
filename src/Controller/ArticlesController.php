@@ -188,7 +188,7 @@ class ArticlesController extends AbstractController
 
         $this->hydrator->hydrate($newArticle, $this->request->getParams('POST'));
 
-        $newArticle->setSlug($this->helpers->slugify($article->getTitle()));
+        $newArticle->setSlug($this->helpers::slugify($article->getTitle()));
         $newArticle->setId($article->getId());
 
         if (!$this->repository->update($newArticle)) {
