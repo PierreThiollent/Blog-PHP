@@ -52,3 +52,11 @@ Then fill the env vars into .env.local
   DB_CHARSET="dbcharset"
   env="dev"
 ```
+
+## DB Setup
+To setup the database of the project you can execute this command
+This Php file will connect to the database previously created and will create all the necessary tables
+
+````
+    php ./src/Config/SetupDB.php
+````
