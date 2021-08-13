@@ -13,13 +13,13 @@ window.addEventListener('DOMContentLoaded', () => {
       })
       .catch(error => {
         let form = document.getElementById('add-comment');
-        form.insertAdjacentHTML('beforeend', text);
+        form.insertAdjacentHTML('beforeend', error);
       });
   };
 
   Array.from(document.querySelectorAll('.validate-comment'))?.forEach(element => {
     element.addEventListener('click', event => {
-      const commentId = event.target.getAttribute('data-comment-id');
+      const commentId = element.getAttribute('data-comment-id');
 
       let div = document.getElementById('validate-comment');
       let form = div.getElementsByTagName('form')[0];
@@ -30,8 +30,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   Array.from(document.querySelectorAll('.delete-comment'))?.forEach(element => {
     element.addEventListener('click', event => {
-      const commentId = event.target.getAttribute('data-comment-id');
-
+      const commentId = element.getAttribute('data-comment-id');
+      
       let div = document.getElementById('delete-comment');
       let form = div.getElementsByTagName('form')[0];
 
