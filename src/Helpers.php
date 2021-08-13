@@ -20,7 +20,7 @@ class Helpers
      * @param  string $string
      * @return string $slug
      */
-    public function slugify(string $string): string
+    public static function slugify(string $string): string
     {
         return preg_replace(
             '/\s+/',

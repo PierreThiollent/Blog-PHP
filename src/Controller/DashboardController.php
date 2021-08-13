@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Http\File;
+use App\Http\Request;
+use App\Http\Session;
 use App\Hydrator;
 use App\Repository\UserRepository;
 use App\Validator\Validator;
@@ -10,13 +13,10 @@ use Twig\Environment;
 
 class DashboardController extends AbstractController
 {
-    private Validator $validator;
-    private Hydrator $hydrator;
-    private UserRepository $repository;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Request $request, Session $session, File $files)
     {
-        parent::__construct($twig);
+        parent::__construct($twig, $request, $session, $files);
     }
 
     /**
@@ -28,52 +28,54 @@ class DashboardController extends AbstractController
      */
     public function index()
     {
-        if (!isset($_SESSION['user'])) {
+        if ($this->session->get('user') === null) {
             return $this->redirect('/connexion');
         }
 
-        if (!empty($_POST)) {
+        if (!empty($this->request->getParams('POST'))) {
             $user = new User();
-            $this->repository = new UserRepository();
+            $repository = new UserRepository();
             $passwordUpdated = false;
 
             // Si l'utilisateur n'a pas renseigné de nouveau mdp
-            if ($_POST['password'] === '') {
-                $userPasswordHash = $this->repository->getUserPasswordHash($_SESSION['user']);
+            if ($this->request->getParam('POST', 'password') === '') {
+                $userPasswordHash = $repository->getUserPasswordHash($this->session->get('user'));
                 // On recupere son mdp en session
-                $_POST['password'] = $userPasswordHash;
+                $this->request->setParam('POST', 'password', $userPasswordHash);
             } else {
                 $passwordUpdated = true;
             }
 
             // On validate notre object user
-            $this->validator = new Validator();
-            $errors = $this->validator->validate($user, $_POST);
+            $validator = new Validator();
+            $errors = $validator->validate($user, $this->request->getParams('POST'));
 
             if (!empty($errors)) {
                 return $this->render(
                     'dashboard.html.twig',
-                    ['errors' => $errors, 'post_data' => $_POST]
+                    ['errors' => $errors, 'post_data' => $this->request->getParams('POST')]
                 );
             }
 
             // On hydrate notre user
-            $this->hydrator = new Hydrator();
-            $this->hydrator->hydrate($user, $_POST);
+            $hydrator = new Hydrator();
+            $hydrator->hydrate($user, $this->request->getParams('POST'));
 
-            $user->setImageUrl($_SESSION['user']->getImageUrl());
+            // On ecrase les propriétés par defaut d'un user
+            $user->setImageUrl($this->session->get('user')->getImageUrl());
+            $user->setId($this->session->get('user')->getId());
+            $user->setRole($this->session->get('user')->getRole());
 
             // Si l'utilisateur a renseigne un nouveau mdp
             if ($passwordUpdated) {
                 // On hashe le nouveau mdp
-                $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
+                $user->setPassword(password_hash($this->request->getParam('POST', 'password'), PASSWORD_DEFAULT));
             }
 
-            $this->repository->updateUser($user);
+            $repository->updateUser($user);
 
             // On stocke les nouvelles infos du user en session
-            $_SESSION['user']->setLastname($user->getLastname());
-            $_SESSION['user']->setFirstname($user->getFirstname());
+            $this->session->set('user', $user);
 
             return $this->render('dashboard.html.twig', ['message' => 'Votre profil a bien été modifié.']);
         }

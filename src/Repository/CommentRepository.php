@@ -91,7 +91,7 @@ class CommentRepository
     public function getArticleComments(int $articleId): array
     {
         $sql = 'SELECT comment.id, content, publishedAt, isValidated, authorId, articleId, firstname, lastname, imageUrl
-                FROM comment INNER JOIN user ON comment.authorId = user.id WHERE articleId = :articleId';
+                FROM comment INNER JOIN user ON comment.authorId = user.id WHERE articleId = :articleId AND isValidated = 1';
 
         if (!empty($order)) {
             $sql .= ' ORDER BY ';

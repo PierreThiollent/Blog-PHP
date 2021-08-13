@@ -2,16 +2,22 @@
 
 namespace App\Router;
 
+use App\Http\File;
+use App\Http\Request;
+use App\Http\Session;
 use Twig\Environment;
 
 class Router
 {
     private array $routes = [];
 
-    public function __construct(string $url, Environment $twig)
-    {
-        $this->url = $url;
-        $this->twig = $twig;
+    public function __construct(
+        private string $url,
+        private Environment $twig,
+        private Request $request,
+        private Session $session,
+        private File $files
+    ) {
     }
 
     /**
@@ -20,7 +26,7 @@ class Router
      *
      * @param \Closure|string $callable callback function
      */
-    public function get(string $path, \Closure | string $callable): Route
+    public function get(string $path, \Closure|string $callable): Route
     {
         return $this->add($path, $callable, 'GET');
     }
@@ -30,7 +36,7 @@ class Router
      *
      * @param \Closure|string $callable callback function
      */
-    public function post(string $path, \Closure | string $callable): Route
+    public function post(string $path, \Closure|string $callable): Route
     {
         return $this->add($path, $callable, 'POST');
     }
@@ -39,9 +45,9 @@ class Router
      * Method to create a new GET route.
      *
      * @param \Closure|string $callable callback function
-     * @param string          $method   HTTP_METHOD
+     * @param string $method HTTP_METHOD
      */
-    private function add(string $path, \Closure | string $callable, string $method): Route
+    private function add(string $path, \Closure|string $callable, string $method): Route
     {
         $route = new Route($path, $callable);
         $this->routes[$method][] = $route;
@@ -54,15 +60,15 @@ class Router
      */
     public function run()
     {
-        if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
+        if (!isset($this->routes[$this->request->getMethod()])) {
             header('HTTP/1.0 404 Not Found');
 
             return $this->twig->render('404.html.twig');
         }
 
-        foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
+        foreach ($this->routes[$this->request->getMethod()] as $route) {
             if ($route->match($this->url)) {
-                return $route->call($this->twig);
+                return $route->call($this->twig, $this->request, $this->session, $this->files);
             }
         }
 
