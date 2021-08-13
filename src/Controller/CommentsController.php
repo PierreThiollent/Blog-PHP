@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Http\File;
+use App\Http\Request;
+use App\Http\Session;
 use App\Hydrator;
 use App\Repository\CommentRepository;
 use App\Validator\Validator;
@@ -14,12 +17,12 @@ class CommentsController extends AbstractController
     private Hydrator $hydrator;
     private CommentRepository $repository;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Request $request, Session $session, File $files)
     {
         $this->validator = new Validator();
         $this->hydrator = new Hydrator();
         $this->repository = new CommentRepository();
-        parent::__construct($twig);
+        parent::__construct($twig, $request, $session, $files);
     }
 
     /**
@@ -29,12 +32,12 @@ class CommentsController extends AbstractController
      */
     public function new()
     {
-        if (empty($_POST)) {
-            return;
+        if (empty($this->request->getParams('POST'))) {
+            return null;
         }
 
         $comment = new Comment();
-        $errors = $this->validator->validate($comment, $_POST);
+        $errors = $this->validator->validate($comment, $this->request->getParams('POST'));
 
         if (!empty($errors)) {
             foreach ($errors as $error) { ?>
@@ -43,8 +46,8 @@ class CommentsController extends AbstractController
             exit;
         }
 
-        $this->hydrator->hydrate($comment, $_POST);
-        $comment->setAuthor($_SESSION['user']);
+        $this->hydrator->hydrate($comment, $this->request->getParams('POST'));
+        $comment->setAuthor($this->session->get('user'));
 
         if (!$this->repository->add($comment)) {
             return $this->render('error.html.twig', ['error' => "Une erreur s'est produite pendant l'ajout de votre commentaire, veuillez réessayer."]);
@@ -53,9 +56,9 @@ class CommentsController extends AbstractController
         return $this->render('message.html.twig', ['message' => 'Votre commentaire a bien été ajouté, il est en attente de validation.']);
     }
 
-    public function manageComments()
+    public function manageComments(): string
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+        if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
@@ -66,11 +69,11 @@ class CommentsController extends AbstractController
 
     public function validate(int $id): bool
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+        if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 
-        if (!$this->repository->validate($id)) {
+        if (!$this->repository->validate((int) $id)) {
             // TODO pass an error alert
             return $this->redirect('/admin/list-comments');
         }
@@ -81,7 +84,7 @@ class CommentsController extends AbstractController
 
     public function delete(int $id): bool
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== 'admin') {
+        if ($this->session->get('user') === null || $this->session->get('user')->getRole() !== 'admin') {
             return $this->render('404.html.twig');
         }
 

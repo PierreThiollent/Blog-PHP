@@ -42,14 +42,14 @@
 							Contact
 						</a>
 					</li>
-					{% if session.user is null %}
+					{% if session.get('user') is null %}
 						<li class="">
 							<a href="/inscription">
 								S'inscrire
 							</a>
 						</li>
 					{% endif %}
-					{% if session.user %}
+					{% if session.get('user') %}
 						<li class="">
 							<a href="/mon-compte">
 								Mon compte
@@ -78,7 +78,6 @@
 							<form action="#" class="search-form">
 								<span class="icon-search2"></span>
 								<span class="fal fa-search icon-search2"></span>
-
 								<input type="search" class="form-control" placeholder="Search..."/>
 							</form>
 						</div>

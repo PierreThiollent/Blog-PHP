@@ -2,14 +2,17 @@
 
 namespace App\Router;
 
+use App\Http\File;
+use App\Http\Request;
+use App\Http\Session;
 use Twig\Environment;
 
 class Route
 {
-    private string $path;
-    private \Closure | string $callable;
     private array $matches = [];
     private array $params = [];
+    private \Closure|string $callable;
+    private string $path;
 
     public function __construct(string $path, \Closure | string $callable)
     {
@@ -34,12 +37,12 @@ class Route
     /**
      * Method which call a controller method.
      */
-    public function call(Environment $twig)
+    public function call(Environment $twig, Request $request, Session $session, File $file)
     {
         if (is_string($this->callable)) {
             $params = explode('->', $this->callable);
             $controller = 'App\\Controller\\' . $params[0];
-            $controller = new $controller($twig);
+            $controller = new $controller($twig, $request, $session, $file);
 
             return call_user_func_array([$controller, $params[1]], $this->matches);
         }

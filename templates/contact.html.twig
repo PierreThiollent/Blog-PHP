@@ -1,65 +1,65 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Contact
+    Contact
 {% endblock %}
 
 {% block body %}
-	<div class="row">
-		<div class="col-12 col-lg-6 align-self-center mx-auto">
+    <div class="row">
+        <div class="col-12 col-lg-6 align-self-center mx-auto">
 
-			{% include 'message.html.twig' %}
-			{% include 'error.html.twig' %}
+            {% include 'message.html.twig' %}
+            {% include 'error.html.twig' %}
 
-			<div class="m-3 m-lg-5">
-				<div class="text-center mt-4 mb-5">
-					<h2 class="h3">Contactez-nous</h2>
-				</div>
+            <div class="m-3 m-lg-5">
+                <div class="text-center mt-4 mb-5">
+                    <h2 class="h3">Contactez-nous</h2>
+                </div>
 
-				<form action="" method="POST">
-					<div class="mb-3">
-						<label class="form-label" for="nom">Nom</label>
-						<input class="form-control mb-2" type="text" name="nom" required/>
-						{% if errors.nom %}
-							<small class="text-danger">*
-								{{ errors.nom }}</small>
-						{% endif %}
-					</div>
+                <form action="" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label" for="nom">Nom</label>
+                        <input class="form-control mb-2" type="text" name="nom" required/>
+                        {% if errors.nom %}
+                            <small class="text-danger">*
+                                {{ errors.nom }}</small>
+                        {% endif %}
+                    </div>
 
-					<div class="mb-3">
-						<label class="form-label" for="prenom">Prénom</label>
-						<input class="form-control mb-2" type="text" name="prenom" required/>
-						{% if errors.prenom %}
-							<small class="text-danger">*
-								{{ errors.prenom }}</small>
-						{% endif %}
-					</div>
+                    <div class="mb-3">
+                        <label class="form-label" for="prenom">Prénom</label>
+                        <input class="form-control mb-2" type="text" name="prenom" required/>
+                        {% if errors.prenom %}
+                            <small class="text-danger">*
+                                {{ errors.prenom }}</small>
+                        {% endif %}
+                    </div>
 
-					<div class="mb-3">
-						<label class="form-label" form="email">Email</label>
-						<input class="form-control mb-2" type="email" name="email" required/>
-						{% if errors.email %}
-							<small class="text-danger">*
-								{{ errors.email }}</small>
-						{% endif %}
-					</div>
+                    <div class="mb-3">
+                        <label class="form-label" form="email">Email</label>
+                        <input class="form-control mb-2" type="email" name="email" required/>
+                        {% if errors.email %}
+                            <small class="text-danger">*
+                                {{ errors.email }}</small>
+                        {% endif %}
+                    </div>
 
-					<div class="mb-3">
-						<label for="message" class="form-label">Message</label>
-						<textarea class="form-control" id="message" style="height: 100px;" name="message"></textarea>
-						{% if errors.email %}
-							<small class="text-danger">*
-								{{ errors.email }}</small>
-						{% endif %}
-					</div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" style="height: 100px;" name="message" required></textarea>
+                        {% if errors.message %}
+                            <small class="text-danger">*
+                                {{ errors.message }}</small>
+                        {% endif %}
+                    </div>
 
-					<div class="text-center mt-4">
-						<button type="submit" class="btn btn-primary w-25">Envoyer</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary w-25">Envoyer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block script %}{% endblock %}
