@@ -32,7 +32,7 @@ class DAL
 
     #[Pure] public function __invoke(): bool
     {
-       return $this->isConnected();
+        return $this->isConnected();
     }
 
     /**
@@ -55,10 +55,8 @@ class DAL
 
     /**
      * Method to execute an SQL query.
-     *
-     * @param array|object $data
      */
-    public function execute(string $query, $data = []): bool
+    public function execute(string $query, object|array $data = []): bool
     {
         try {
             $request = $this->db->prepare($query);
